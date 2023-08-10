@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Calendar } from '@styled-icons/feather/Calendar';
 import { Clock } from '@styled-icons/feather/Clock';
-import { truncate } from 'lodash';
+import { get, truncate } from 'lodash';
 import { FormattedDate, FormattedMessage } from 'react-intl';
 
 import { ContributionTypes } from '../../lib/constants/contribution-types';
@@ -33,6 +33,7 @@ const ContributeEvent = ({ collective, event, ...props }) => {
       contributors={event.contributors}
       stats={event.stats.backers}
       image={event.backgroundImageUrl}
+      color={get(event, 'settings.collectivePage.primaryColor')}
       title={
         <StyledLink as={Link} color="black.800" href={`/${collective.slug}/events/${event.slug}`}>
           {event.name}
@@ -101,6 +102,7 @@ ContributeEvent.propTypes = {
     name: PropTypes.string.isRequired,
     slug: PropTypes.string.isRequired,
     backgroundImageUrl: PropTypes.string,
+    settings: PropTypes.object,
     startsAt: PropTypes.string,
     endsAt: PropTypes.string,
     description: PropTypes.string,

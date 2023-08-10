@@ -138,7 +138,7 @@ export const collectivePageQuery = gqlV1/* GraphQL */ `
       }
       projects {
         id
-        ...ContributeCardProjectFields
+        ...ContributeCardEventFields
       }
       admins: members(role: "ADMIN") {
         id

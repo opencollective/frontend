@@ -4,6 +4,7 @@ import { defineMessages, FormattedMessage, injectIntl } from 'react-intl';
 import styled, { css } from 'styled-components';
 
 import { ContributionTypes } from '../../lib/constants/contribution-types';
+import { adjustLuminance } from '../../lib/theme';
 
 import { ContributorAvatar } from '../Avatar';
 import Container from '../Container';
@@ -54,8 +55,6 @@ const CoverImage = styled.div`
   border-radius: 16px 16px 0 0;
 
   ${props => {
-    const primary = props.theme.colors.primary;
-    const radial = `radial-gradient(circle, ${primary[300]} 0%, ${primary[800]} 100%), `;
     const image = props.image ? `url(${props.image}), ` : '';
     const applyGrayscale = (isDisabled, contributionType) => {
       if (isDisabled) {
@@ -65,10 +64,24 @@ const CoverImage = styled.div`
       }
     };
 
-    return css`
-      background: ${image} ${radial} ${primary[500]};
-      ${applyGrayscale(props.isDisabled, props.contributionType)}
-    `;
+    if (props.customPrimaryColor) {
+      const primary = props.customPrimaryColor;
+      const radial = `radial-gradient(circle, ${adjustLuminance(primary, 0.65)} 0%, ${adjustLuminance(
+        primary,
+        0.2,
+      )} 100%), `;
+      return css`
+        background: ${image} ${radial} ${props.customPrimaryColor};
+        ${applyGrayscale(props.isDisabled, props.contributionType)}
+      `;
+    } else {
+      const primary = props.theme.colors.primary;
+      const radial = `radial-gradient(circle, ${primary[300]} 0%, ${primary[800]} 100%), `;
+      return css`
+        background: ${image} ${radial} ${primary[500]};
+        ${applyGrayscale(props.isDisabled, props.contributionType)}
+      `;
+    }
   }};
 `;
 
@@ -206,6 +219,7 @@ const ContributeCard = ({
   stats,
   hideContributors,
   image,
+  color,
   disableCTA,
   hideCTA,
   onClickEdit,
@@ -220,8 +234,8 @@ const ContributeCard = ({
   }
 
   return (
-    <StyledContributeCard {...props}>
-      <CoverImage image={image} isDisabled={disableCTA} contributionType={type}>
+    <StyledContributeCard customPrimaryColor={color} {...props}>
+      <CoverImage image={image} isDisabled={disableCTA} contributionType={type} customPrimaryColor={color}>
         <StyledTag
           position="absolute"
           bottom="8px"
@@ -334,6 +348,8 @@ ContributeCard.propTypes = {
   buttonText: PropTypes.string,
   /** An image to display on the card hero */
   image: PropTypes.string,
+  /** The color for card */
+  color: PropTypes.string,
   /** The card body */
   children: PropTypes.node,
   /** If true, the call to action will not be displayed */

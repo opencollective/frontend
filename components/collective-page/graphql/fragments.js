@@ -137,6 +137,7 @@ export const contributeCardEventFieldsFragment = gqlV1/* GraphQL */ `
     startsAt
     endsAt
     backgroundImageUrl(height: 208)
+    settings
     tiers {
       id
       type
@@ -168,6 +169,7 @@ export const contributeCardProjectFieldsFragment = gqlV1/* GraphQL */ `
     isActive
     isArchived
     backgroundImageUrl(height: 208)
+    settings
     contributors(limit: $nbContributorsPerContributeCard, roles: [BACKER]) {
       id
       ...ContributeCardContributorFields
