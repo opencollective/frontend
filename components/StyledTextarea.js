@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { themeGet } from '@styled-system/theme-get';
+import { FormattedMessage } from 'react-intl';
 import styled, { css } from 'styled-components';
 import { border, color, layout, space, typography } from 'styled-system';
 
 import { overflow, resize } from '../lib/styled-system-custom-properties';
 
 import Container from './Container';
-import StyledTag from './StyledTag';
+import { Span } from './Text';
 
 const TextArea = styled.textarea`
   outline: none;
@@ -129,9 +130,65 @@ export default class StyledTextarea extends React.PureComponent {
     }
   };
 
-  render() {
-    const { autoSize, showCount, resize, ...props } = this.props;
+  renderCountMessage() {
+    const { showCount, ...props } = this.props;
     const value = props.value || props.defaultValue || '';
+
+    if (!showCount || props.disabled || props.readOnly) {
+      return '';
+    }
+
+    let formattedMessage;
+    if (props.maxLength) {
+      const charactersRemaining = props.maxLength - value.length;
+      if (charactersRemaining > 1) {
+        formattedMessage = (
+          <FormattedMessage
+            id="textarea.charactersRemaining"
+            defaultMessage="Remaining {charactersRemaining} characters."
+            values={{ charactersRemaining: charactersRemaining }}
+          />
+        );
+      } else {
+        formattedMessage = (
+          <FormattedMessage
+            id="textarea.characterRemaining"
+            defaultMessage="Remaining {charactersRemaining} character."
+            values={{ charactersRemaining: charactersRemaining }}
+          />
+        );
+      }
+    } else {
+      if (value.length > 1) {
+        formattedMessage = (
+          <FormattedMessage
+            id="textarea.charactersTyped"
+            defaultMessage="{charactersTyped} characters typed."
+            values={{ charactersTyped: value.length }}
+          />
+        );
+      } else {
+        formattedMessage = (
+          <FormattedMessage
+            id="textarea.characterTyped"
+            defaultMessage="{charactersTyped} character typed."
+            values={{ charactersTyped: value.length }}
+          />
+        );
+      }
+    }
+
+    return (
+      <Container position="relative">
+        <Span ml={1} color="black.700" fontSize="14px" css={{ verticalAlign: 'middle' }}>
+          {formattedMessage}
+        </Span>
+      </Container>
+    );
+  }
+
+  render() {
+    const { autoSize, resize, ...props } = this.props;
 
     const textarea = (
       <TextArea
@@ -143,17 +200,10 @@ export default class StyledTextarea extends React.PureComponent {
       />
     );
 
-    return !showCount ? (
-      textarea
-    ) : (
+    return (
       <Container position="relative">
         {textarea}
-        <Container position="absolute" bottom="1.25em" right="1.5em">
-          <StyledTag textTransform="uppercase">
-            <span>{value.length}</span>
-            {props.maxLength && <span> / {props.maxLength}</span>}
-          </StyledTag>
-        </Container>
+        {this.renderCountMessage()}
       </Container>
     );
   }
