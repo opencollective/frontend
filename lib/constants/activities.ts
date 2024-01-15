@@ -68,7 +68,7 @@ export const ActivityTypes = {
   ORDER_PENDING_CONTRIBUTION_REMINDER: 'order.reminder.pendingFinancialContribution',
   ORDER_PROCESSING_CRYPTO: 'order.processing.crypto',
   ORDER_PROCESSING: 'order.processing',
-  ORDER_THANKYOU: 'order.thankyou',
+  ORDER_CONFIRMED: 'order.thankyou',
   ORDERS_SUSPICIOUS: 'orders.suspicious',
   ORGANIZATION_COLLECTIVE_CREATED: 'organization.collective.created',
   PAYMENT_CREDITCARD_CONFIRMATION: 'payment.creditcard.confirmation',

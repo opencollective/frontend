@@ -66,7 +66,7 @@ const ActivityCategories = {
       'ORDER_PROCESSING',
       'ORDER_PROCESSING_CRYPTO',
       'ORDER_PENDING_CONTRIBUTION_NEW',
-      'ORDER_THANKYOU',
+      'ORDER_CONFIRMED',
       'ORDERS_SUSPICIOUS',
       'PAYMENT_FAILED',
     ],

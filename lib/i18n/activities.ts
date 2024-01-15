@@ -539,7 +539,7 @@ export const ActivityTypeI18n: ActivityTranslations = defineMessages({
   ORDER_PENDING_CONTRIBUTION_NEW: {
     defaultMessage: 'New pending contribution',
   },
-  ORDER_THANKYOU: {
+  ORDER_CONFIRMED: {
     defaultMessage: 'New contribution',
   },
   ORDERS_SUSPICIOUS: {
