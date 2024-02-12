@@ -5,7 +5,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { Plus } from '@styled-icons/fa-solid/Plus';
 import { Times } from '@styled-icons/fa-solid/Times';
 import { DragIndicator } from '@styled-icons/material/DragIndicator';
-import { sortBy } from 'lodash';
+import { get, sortBy } from 'lodash';
 import { FormattedMessage } from 'react-intl';
 
 import type { SocialLink, SocialLinkInput } from '../../lib/graphql/types/v2/graphql';
@@ -217,7 +217,7 @@ type SocialLinkItemProps = {
   onRemoveItem: (sortId: string) => void;
 };
 
-function SocialLinkItem({ value, error, onChange, onRemoveItem }: SocialLinkItemProps) {
+function SocialLinkItem({ value, error, errors, onChange, onRemoveItem }: SocialLinkItemProps) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: value.sortId });
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -284,12 +284,12 @@ function SocialLinkItem({ value, error, onChange, onRemoveItem }: SocialLinkItem
         </Box>
         <StyledInput
           autoFocus={value.url === ''}
-          error={error}
           flexGrow={1}
           value={value.url}
           onBlur={onUrlBlur}
           onChange={onUrlChange}
-          placeholder="https://opencollective.com/"
+          placeholder="https://example.com/my-profile"
+          type="url"
         />
       </Flex>
 
