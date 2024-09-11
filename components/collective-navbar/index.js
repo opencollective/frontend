@@ -78,7 +78,24 @@ const NavBarContainerGlobalStyle = createGlobalStyle`
 const NavbarContentContainer = styled(Container)`
   background: white;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
+
+  @media (min-width: 64em) {
+    justify-content: flex-start;
+  }
+`;
+
+const StyledContainer = styled.div`
+  display: flex;
+  width: auto;
+  justify-content: center;
+  flex-direction: column;
+
+  @media (min-width: 64em) {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
 `;
 
 const AvatarBox = styled(Box)`
@@ -571,12 +588,7 @@ const CollectiveNavbar = ({
           {/** Main navbar items */}
 
           {!onlyInfos && (
-            <Container
-              display={['block', 'flex']}
-              width="100%"
-              justifyContent="space-between"
-              flexDirection={['column', 'row']}
-            >
+            <StyledContainer>
               {isExpanded && <DisableGlobalScrollOnMobile />}
               <CategoriesContainer
                 ref={navbarRef}
@@ -638,7 +650,7 @@ const CollectiveNavbar = ({
                   )}
                 </Container>
               </Container>
-            </Container>
+            </StyledContainer>
           )}
         </NavbarContentContainer>
       </NavBarContainer>

@@ -146,7 +146,7 @@ export const NavBarCategory = ({ category, collective }) => {
   const categoryDetails = getSectionsCategoryDetails(intl, collective, category);
   return (
     <Flex>
-      <Flex alignItems="center" mr={2}>
+      <Flex alignItems="center" minWidth={32} mr={2}>
         <Image width={32} height={32} alt="" src={categoryDetails.img || SECTIONS_CATEGORY_ICON.CONTRIBUTE} />
       </Flex>
       <Flex alignItems="center">
