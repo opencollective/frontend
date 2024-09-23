@@ -90,7 +90,7 @@ const BrowseTopics = () => {
     <React.Fragment>
       <Flex flexDirection="column" px="16px" alignItems="center" my="120px">
         <Flex
-          width={[null, '568px', '864px', null, '1020px']}
+          width={[null, '568px','750px', '864px', null, '1020px']}
           alignItems="center"
           mb={['24px', '48px']}
           justifyContent="space-between"
@@ -111,8 +111,8 @@ const BrowseTopics = () => {
         <Grid
           justifyContent="center"
           alignItems="center"
-          width={['100%', '568px', '864px', null, null, '1020px']}
-          gridTemplateColumns={[null, 'repeat(2, 288px)', 'repeat(3, 272px)', null, `repeat(3, 320px)`]}
+          width={['100%', '568px','750px', '864px', null, null, '1020px']}
+          gridTemplateColumns={[null, 'repeat(2, 288px)', 'repeat(2, 300px)','repeat(3, 272px)', null, `repeat(3, 320px)`]}
           gridGap={['30px', null, '24px']}
         >
           {topics.map(({ id, iconSrc, link }) => (

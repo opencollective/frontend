@@ -53,19 +53,19 @@ const HowOCWorks = () => (
           <FormattedMessage id="helpAndSupport.getToKnowUs" defaultMessage="Get to know us!" />
         </SectionTitle>
       </Box>
-      <Box mt="16px" order={[null, 3]} width={['216px', '320px', '448px']}>
+      <Box mt="16px" order={[null, 3]} width={['216px', '320px']}>
         <NextIllustration
           src="/static/images/help-and-support/getToKnowUs-illustration.png"
           alt="How open collective illustration"
-          width={448}
-          height={365}
+          width={320}
+          height={300}
         />
       </Box>
       <Box
         textAlign={['center', null, 'left']}
         width={['288px', '660px', '417px']}
         order={[null, 2]}
-        mr={[null, null, '72px']}
+        mr={['20px', null, '32px']}
       >
         <SectionTitle mb={3} display={['none', null, 'block']}>
           <FormattedMessage id="helpAndSupport.getToKnowUs" defaultMessage="Get to know us!" />
