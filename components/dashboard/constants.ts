@@ -18,6 +18,7 @@ export const SECTIONS = {
   HOST_APPLICATIONS: 'host-applications',
   HOST_TAX_FORMS: 'host-tax-forms',
   CONTRIBUTORS: 'contributors',
+  HOST_COMMUNITY: 'host-community',
   INCOMING_CONTRIBUTIONS: 'incoming-contributions',
   OUTGOING_CONTRIBUTIONS: 'outgoing-contributions',
   HOST_EXPECTED_FUNDS: 'expected-funds',
@@ -269,6 +270,10 @@ export const SECTION_LABELS = defineMessages({
   [ALL_SECTIONS.CONTRIBUTORS]: {
     id: 'Contributors',
     defaultMessage: 'Contributors',
+  },
+  [ALL_SECTIONS.HOST_COMMUNITY]: {
+    id: 'HostContributors',
+    defaultMessage: 'Host Contributors',
   },
   [ALL_SECTIONS.OUTGOING_CONTRIBUTIONS]: {
     id: 'OutgoingContributions',
