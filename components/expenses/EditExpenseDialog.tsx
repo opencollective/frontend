@@ -405,7 +405,7 @@ export default function EditExpenseDialog({
   const intl = useIntl();
   const [editExpense] = useMutation(
     gql`
-      mutation EditExpense($expenseEditInput: ExpenseUpdateInput!) {
+      mutation EditExpenseDialog($expenseEditInput: ExpenseUpdateInput!) {
         expense: editExpense(expense: $expenseEditInput) {
           id
           ...ExpensePageExpenseFields
