@@ -3572,7 +3572,7 @@ type TaxInfo {
   """
   Identifier for this tax (GST, VAT, etc)
   """
-  type: OrderTaxType!
+  type: TaxType!
 
   """
   Percentage applied, between 0-100
@@ -3593,7 +3593,7 @@ type TaxInfo {
 """
 The type of a tax like GST, VAT, etc
 """
-enum OrderTaxType {
+enum TaxType {
   """
   European Value Added Tax
   """

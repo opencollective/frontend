@@ -2612,6 +2612,8 @@ export type ContributionStats = {
 export type Contributor = {
   __typename?: 'Contributor';
   account?: Maybe<Account>;
+  /** List of accounts the contributor has contributed to */
+  accountsContributedTo?: Maybe<Array<Maybe<Account>>>;
   /**
    * If the contributor has a page on Open Collective, this is the slug to link to it. Always null for incognito contributors
    * @deprecated 2024-08-26: Use account.slug instead
@@ -8842,8 +8844,11 @@ export enum OrderStatus {
 
 export type OrderTax = {
   __typename?: 'OrderTax';
+  /** @deprecated Please use `rate` instead */
   percentage: Scalars['Int']['output'];
-  type: OrderTaxType;
+  /** Percentage applied, between 0-1 */
+  rate: Scalars['Float']['output'];
+  type: TaxType;
 };
 
 /** Input to set taxes for an order */
@@ -8853,16 +8858,8 @@ export type OrderTaxInput = {
   country?: InputMaybe<CountryIso>;
   /** Tax identification number, if any */
   idNumber?: InputMaybe<Scalars['String']['input']>;
-  type: OrderTaxType;
+  type: TaxType;
 };
-
-/** The type of a tax like GST, VAT, etc */
-export enum OrderTaxType {
-  /** New Zealand Good and Services Tax */
-  GST = 'GST',
-  /** European Value Added Tax */
-  VAT = 'VAT'
-}
 
 export type OrderUpdateInput = {
   /** Amount received by collective, excluding any tips, taxes or fees */
@@ -10447,6 +10444,10 @@ export type Query = {
   activities: ActivityCollection;
   application?: Maybe<Application>;
   collective?: Maybe<Collective>;
+  /** Get Contributors grouped by their profiles */
+  contributor: Contributor;
+  /** Get Contributors grouped by their profiles */
+  contributors: ContributorCollection;
   conversation?: Maybe<Conversation>;
   /** Get exchange rates from Open Collective */
   currencyExchangeRate: Array<CurrencyExchangeRate>;
@@ -10463,6 +10464,8 @@ export type Query = {
   me?: Maybe<Individual>;
   /** [AUTHENTICATED] Returns the pending invitations */
   memberInvitations?: Maybe<Array<Maybe<MemberInvitation>>>;
+  /** Get all members (admins, members, backers, followers) */
+  members: MemberCollection;
   order?: Maybe<Order>;
   orders: OrderCollection;
   organization?: Maybe<Organization>;
@@ -10553,6 +10556,27 @@ export type QueryCollectiveArgs = {
   id?: InputMaybe<Scalars['String']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   throwIfMissing?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+/** This is the root query */
+export type QueryContributorArgs = {
+  account?: InputMaybe<AccountReferenceInput>;
+  host?: InputMaybe<AccountReferenceInput>;
+};
+
+
+/** This is the root query */
+export type QueryContributorsArgs = {
+  account?: InputMaybe<AccountReferenceInput>;
+  email?: InputMaybe<Scalars['EmailAddress']['input']>;
+  host?: InputMaybe<AccountReferenceInput>;
+  includeInherited?: InputMaybe<Scalars['Boolean']['input']>;
+  limit?: Scalars['Int']['input'];
+  offset?: Scalars['Int']['input'];
+  orderBy?: ChronologicalOrderInput;
+  role?: InputMaybe<Array<InputMaybe<MemberRole>>>;
+  type?: InputMaybe<Array<InputMaybe<AccountType>>>;
 };
 
 
@@ -10678,6 +10702,20 @@ export type QueryIndividualArgs = {
 export type QueryMemberInvitationsArgs = {
   account?: InputMaybe<AccountReferenceInput>;
   memberAccount?: InputMaybe<AccountReferenceInput>;
+  role?: InputMaybe<Array<InputMaybe<MemberRole>>>;
+};
+
+
+/** This is the root query */
+export type QueryMembersArgs = {
+  account?: InputMaybe<AccountReferenceInput>;
+  accountType?: InputMaybe<Array<InputMaybe<AccountType>>>;
+  email?: InputMaybe<Scalars['EmailAddress']['input']>;
+  host?: InputMaybe<AccountReferenceInput>;
+  includeInherited?: InputMaybe<Scalars['Boolean']['input']>;
+  limit?: Scalars['Int']['input'];
+  offset?: Scalars['Int']['input'];
+  orderBy?: ChronologicalOrderInput;
   role?: InputMaybe<Array<InputMaybe<MemberRole>>>;
 };
 
@@ -11190,7 +11228,7 @@ export type TaxInfo = {
   /** Percentage applied, between 0-1 */
   rate: Scalars['Float']['output'];
   /** Identifier for this tax (GST, VAT, etc) */
-  type: OrderTaxType;
+  type: TaxType;
 };
 
 /** Input to set taxes for an expense */
