@@ -9,7 +9,8 @@ import { z } from 'zod';
 
 import { i18nGraphqlException } from '../../lib/errors';
 import { API_V2_CONTEXT } from '../../lib/graphql/helpers';
-import type { Currency, CurrencyExchangeRateInput, Expense } from '../../lib/graphql/types/v2/graphql';
+import type { Currency, CurrencyExchangeRateInput } from '../../lib/graphql/types/v2/graphql';
+import type { Expense } from '../../lib/graphql/types/v2/schema';
 import { cn } from '../../lib/utils';
 
 import { FormField } from '../FormField';
