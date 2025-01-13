@@ -1,5 +1,4 @@
 import React from 'react';
-import type { MouseEventHandler } from 'react';
 
 import type { Account } from '../lib/graphql/types/v2/schema';
 
@@ -12,7 +11,6 @@ const StackedAvatars = ({
   maxDisplayedAvatars = 3,
   withHoverCard,
   gapPercentage = 0.33,
-  onClick,
 }: {
   accounts: Partial<Account>[];
   imageSize: number;
@@ -20,7 +18,6 @@ const StackedAvatars = ({
   withHoverCard?: boolean | { includeAdminMembership: boolean };
   /** The negative gap between overlaying image, calculated as a percentage of the imageSize */
   gapPercentage?: number;
-  onClick?: (account: Partial<Account>) => MouseEventHandler<HTMLAnchorElement>;
 }) => {
   const width = `${imageSize}px`;
   const marginLeft = `-${imageSize * gapPercentage}px`;
@@ -37,7 +34,6 @@ const StackedAvatars = ({
               includeAdminMembership:
                 typeof withHoverCard === 'object' && withHoverCard.includeAdminMembership ? account.slug : false,
             }}
-            onClick={onClick?.(account)}
           >
             <Avatar
               collective={account}

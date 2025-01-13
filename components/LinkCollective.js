@@ -40,7 +40,7 @@ const LinkCollective = ({
   const { slug, name } = collective;
   const link = (
     <Link
-      href={props.onClick ? '#' : getCollectivePageRoute(collective)}
+      href={getCollectivePageRoute(collective)}
       title={noTitle || withHoverCard ? null : title || name}
       target={target}
       className={cn('hover:underline', className)}
@@ -79,7 +79,6 @@ LinkCollective.propTypes = {
   /** If true, will display a hover card on mouse over */
   withHoverCard: PropTypes.bool,
   hoverCardProps: PropTypes.object,
-  onClick: PropTypes.func,
 };
 
 export default LinkCollective;
