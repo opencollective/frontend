@@ -10,14 +10,17 @@ const StackedAvatars = ({
   imageSize,
   maxDisplayedAvatars = 3,
   withHoverCard,
+  gapPercentage = 0.33,
 }: {
   accounts: Partial<Account>[];
   imageSize: number;
   maxDisplayedAvatars?: number;
   withHoverCard?: boolean | { includeAdminMembership: boolean };
+  /** The negative gap between overlaying image, calculated as a percentage of the imageSize */
+  gapPercentage?: number;
 }) => {
   const width = `${imageSize}px`;
-  const marginLeft = `-${imageSize / 3}px`;
+  const marginLeft = `-${imageSize * gapPercentage}px`;
   const displayed = accounts.length > maxDisplayedAvatars ? accounts.slice(0, maxDisplayedAvatars - 1) : accounts;
   const left = accounts.length - displayed.length;
   return (
@@ -36,7 +39,7 @@ const StackedAvatars = ({
               collective={account}
               radius={imageSize}
               displayTitle={true}
-              className="border border-solid border-white"
+              className="border border-solid border-white bg-white"
             />
           </LinkCollective>
         </div>

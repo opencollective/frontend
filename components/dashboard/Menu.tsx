@@ -12,6 +12,7 @@ import {
   FlaskConical,
   Globe2,
   HeartHandshake,
+  HeartHandshakeIcon,
   LayoutDashboard,
   Megaphone,
   Receipt,
@@ -227,6 +228,12 @@ export const getMenuItems = ({ intl, account, LoggedInUser }): MenuItem[] => {
           section: ALL_SECTIONS.HOST_APPLICATIONS,
         },
       ],
+    },
+    {
+      if: (isHost || isSelfHosted) && hasFeature(account, FEATURES.COMMUNITY_DASHBOARD),
+      label: intl.formatMessage({ id: 'community', defaultMessage: 'Community' }),
+      section: ALL_SECTIONS.HOST_COMMUNITY,
+      Icon: HeartHandshakeIcon,
     },
     {
       if: isHost,

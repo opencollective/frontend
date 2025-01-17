@@ -2289,7 +2289,7 @@ type TaxInfo {
   """
   Identifier for this tax (GST, VAT, etc)
   """
-  type: OrderTaxType!
+  type: TaxType!
 
   """
   Percentage applied, between 0-100
@@ -2310,7 +2310,7 @@ type TaxInfo {
 """
 The type of a tax like GST, VAT, etc
 """
-enum OrderTaxType {
+enum TaxType {
   """
   European Value Added Tax
   """
@@ -4243,6 +4243,11 @@ type Contributor {
   """
   collectiveSlug: String @deprecated(reason: "2024-08-26: Use account.slug instead")
   account: Account
+
+  """
+  List of accounts the contributor has contributed to
+  """
+  accountsContributedTo: [Account]
 
   """
   Contributor avatar or logo
@@ -7721,8 +7726,13 @@ type TransactionPermissions {
 }
 
 type OrderTax {
-  type: OrderTaxType!
-  percentage: Int!
+  type: TaxType!
+  percentage: Int! @deprecated(reason: "Please use `rate` instead")
+
+  """
+  Percentage applied, between 0-1
+  """
+  rate: Float!
 }
 
 """
@@ -14608,6 +14618,51 @@ type Query {
   ): Conversation
 
   """
+  Get Contributors grouped by their profiles
+  """
+  contributors(
+    """
+    Host hosting the account
+    """
+    account: AccountReferenceInput
+
+    """
+    Host hosting the account
+    """
+    host: AccountReferenceInput
+    limit: Int! = 100
+    offset: Int! = 0
+    role: [MemberRole]
+    type: [AccountType]
+
+    """
+    Admin only. To filter on the email address of a member, useful to check if a member exists.
+    """
+    email: EmailAddress
+
+    """
+    Order of the results
+    """
+    orderBy: ChronologicalOrderInput! = { field: CREATED_AT, direction: ASC }
+    includeInherited: Boolean = true
+  ): ContributorCollection!
+
+  """
+  Get Contributors grouped by their profiles
+  """
+  contributor(
+    """
+    Contributor Account reference
+    """
+    account: AccountReferenceInput
+
+    """
+    Context host to fetch the contributor from
+    """
+    host: AccountReferenceInput
+  ): Contributor!
+
+  """
   Get exchange rates from Open Collective
   """
   currencyExchangeRate(
@@ -14928,6 +14983,36 @@ type Query {
     """
     role: [MemberRole]
   ): [MemberInvitation]
+
+  """
+  Get all members (admins, members, backers, followers)
+  """
+  members(
+    """
+    Host hosting the account
+    """
+    account: AccountReferenceInput
+
+    """
+    Host hosting the account
+    """
+    host: AccountReferenceInput
+    limit: Int! = 100
+    offset: Int! = 0
+    role: [MemberRole]
+    accountType: [AccountType]
+
+    """
+    Admin only. To filter on the email address of a member, useful to check if a member exists.
+    """
+    email: EmailAddress
+
+    """
+    Order of the results
+    """
+    orderBy: ChronologicalOrderInput! = { field: CREATED_AT, direction: ASC }
+    includeInherited: Boolean = true
+  ): MemberCollection!
   order(
     """
     Identifiers to retrieve the Order
@@ -21591,21 +21676,6 @@ input TaxInput {
 }
 
 """
-The type of a tax like GST, VAT, etc
-"""
-enum TaxType {
-  """
-  European Value Added Tax
-  """
-  VAT
-
-  """
-  New Zealand Good and Services Tax
-  """
-  GST
-}
-
-"""
 Reference to an accounting category
 """
 input AccountingCategoryReferenceInput {
@@ -22705,7 +22775,7 @@ input PaypalPaymentInput {
 Input to set taxes for an order
 """
 input OrderTaxInput {
-  type: OrderTaxType!
+  type: TaxType!
   amount: AmountInput!
 
   """

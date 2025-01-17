@@ -36,6 +36,7 @@ import { Pagination } from '../../filters/Pagination';
 import { searchFilter } from '../../filters/SearchFilter';
 import { buildSortFilter } from '../../filters/SortFilter';
 import type { DashboardSectionProps } from '../../types';
+import { makePushSubpath } from '../../utils';
 
 import CollectiveDetails from './CollectiveDetails';
 import type { HostedCollectivesDataTableMeta } from './common';
@@ -124,18 +125,7 @@ const HostedCollectives = ({ accountSlug: hostSlug, subpath }: DashboardSectionP
     context: API_V2_CONTEXT,
   });
 
-  const pushSubpath = subpath => {
-    router.push(
-      {
-        pathname: compact([router.pathname, router.query.slug, router.query.section, subpath]).join('/'),
-        query: omit(router.query, ['slug', 'section', 'subpath']),
-      },
-      undefined,
-      {
-        shallow: true,
-      },
-    );
-  };
+  const pushSubpath = makePushSubpath(router);
 
   const views = [
     {
