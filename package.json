@@ -21,7 +21,7 @@
     "@hyperwatch/hyperwatch": "4.0.0",
     "@icons-pack/react-simple-icons": "^10.0.0",
     "@opencollective/taxes": "5.0.0",
-    "@opencollective/trix": "2.1.6",
+    "trix": "2.1.11",
     "@popperjs/core": "2.11.8",
     "@radix-ui/react-accordion": "1.2.1",
     "@radix-ui/react-alert-dialog": "1.1.2",

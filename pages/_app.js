@@ -23,7 +23,7 @@ import { WorkspaceProvider } from '../components/WorkspaceProvider';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'nprogress/nprogress.css';
-import '@opencollective/trix/dist/trix.css';
+import 'trix/dist/trix.css';
 import '../public/static/styles/app.css';
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css';
 

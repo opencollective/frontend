@@ -1,6 +1,6 @@
 import React from 'react';
 import { css } from '@styled-system/css';
-import { get, remove } from 'lodash';
+import { get } from 'lodash';
 import styled from 'styled-components';
 import { v4 as uuid } from 'uuid';
 import { isURL } from 'validator';
@@ -272,7 +272,7 @@ export default class RichTextEditor extends React.Component<RichTextEditorProps,
 
     // Load Trix
     if (typeof window !== 'undefined') {
-      this.Trix = require('@opencollective/trix').default; // eslint-disable-line @typescript-eslint/no-var-requires
+      this.Trix = require('trix').default; // eslint-disable-line @typescript-eslint/no-var-requires
       document.addEventListener('trix-before-initialize', this.trixBeforeInitialize);
     }
   }
@@ -355,8 +355,8 @@ export default class RichTextEditor extends React.Component<RichTextEditorProps,
   trixBeforeInitialize = () => {
     this.Trix.config.blockAttributes.heading1 = { tagName: 'h3' };
     this.Trix.config.attachments.preview.caption = { name: false, size: false };
-    remove(this.Trix.config.parser.forbiddenElements, type => type === 'iframe'); // Allow iframes for video embeds
-    this.Trix.config.parser.allowedAttributes.push('frameborder', 'allowfullscreen');
+    this.Trix.config.dompurify.ADD_TAGS = ['iframe']; // Allow iframes for video embeds
+    this.Trix.config.dompurify.ADD_ATTR = ['allowfullscreen', 'frameborder'];
   };
 
   trixInitialize = event => {
