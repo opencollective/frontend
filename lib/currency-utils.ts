@@ -11,7 +11,7 @@ export type Options = {
   minimumFractionDigits?: number;
   precision?: number;
   style?: 'currency' | 'decimal';
-  currencyDisplay?: 'symbol' | 'narrowSymbol' | 'code' | 'name';
+  currencyDisplay?: Intl.NumberFormatOptions['currencyDisplay'];
   absolute?: boolean;
 };
 
@@ -90,7 +90,7 @@ export function formatCurrency(
     maximumFractionDigits = 0;
   }
 
-  const formatAmount = (currencyDisplay: Intl.NumberFormatOptions['currencyDisplay']): string => {
+  const formatAmount = (currencyDisplay: Options['currencyDisplay']): string => {
     return amount.toLocaleString(options.locale, {
       style: options.style || 'currency',
       currency,
