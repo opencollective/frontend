@@ -14,6 +14,7 @@ import type {
   GeneratePlaidLinkTokenMutation,
   GeneratePlaidLinkTokenMutationVariables,
 } from '../graphql/types/v2/graphql';
+import type { Host } from '../graphql/types/v2/schema';
 
 const generatePlaidLinkTokenMutation = gql`
   mutation GeneratePlaidLinkToken {
@@ -32,8 +33,15 @@ const connectPlaidAccountMutation = gql`
     $host: AccountReferenceInput!
     $sourceName: String
     $name: String
+    $transactionImport: TransactionsImportReferenceInput
   ) {
-    connectPlaidAccount(publicToken: $publicToken, host: $host, sourceName: $sourceName, name: $name) {
+    connectPlaidAccount(
+      publicToken: $publicToken
+      host: $host
+      sourceName: $sourceName
+      name: $name
+      transactionImport: $transactionImport
+    ) {
       connectedAccount {
         id
       }
@@ -44,11 +52,20 @@ const connectPlaidAccountMutation = gql`
   }
 `;
 
-type PlaidDialogStatus = 'idle' | 'loading' | 'active' | 'disabled' | 'success';
+export type PlaidDialogStatus = 'idle' | 'loading' | 'active' | 'disabled' | 'success';
 
 export const usePlaidConnectDialog = ({
   host,
   onSuccess,
+  disabled,
+  onOpen,
+  transactionImportId,
+}: {
+  host: Host;
+  onSuccess: (result: ConnectPlaidAccountMutation['connectPlaidAccount']) => void;
+  disabled?: boolean;
+  onOpen?: () => void;
+  transactionImportId?: string;
 }): {
   status: PlaidDialogStatus;
   show: () => void;
@@ -70,6 +87,7 @@ export const usePlaidConnectDialog = ({
     onEvent: eventName => {
       if (eventName === 'OPEN') {
         setStatus('active');
+        onOpen?.();
       }
     },
     onExit: err => {
@@ -88,6 +106,7 @@ export const usePlaidConnectDialog = ({
             host: getAccountReferenceInput(host),
             sourceName: metadata.institution.name,
             name: metadata.accounts.map(a => a.name).join(', '),
+            transactionImport: transactionImportId ? { id: transactionImportId } : undefined,
           },
         });
       } catch (e) {
@@ -119,7 +138,7 @@ export const usePlaidConnectDialog = ({
   }, [ready, linkToken, open]);
 
   return {
-    status: !host ? 'disabled' : status,
+    status: !host || disabled ? 'disabled' : status,
     show,
   };
 };
