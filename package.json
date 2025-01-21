@@ -217,7 +217,7 @@
     "@rollup/plugin-image": "^3.0.3",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
-    "@rollup/plugin-swc": "^0.3.0",
+    "@rollup/plugin-swc": "^0.4.0",
     "@swc/core": "^1.5.24",
     "@tailwindcss/typography": "^0.5.13",
     "@types/apollo-upload-client": "17.0.5",
