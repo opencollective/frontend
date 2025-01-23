@@ -100,7 +100,7 @@ export const hostApplicationsMetadataQuery = gql`
         }
       }
 
-      unreplied: hostApplications(limit: 0, offset: 0, lastCommentBy: COLLECTIVE_ADMIN) {
+      unreplied: hostApplications(limit: 0, offset: 0, lastCommentBy: COLLECTIVE_ADMIN, status: PENDING) {
         totalCount
       }
       pending: hostApplications(limit: 0, offset: 0, status: PENDING) {

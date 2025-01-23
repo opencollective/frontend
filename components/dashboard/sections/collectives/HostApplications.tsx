@@ -103,6 +103,7 @@ const HostApplications = ({ accountSlug: hostSlug }: DashboardSectionProps) => {
       label: intl.formatMessage({ defaultMessage: 'Unreplied', id: 'k9Y5So' }),
       filter: {
         lastCommentBy: [HostApplicationLastCommentBy.COLLECTIVE_ADMIN],
+        status: HostApplicationStatus.PENDING,
       },
       count: metadata?.host?.unreplied?.totalCount,
     },
