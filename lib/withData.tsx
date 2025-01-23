@@ -41,10 +41,11 @@ const withData = ComposedComponent => {
         // Prevent Apollo Client GraphQL errors from crashing SSR.
         // Handle them in components via the data.error prop:
         // http://dev.apollodata.com/react/api-queries.html#graphql-query-data-error
-        if (process.env.DEBUG) {
-          // eslint-disable-next-line no-console
-          console.error('>>> apollo error: ', error);
-        }
+        // if (process.env.DEBUG) {
+        // // eslint-disable-next-line no-console
+        console.error('>>> apollo error: ', error);
+        throw error;
+        // }
       }
 
       return {
