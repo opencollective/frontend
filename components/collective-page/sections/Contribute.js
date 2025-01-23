@@ -96,7 +96,7 @@ class SectionContribute extends React.PureComponent {
   };
 
   getFinancialContributorsWithoutTier = memoizeOne(contributors => {
-    return contributors.filter(c => c.isBacker && (c.tiersIds.length === 0 || c.tiersIds[0] === null));
+    return contributors.filter(c => c.isBacker && (!c.tiersIds || c.tiersIds.length === 0 || c.tiersIds[0] === null));
   });
 
   hasContributors = memoizeOne(contributors => {
