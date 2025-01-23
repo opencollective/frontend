@@ -247,10 +247,6 @@ class AcceptContributionsOurselvesOrOrg extends React.Component {
               </Fragment>
             ) : (
               <Fragment>
-                <Avatar collective={organizationPicked ? organization : collective} radius={64} mb={2} />
-                <P fontSize="16px" lineHeight="21px" fontWeight="bold" mb={3}>
-                  {organizationPicked ? organization.name : collective.name}
-                </P>
                 <H2 fontSize="20px" fontWeight="bold" color="black.900" textAlign="center">
                   {router.query.method === 'bank' ? (
                     <FormattedMessage id="acceptContributions.addBankAccount" defaultMessage="Add bank account" />
