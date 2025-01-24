@@ -84,9 +84,19 @@ echo ""
 wait_for_service PDF 127.0.0.1 3002
 
 echo ""
-echo "> Running cypress tests"
 
-npm run cypress:run -- ${CYPRESS_RECORD} --browser chromium --env OC_ENV=$OC_ENV --spec "test/cypress/integration/${CYPRESS_TEST_FILES}"
+if [ "$USE_PLAYWRIGHT" = "true" ]; then
+  echo "> Running playwright tests"
+  pwd
+  ls
+  ls test
+  ls test/playwright
+  ls test/playwright/integration
+  npx playwright test test/playwright/integration/*.spec.ts
+else
+  echo "> Running cypress tests"
+  npm run cypress:run -- ${CYPRESS_RECORD} --browser chromium --env OC_ENV=$OC_ENV --spec "test/cypress/integration/${CYPRESS_TEST_FILES}"
+fi
 
 RETURN_CODE=$?
 if [ $RETURN_CODE -ne 0 ]; then
@@ -102,5 +112,6 @@ kill $API_PID
 kill $FRONTEND_PID
 kill $IMAGES_PID
 kill $PDF_PID
+
 echo "Exiting with code $RETURN_CODE"
 exit $RETURN_CODE

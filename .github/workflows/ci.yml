@@ -187,3 +187,9 @@ jobs:
     needs: build
     uses: ./.github/workflows/e2e.yml
     secrets: inherit
+
+  playwright:
+    if: github.ref_name != 'i18n/crowdin'
+    needs: build
+    uses: ./.github/workflows/playwright.yml
+    secrets: inherit
