@@ -268,6 +268,46 @@ Cypress.Commands.add('createProject', ({ userEmail = defaultTestUserEmail, colle
   });
 });
 
+Cypress.Commands.add('createHostOrganization', (userEmail, variables) => {
+  return signinRequest({ email: userEmail }, null).then(response => {
+    const token = getTokenFromRedirectUrl(response.body.redirect);
+    return graphqlQueryV2(token, {
+      operationName: 'CreateOrganization',
+      query: gql`
+        mutation CreateOrganization($organization: OrganizationCreateInput!, $inviteMembers: [InviteMemberInput!]) {
+          createOrganization(organization: $organization, inviteMembers: $inviteMembers) {
+            id
+            legacyId
+            slug
+          }
+        }
+      `,
+      variables: {
+        ...variables,
+        organization: {
+          slug: randomSlug(),
+          description: 'Test Host',
+          name: 'Test Host',
+          ...variables?.organization,
+        },
+      },
+    }).then(({ body }) => {
+      const host = body.data.createOrganization;
+      return graphqlQuery(token, {
+        operationName: 'ActivateCollectiveAsHost',
+        query: gqlV1`
+          mutation ActivateCollectiveAsHost($id: Int!) {
+            activateCollectiveAsHost(id: $id) {
+              id
+            }
+          }
+        `,
+        variables: { id: host.legacyId },
+      }).then(() => host);
+    });
+  });
+});
+
 Cypress.Commands.add('graphqlQueryV2', (query, { variables = {}, token = null } = {}) => {
   return graphqlQueryV2(token, { query, variables }).then(({ body }) => {
     return body.data;
