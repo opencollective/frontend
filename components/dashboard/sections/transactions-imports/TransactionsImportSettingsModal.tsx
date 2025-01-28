@@ -9,6 +9,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { i18nGraphqlException } from '../../../../lib/errors';
 import { API_V2_CONTEXT } from '../../../../lib/graphql/helpers';
 import type { TransactionsImport } from '../../../../lib/graphql/types/v2/schema';
+import type { PlaidDialogStatus } from '../../../../lib/hooks/usePlaidConnectDialog';
 
 import {
   AlertDialog,
@@ -56,12 +57,16 @@ const deleteConnectedAccountMutation = gql`
 
 export default function TransactionsImportSettingsModal({
   transactionsImport,
+  plaidStatus,
   onOpenChange,
+  onReconnectClick,
   isOpen,
 }: {
   onOpenChange: (isOpen: boolean) => void;
   isOpen: boolean;
-  transactionsImport: Pick<TransactionsImport, 'id' | 'source' | 'name'> & {
+  onReconnectClick: () => void;
+  plaidStatus: PlaidDialogStatus;
+  transactionsImport: Pick<TransactionsImport, 'id' | 'source' | 'name' | 'type'> & {
     connectedAccount?: Pick<TransactionsImport['connectedAccount'], 'id'>;
   };
 }) {
@@ -232,6 +237,34 @@ export default function TransactionsImportSettingsModal({
                           </AlertDialogFooter>
                         </AlertDialogContent>
                       </AlertDialog>
+                    </div>
+                    <Separator />
+                  </React.Fragment>
+                )}
+                {!transactionsImport.connectedAccount && transactionsImport.type === 'PLAID' && (
+                  <React.Fragment>
+                    <div>
+                      <h3 className="mb-2 text-sm font-medium">
+                        <FormattedMessage defaultMessage="Reconnect Bank Account" id="BankAccount.Reconnect" />
+                      </h3>
+                      <p className="mb-4 text-sm text-muted-foreground">
+                        <FormattedMessage
+                          defaultMessage="Reconnect your bank account to resume importing transactions."
+                          id="BankAccount.Reconnect.Description"
+                        />
+                      </p>
+                      <Button
+                        variant="outline"
+                        className="w-full"
+                        loading={plaidStatus === 'loading' || plaidStatus === 'active'}
+                        disabled={plaidStatus === 'disabled' || isDeleting}
+                        onClick={onReconnectClick}
+                      >
+                        <FormattedMessage
+                          id="collective.connectedAccounts.reconnect.button"
+                          defaultMessage="Reconnect"
+                        />
+                      </Button>
                     </div>
                     <Separator />
                   </React.Fragment>
