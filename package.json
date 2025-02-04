@@ -18,7 +18,7 @@
     "@dnd-kit/utilities": "3.2.2",
     "@graphql-typed-document-node/core": "3.2.0",
     "@hcaptcha/react-hcaptcha": "1.11.1",
-    "@hyperwatch/hyperwatch": "4.0.0",
+    "@hyperwatch/hyperwatch": "4.2.0",
     "@icons-pack/react-simple-icons": "^10.0.0",
     "@opencollective/taxes": "5.1.0",
     "@opencollective/trix": "2.1.6",
