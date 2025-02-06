@@ -101,6 +101,76 @@ jobs:
 
       - run: npm run langs:check
 
+  check-graphql:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup project
+        uses: ./.github/actions/setup-project
+        with:
+          CACHE_VERSION: ${{ secrets.CACHE_VERSION }}
+
+      - run: npm run graphql:check
+
+  check-graphql-alt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup project
+        uses: ./.github/actions/setup-project
+        with:
+          CACHE_VERSION: ${{ secrets.CACHE_VERSION }}
+
+      - name: Run GraphQL update
+        run: |
+          npm run graphql:update | tee /dev/stdout
+
+      - name: Check for schema changes
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "Error: GraphQL schema is not up to date. Please update the schema and commit changes." && exit 1
+          else
+            echo "GraphQL schema is up to date."
+          fi
+
+  check-codegen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup project
+        uses: ./.github/actions/setup-project
+        with:
+          CACHE_VERSION: ${{ secrets.CACHE_VERSION }}
+
+      - run: npm run graphql:codegen-check -- --verbose --concurrency=1
+
+  check-codegen-script:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup project
+        uses: ./.github/actions/setup-project
+        with:
+          CACHE_VERSION: ${{ secrets.CACHE_VERSION }}
+
+      - run: npm run graphql:codegen-check-script
+
   build:
     runs-on: ubuntu-latest
 
