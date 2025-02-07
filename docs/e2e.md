@@ -35,7 +35,7 @@ Behind the scenes it will do the following (so you don't have to do it):
 
 ### 2. Frontend: Server
 
-If it's not already setup, look at the "Install" instructions in the [README](README.md).
+If it's not already setup, look at the "Install" instructions in the [README.md](../README.md).
 
 Make sure the Frontend is talking to the local API:
 
