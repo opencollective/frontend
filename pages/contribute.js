@@ -26,7 +26,7 @@ import ContributeEvent from '../components/contribute-cards/ContributeEvent';
 import ContributeProject from '../components/contribute-cards/ContributeProject';
 import ContributeTier from '../components/contribute-cards/ContributeTier';
 import ErrorPage from '../components/ErrorPage';
-import { Box, Flex, Grid } from '../components/Grid';
+import { Grid } from '../components/Grid';
 import Header from '../components/Header';
 import Link from '../components/Link';
 import Loading from '../components/Loading';
@@ -275,8 +275,8 @@ class ContributePage extends React.Component {
               <Container pb={3}>
                 <CollectiveNavbar collective={collective} selectedCategory={NAVBAR_CATEGORIES.CONTRIBUTE} />
                 <Container maxWidth={1260} my={5} px={[15, 30]} mx="auto">
-                  <Box my={5}>
-                    <Flex flexWrap="wrap" justifyContent="space-between">
+                  <div className="my-5">
+                    <div className="flex flex-wrap justify-between">
                       <H2 fontWeight="normal" mb={2}>
                         {title}
                       </H2>
@@ -294,7 +294,7 @@ class ContributePage extends React.Component {
                           </StyledButton>
                         </Link>
                       )}
-                    </Flex>
+                    </div>
                     {subtitle && (
                       <P color="black.700" mt={3}>
                         {subtitle}
@@ -312,7 +312,7 @@ class ContributePage extends React.Component {
                         </StyledButton>
                       </Link>
                     )}
-                  </Box>
+                  </div>
                   {waysToContribute.length > 0 ? (
                     <CardsContainer>
                       {waysToContribute.map(({ ContributeCardComponent, key, props }) => (

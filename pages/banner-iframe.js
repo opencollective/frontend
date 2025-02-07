@@ -14,7 +14,6 @@ import { getRequestIntl } from '../lib/i18n/request';
 import { parseToBoolean } from '../lib/utils';
 
 import TopContributors from '../components/collective-page/TopContributors';
-import { Box, Flex } from '../components/Grid';
 import Loading from '../components/Loading';
 import MembersWithData from '../components/MembersWithData';
 import MessageBoxGraphqlError from '../components/MessageBoxGraphqlError';
@@ -285,8 +284,8 @@ class BannerIframe extends React.Component {
             ) : error ? (
               <MessageBoxGraphqlError error={error} />
             ) : (
-              <Box>
-                <Flex flexDirection="column" alignItems="center" mb={3}>
+              <div>
+                <div className="mb-3 flex flex-col items-center">
                   <H3 fontSize="18px" lineHeight="28px">
                     <FormattedMessage
                       id="NewContributionFlow.Join"
@@ -300,9 +299,9 @@ class BannerIframe extends React.Component {
                       defaultMessage="Contribute on Open Collective"
                     />
                   </StyledLink>
-                </Flex>
+                </div>
                 {this.renderTopContributors(data.account)}
-              </Box>
+              </div>
             )
           }
         </Query>

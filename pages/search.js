@@ -15,7 +15,6 @@ import { parseToBoolean } from '../lib/utils';
 
 import Container from '../components/Container';
 import ErrorPage from '../components/ErrorPage';
-import { Box, Flex, Grid } from '../components/Grid';
 import Hide from '../components/Hide';
 import { getI18nLink, I18nSupportLink } from '../components/I18nFormatters';
 import Image from '../components/Image';
@@ -38,12 +37,6 @@ import { toast } from '../components/ui/useToast';
 const CollectiveCardContainer = styled.div`
   animation: ${fadeIn} 0.2s;
 `;
-
-const AllCardsContainer = styled(Grid).attrs({
-  width: '100%',
-  maxWidth: 1200,
-  gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 2fr))',
-})``;
 
 const FILTERS = {
   ALL: 'ALL',
@@ -85,12 +78,6 @@ const I18nFilters = defineMessages({
     id: '59l1l8',
   },
 });
-
-const SearchFormContainer = styled(Box)`
-  height: 58px;
-  width: 608px;
-  min-width: 6.25rem;
-`;
 
 const FilterLabel = styled.label`
   font-weight: 500;
@@ -321,8 +308,8 @@ class SearchPage extends React.Component {
           justifyContent="center"
           textAlign="center"
         >
-          <Flex justifyContent="center" flex="1 1 1" width={['288px', 1]} style={{ transform: 'rotate(180deg)' }}>
-            <SearchFormContainer mb={['20px', '48px']}>
+          <div className="flex w-[288px] flex-1 justify-center sm:w-full" style={{ transform: 'rotate(180deg)' }}>
+            <div className="mb-5 h-[58px] w-[608px] min-w-[6.25rem] sm:mb-12">
               <SearchForm
                 borderRadius="100px"
                 fontSize="16px"
@@ -338,11 +325,11 @@ class SearchPage extends React.Component {
                 searchButtonStyles={{ minWidth: '40px', height: '40px' }}
                 onClearFilter={this.handleClearFilter}
               />
-            </SearchFormContainer>
-          </Flex>
+            </div>
+          </div>
         </Container>
         <Container mx="auto" px={3} width={1} maxWidth={1200}>
-          <Flex mb={4} mx="auto" flexDirection={['column', 'row']} justifyContent="center">
+          <div className="mx-auto mb-4 flex flex-col justify-center sm:flex-row">
             <Hide xs sm>
               <StyledFilters
                 filters={Object.keys(FILTERS)}
@@ -369,9 +356,9 @@ class SearchPage extends React.Component {
                 }}
               />
             </Hide>
-          </Flex>
+          </div>
           <StyledHr mt="30px" mb="24px" flex="1" borderStyle="solid" borderColor="rgba(50, 51, 52, 0.2)" />
-          <Flex flexDirection={['column', 'row']}>
+          <div className="flex flex-col sm:flex-row">
             <Container pr={[0, '19px']}>
               <FilterLabel htmlFor="sort-filter-type">
                 <FormattedMessage defaultMessage="Sort" id="25oM9Q" />
@@ -405,7 +392,7 @@ class SearchPage extends React.Component {
                 <FilterLabel htmlFor="tag-filter-type">
                   <FormattedMessage id="Tags" defaultMessage="Tags" />
                 </FilterLabel>
-                <Flex flexWrap="wrap">
+                <div className="flex flex-wrap">
                   {uniqBy(
                     tagStats?.nodes.map(node => node.tag),
                     toLower,
@@ -435,32 +422,32 @@ class SearchPage extends React.Component {
                       {truncate(tag, { length: 20 })}
                     </FilterButton>
                   ))}
-                </Flex>
+                </div>
               </Container>
             )}
-          </Flex>
-          <Flex mb="64px" justifyContent="center" flexWrap="wrap">
-            <AllCardsContainer>
+          </div>
+          <div className="mb-16 flex flex-wrap justify-center">
+            <div className="grid w-full max-w-[1200px] grid-cols-[repeat(auto-fill,minmax(260px,2fr))]">
               {loading
                 ? Array.from(new Array(12)).map((_, index) => (
                     // eslint-disable-next-line react/no-array-index-key
-                    <Box key={index} my={3} mx={2}>
+                    <div key={index} className="mx-2 my-3">
                       <CollectiveCardContainer>
                         <LoadingPlaceholder height={336} borderRadius="16px" />
                       </CollectiveCardContainer>
-                    </Box>
+                    </div>
                   ))
                 : accounts?.nodes?.map(collective => (
-                    <Box key={collective.slug} my={3} mx={2}>
+                    <div key={collective.slug} className="mx-2 my-3">
                       <CollectiveCardContainer key={collective.id}>
                         <SearchCollectiveCard collective={collective} />
                       </CollectiveCardContainer>
-                    </Box>
+                    </div>
                   ))}
-            </AllCardsContainer>
+            </div>
 
             {accounts?.nodes?.length === 0 && (
-              <Flex py={3} mt={4} width={1} justifyContent="center" flexDirection="column" alignItems="center">
+              <div className="mt-4 flex w-full flex-col items-center justify-center py-3">
                 <H1 fontSize="32px" lineHeight="40px" color="black.700" fontWeight={500}>
                   <FormattedMessage defaultMessage="No results match your search" id="qqqV4d" />
                 </H1>
@@ -515,9 +502,9 @@ class SearchPage extends React.Component {
                     />
                   </Container>
                 </Container>
-              </Flex>
+              </div>
             )}
-          </Flex>
+          </div>
           {accounts?.nodes?.length !== 0 && totalCount > limit && (
             <Container display="flex" justifyContent="center" fontSize="14px" my={3}>
               <Pagination offset={offset} total={totalCount} limit={limit} />
@@ -525,17 +512,17 @@ class SearchPage extends React.Component {
           )}
 
           {accounts?.nodes?.length !== 0 && (
-            <Flex flexDirection="column" alignItems="center">
+            <div className="flex flex-col items-center">
               <StyledButton onClick={this.handleCopy}>
                 <Span pr={1} fontSize="14px" fontWeight={500}>
                   <FormattedMessage defaultMessage="Share results" id="Pkx+Wj" />
                 </Span>
                 <ShareAlt size="14px" />
               </StyledButton>
-            </Flex>
+            </div>
           )}
           {accounts?.nodes?.length !== 0 && (
-            <Flex py={3} width={1} justifyContent="center" flexDirection="column" alignItems="center">
+            <div className="flex w-full flex-col items-center justify-center py-3">
               <P pt={3} pb={3} borderTop="1px solid #E6E6E6">
                 <em>
                   <FormattedMessage
@@ -550,7 +537,7 @@ class SearchPage extends React.Component {
                   />
                 </em>
               </P>
-            </Flex>
+            </div>
           )}
         </Container>
       </Page>

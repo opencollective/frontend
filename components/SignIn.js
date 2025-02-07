@@ -4,7 +4,6 @@ import Head from 'next/head';
 import { FormattedMessage } from 'react-intl';
 
 import Container from './Container';
-import { Box, Flex } from './Grid';
 import { WebsiteName } from './I18nFormatters';
 import Image from './Image';
 import Link from './Link';
@@ -129,43 +128,38 @@ export default class SignIn extends React.Component {
           {/* Add title hint for 1password and perhaps other password managers*/}
           <title>Sign In - Open Collective</title>
         </Head>
-        <Box maxWidth={390} px={['20px', 0]}>
+        <div className="max-w-[390px] px-5 md:px-0">
           {this.props.isOAuth ? (
             <React.Fragment>
-              <Flex justifyContent="center" mb={40}>
-                <Box minWidth={104}>
+              <div className="mb-10 flex justify-center">
+                <div className="min-w-[104px]">
                   <Image src="/static/images/oc-logo-oauth.png" height={104} width={104} />
-                </Box>
-                <Box ml={24} mr={24} mt={32} minWidth={40}>
+                </div>
+                <div className="ml-6 mr-6 mt-8 min-w-[40px]">
                   <Image src="/static/images/oauth-flow-connect.png" height={40} width={40} />
-                </Box>
-                <Box minWidth={104}>
+                </div>
+                <div className="min-w-[104px]">
                   <img src={this.props.oAuthAppImage} alt="" height={104} width={104} style={{ borderRadius: 10 }} />
-                </Box>
-              </Flex>
+                </div>
+              </div>
             </React.Fragment>
           ) : (
             this.props.showOCLogo && (
-              <Flex justifyContent="center">
+              <div className="flex justify-center">
                 <Image src="/static/images/oc-logo-watercolor-256.png" height={128} width={128} />
-              </Flex>
+              </div>
             )
           )}
-          <Flex
-            as="label"
-            fontWeight={700}
+          <label
             htmlFor="email"
-            fontSize={label ? '24px' : ['24px', '32px']}
-            mb={12}
-            mt={3}
-            textAlign="center"
+            className={`flex font-bold text-[${label ? '24px' : ['24px', '32px']}] mb-3 mt-3 text-center`}
           >
             {label || this.getSignInPageHeading(this.state.unknownEmail)}
-          </Flex>
+          </label>
           {this.props.showSubHeading && (
-            <Flex fontWeight={400} fontSize="16px" color="black.700" mb="50px" justifyContent="center">
+            <div className="mb-[50px] flex justify-center text-base font-normal text-gray-500">
               {this.getSignInPageSubHeading(this.props.oAuthAppName)}
-            </Flex>
+            </div>
           )}
           {!this.state.unknownEmail ? (
             <React.Fragment>
@@ -274,7 +268,7 @@ export default class SignIn extends React.Component {
                     {error}
                   </Span>
                 )}
-                <Flex justifyContent="center" mb="24px" mt="26px">
+                <div className="mb-6 mt-[26px] flex justify-center">
                   <StyledButton
                     data-cy="signin-btn"
                     buttonStyle="primary"
@@ -287,23 +281,23 @@ export default class SignIn extends React.Component {
                   >
                     <FormattedMessage id="actions.continue" defaultMessage="Continue" />
                   </StyledButton>
-                </Flex>
+                </div>
               </Container>
 
               {this.props.showSecondaryAction && !this.props.passwordRequired && (
-                <Box>
-                  <Flex color="black.800" mr={1} fontSize="14px" justifyContent="center">
+                <div>
+                  <div className="mr-1 flex justify-center text-sm text-neutral-500">
                     <FormattedMessage defaultMessage="Don't have one?" id="1KQrEf" />
-                  </Flex>
-                  <Flex fontSize="14px" justifyContent="center" mt={2}>
+                  </div>
+                  <div className="mt-2 flex justify-center text-sm">
                     {this.renderSecondaryAction(<FormattedMessage defaultMessage="Create an account" id="0vL5u1" />)}
-                  </Flex>
-                </Box>
+                  </div>
+                </div>
               )}
 
               {this.props.passwordRequired && (
-                <Box>
-                  <Flex color="black.800" mr={1} fontSize="14px" justifyContent="center">
+                <div>
+                  <div className="mr-1 flex justify-center text-sm text-neutral-500">
                     <FormattedMessage defaultMessage="Want to receive a login link?" id="4WXVC+" />
                     &nbsp;
                     <StyledLinkButton
@@ -315,9 +309,9 @@ export default class SignIn extends React.Component {
                     >
                       <FormattedMessage defaultMessage="Send me an email" id="bDtPKE" />
                     </StyledLinkButton>
-                  </Flex>
+                  </div>
 
-                  <Flex color="black.800" mr={1} mt={2} fontSize="14px" justifyContent="center">
+                  <div className="mr-1 mt-2 flex justify-center text-sm text-neutral-500">
                     <FormattedMessage defaultMessage="Lost your password?" id="I54CU/" />
                     &nbsp;
                     <StyledLinkButton
@@ -329,8 +323,8 @@ export default class SignIn extends React.Component {
                     >
                       <FormattedMessage defaultMessage="Reset my password" id="OXLLjP" />
                     </StyledLinkButton>
-                  </Flex>
-                </Box>
+                  </div>
+                </div>
               )}
             </React.Fragment>
           ) : (
@@ -348,17 +342,17 @@ export default class SignIn extends React.Component {
                 id="uuvv0g"
                 values={{ email: <strong>{email}</strong>, WebsiteName }}
               />{' '}
-              <Box mt="24px">
-                <Span mr="40px">
+              <div className="mt-6">
+                <span className="mr-10">
                   {this.renderSecondaryAction(<FormattedMessage defaultMessage="Yes, create an account" id="axw0EY" />)}
-                </Span>
+                </span>
                 <StyledLink onClick={() => this.setState({ unknownEmail: false })} $underlineOnHover={true}>
                   <FormattedMessage defaultMessage="No, use a different email" id="uxL7Ai" />
                 </StyledLink>
-              </Box>
+              </div>
             </Container>
           )}
-        </Box>
+        </div>
       </React.Fragment>
     );
   }

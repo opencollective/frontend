@@ -4,8 +4,6 @@ import { graphql } from '@apollo/client/react/hoc';
 import { get } from 'lodash';
 import { withRouter } from 'next/router';
 import { defineMessages, FormattedMessage, injectIntl } from 'react-intl';
-import styled from 'styled-components';
-import { fontSize, maxWidth } from 'styled-system';
 
 import { getErrorFromGraphqlException } from '../lib/errors';
 import { gqlV1 } from '../lib/graphql/helpers';
@@ -16,7 +14,6 @@ import CollectiveThemeProvider from '../components/CollectiveThemeProvider';
 import Container from '../components/Container';
 import CollectiveCard from '../components/gift-cards/CollectiveCard';
 import HappyBackground from '../components/gift-cards/HappyBackground';
-import { Box, Flex } from '../components/Grid';
 import Header from '../components/Header';
 import LinkCollective from '../components/LinkCollective';
 import LoadingPlaceholder from '../components/LoadingPlaceholder';
@@ -24,20 +21,8 @@ import Footer from '../components/navigation/Footer';
 import RedeemForm from '../components/RedeemForm';
 import RedeemSuccess from '../components/RedeemSuccess';
 import StyledButton from '../components/StyledButton';
-import { H1, H5, P } from '../components/Text';
+import { H1, P } from '../components/Text';
 import { withUser } from '../components/UserProvider';
-
-const ShadowBox = styled(Box)`
-  box-shadow: 0px 8px 16px rgba(20, 20, 20, 0.12);
-`;
-
-const Subtitle = styled(H5)`
-  color: white;
-  text-align: center;
-  margin: 0 auto;
-  ${fontSize};
-  ${maxWidth};
-`;
 
 class RedeemPage extends React.Component {
   static getInitialProps({ query: { code, email, name, collectiveSlug } }) {
@@ -144,22 +129,22 @@ class RedeemPage extends React.Component {
     if (!data || (!data.loading && !data.Collective)) {
       return (
         <React.Fragment>
-          <Box mt={5}>
+          <div className="mt-5">
             <H1 color="white.full" textAlign="center" fontSize={['1.9rem', null, '2.5rem']}>
               <FormattedMessage id="redeem.title" defaultMessage="Redeem Gift Card" />
             </H1>
-          </Box>
+          </div>
 
-          <Box mt={2}>
-            <Subtitle fontSize={['0.95rem', null, '1.25rem']} maxWidth={['90%', '640px']}>
-              <Box>
+          <div className="mt-2">
+            <div className="mx-auto text-center text-white">
+              <div>
                 <FormattedMessage
                   id="redeem.subtitle.line1"
                   defaultMessage="Open Collective helps communities - like open source projects, meetups and social movements - raise funds spend them transparently."
                 />
-              </Box>
-            </Subtitle>
-          </Box>
+              </div>
+            </div>
+          </div>
         </React.Fragment>
       );
     } else if (data.loading) {
@@ -205,15 +190,15 @@ class RedeemPage extends React.Component {
         />
         <Body>
           <CollectiveThemeProvider collective={collective}>
-            <Flex alignItems="center" flexDirection="column">
+            <div className="flex flex-col items-center">
               <HappyBackground collective={collective}>
                 <div>{this.renderHeroContent()}</div>
               </HappyBackground>
-              <Flex alignItems="center" flexDirection="column" mt={-175} mb={4}>
+              <div className="mb-4 mt-[-175px] flex flex-col items-center">
                 <Container mt={54} zIndex={2}>
-                  <Flex justifyContent="center" alignItems="center" flexDirection="column">
+                  <div className="flex flex-col items-center">
                     <Container background="white" borderRadius="16px" maxWidth="400px">
-                      <ShadowBox py="24px" px="32px">
+                      <div className="px-8 py-6 shadow-lg">
                         {this.state.view === 'form' && (
                           <RedeemForm
                             code={code}
@@ -225,10 +210,10 @@ class RedeemPage extends React.Component {
                           />
                         )}
                         {this.state.view === 'success' && <RedeemSuccess email={email} />}
-                      </ShadowBox>
+                      </div>
                     </Container>
                     {this.state.view === 'form' && (
-                      <Flex my={4} px={2} flexDirection="column" alignItems="center">
+                      <div className="my-4 flex flex-col items-center px-2">
                         <StyledButton
                           buttonStyle="primary"
                           buttonSize="large"
@@ -247,12 +232,12 @@ class RedeemPage extends React.Component {
                           )}
                         </StyledButton>
                         {this.state.error && <P color="red.500">{this.state.error}</P>}
-                      </Flex>
+                      </div>
                     )}
-                  </Flex>
+                  </div>
                 </Container>
-              </Flex>
-            </Flex>
+              </div>
+            </div>
           </CollectiveThemeProvider>
         </Body>
         <Footer />

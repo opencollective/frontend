@@ -6,7 +6,6 @@ import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 
 import Container from '../components/Container';
-import { Flex } from '../components/Grid';
 import Page from '../components/Page';
 import { H3, P } from '../components/Text';
 import { withUser } from '../components/UserProvider';
@@ -61,9 +60,9 @@ class ConfirmCollectiveDeletion extends Component {
     return (
       <Page title="Deletion Confirmation">
         <Container pt={4} pb={6} px={2} background="linear-gradient(180deg, #EBF4FF, #FFFFFF)" textAlign="center">
-          <Flex justifyContent="center" mb={4}>
+          <div className="mb-4 flex justify-center">
             <Icon size="60" />
-          </Flex>
+          </div>
           <H3 as="h1" fontWeight="800">
             <FormattedMessage
               values={{

@@ -401,23 +401,20 @@ export default function OrderPage(props) {
                 />
               </SummaryHeader>
               <StyledCard mt="24px" p={[16, 24, 32]}>
-                <Flex
-                  flexDirection={['column-reverse', 'row']}
-                  alignItems={['stretch', 'center']}
-                  justifyContent="space-between"
+                <div
+                  className="mb-1 flex flex-col-reverse items-stretch justify-between md:flex-row md:items-center"
                   data-cy="contribution-title"
-                  mb={1}
                 >
-                  <Box mr={[0, 2]}>
+                  <div className="mr-0 md:mr-2">
                     <h4 className="text-xl font-medium" data-cy="contribution-description">
                       {order.description}
                     </h4>
-                  </Box>
-                  <Box mb={[3, 0]} justifyContent={['space-between', 'flex-end']} alignItems="center">
+                  </div>
+                  <div className="mb-3 items-center justify-between md:mb-0 md:justify-end">
                     <OrderStatusTag status={order.status} />
-                  </Box>
-                </Flex>
-                <Flex>
+                  </div>
+                </div>
+                <div className="flex">
                   <StyledTag
                     variant="rounded-left"
                     fontSize="10px"
@@ -429,7 +426,7 @@ export default function OrderPage(props) {
                     <FormattedMessage defaultMessage="Contribution" id="0LK5eg" /> #{order.legacyId}
                   </StyledTag>
                   <Tags order={order} canEdit={order.permissions.canSetTags} />
-                </Flex>
+                </div>
                 <Flex alignItems="center" mt={1}>
                   <P mt="5px" fontSize="12px" color="black.600">
                     <FormattedMessage
@@ -709,7 +706,7 @@ export default function OrderPage(props) {
               </StyledCard>
 
               {order?.memo && (
-                <Box mt={4}>
+                <div className="mt-4">
                   <P fontWeight="700" fontSize="16px" lineHeight="24px" color="black.900">
                     <FormattedMessage defaultMessage="Additional Details" id="DgTPfL" />
                   </P>
@@ -720,7 +717,7 @@ export default function OrderPage(props) {
                     <PrivateInfoIcon className="text-muted-foreground" size={12} />
                   </Span>
                   <HTMLContent color="black.700" mt={1} fontSize="13px" content={order.memo} />
-                </Box>
+                </div>
               )}
             </Box>
             <Flex

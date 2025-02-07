@@ -11,7 +11,6 @@ import type { Mutation, MutationConfirmEmailArgs } from '../lib/graphql/types/v2
 import type { UserContextProps } from '../lib/hooks/useLoggedInUser';
 
 import Container from '../components/Container';
-import { Box } from '../components/Grid';
 import Link from '../components/Link';
 import MessageBox from '../components/MessageBox';
 import Page from '../components/Page';
@@ -87,9 +86,9 @@ class ConfirmEmailPage extends React.Component<{
           alignItems="center"
           background="linear-gradient(180deg, #EBF4FF, #FFFFFF)"
         >
-          <Box my={3}>
+          <div className="my-3">
             <Email size={42} color={this.getIconColor(status)} />
-          </Box>
+          </div>
           {status === 'submitting' && (
             <MessageBox fontSize="16px" type="info" isLoading>
               <FormattedMessage id="confirmEmail.validating" defaultMessage="Validating your email address..." />

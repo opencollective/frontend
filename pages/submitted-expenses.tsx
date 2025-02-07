@@ -7,7 +7,6 @@ import type { NextRouter } from 'next/router';
 import { withRouter } from 'next/router';
 import type { IntlShape } from 'react-intl';
 import { defineMessages, FormattedMessage, injectIntl } from 'react-intl';
-import styled from 'styled-components';
 
 import { getCollectivePageMetadata, isIndividualAccount } from '../lib/collective';
 import expenseTypes from '../lib/constants/expenseTypes';
@@ -31,7 +30,6 @@ import ExpensesFilters from '../components/expenses/ExpensesFilters';
 import ExpensesList from '../components/expenses/ExpensesList';
 import { parseChronologicalOrderInput } from '../components/expenses/filters/ExpensesOrder';
 import { expenseHostFields, expensesListFieldsFragment } from '../components/expenses/graphql/fragments';
-import { Box, Flex } from '../components/Grid';
 import Link from '../components/Link';
 import LoadingPlaceholder from '../components/LoadingPlaceholder';
 import MessageBox from '../components/MessageBox';
@@ -49,12 +47,6 @@ const messages = defineMessages({
     defaultMessage: '{collectiveName} · Expenses',
   },
 });
-
-const SearchFormContainer = styled(Box)`
-  width: 100%;
-  max-width: 278px;
-  min-width: 6.25rem;
-`;
 
 const EXPENSES_PER_PAGE = 10;
 
@@ -172,37 +164,40 @@ class SubmittedExpensesPage extends React.Component<SubmittedExpensesPageProps> 
           selectedCategory={NAVBAR_CATEGORIES.BUDGET}
         />
         <Container position="relative" minHeight={[null, 800]}>
-          <Box maxWidth={Dimensions.MAX_SECTION_WIDTH} m="0 auto" px={[2, 3, 4]} py={[0, 5]} mt={3}>
-            <Flex justifyContent="space-between" flexWrap="wrap">
-              <Box flex="1 1 500px" minWidth={300} maxWidth={'100%'} mr={0} mb={5}>
-                <Flex>
+          <div
+            style={{ maxWidth: Dimensions.MAX_SECTION_WIDTH }}
+            className="mx-auto mt-3 max-w-[1200px] px-2 py-0 sm:px-3 sm:py-5 md:px-4"
+          >
+            <div className="flex flex-wrap justify-between">
+              <div className="mb-5 mr-0 min-w-[300px] flex-1 basis-[500px]">
+                <div className="flex">
                   <H1 fontSize="32px" lineHeight="40px" py={2} fontWeight="normal">
                     <FormattedMessage defaultMessage="Submitted Expenses" id="NpGb+x" />
                   </H1>
-                  <Box mx="auto" />
-                  <SearchFormContainer p={2} width="276px">
+                  <div className="mx-auto" />
+                  <div className="w-full min-w-[6.25rem] max-w-[278px]">
                     <SearchBar
                       defaultValue={searchTerm}
                       onSubmit={searchTerm => this.handleSearch(searchTerm, data.account)}
                       placeholder={undefined}
                     />
-                  </SearchFormContainer>
-                </Flex>
+                  </div>
+                </div>
                 <StyledHr my={24} mx="8px" borderWidth="0.5px" />
-                <Box mx="8px">
+                <div className="mx-2">
                   {data.account ? (
                     <ExpensesFilters
                       collective={data.account}
                       filters={this.props.query}
                       onChange={queryParams => this.updateFilters(queryParams, data.account)}
-                      ignoredExpenseStatus={null} // We want to show all expense types for users, including drafts and unverified
+                      ignoredExpenseStatus={null}
                       wrap={false}
                     />
                   ) : (
                     <LoadingPlaceholder height={70} width="100%" />
                   )}
-                </Box>
-                <Box mt={['16px', '46px']}>
+                </div>
+                <div className="mt-4 sm:mt-[46px]">
                   {!data.loading && !data.expenses?.nodes.length ? (
                     <MessageBox type="info" withIcon data-cy="zero-expense-message">
                       {hasFilters ? (
@@ -232,7 +227,7 @@ class SubmittedExpensesPage extends React.Component<SubmittedExpensesPageProps> 
                         view="submitter"
                         expenseFieldForTotalAmount="amountInCreatedByAccountCurrency"
                       />
-                      <Flex mt={5} justifyContent="center">
+                      <div className="mt-5 flex justify-center">
                         <Pagination
                           route={pageUrl}
                           total={data.expenses?.totalCount}
@@ -240,13 +235,13 @@ class SubmittedExpensesPage extends React.Component<SubmittedExpensesPageProps> 
                           offset={data.variables.offset}
                           ignoredQueryParams={['collectiveSlug']}
                         />
-                      </Flex>
+                      </div>
                     </React.Fragment>
                   )}
-                </Box>
-              </Box>
-            </Flex>
-          </Box>
+                </div>
+              </div>
+            </div>
+          </div>
         </Container>
       </Page>
     );

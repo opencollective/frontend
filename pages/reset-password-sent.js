@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { isEmail } from 'validator';
 
-import { Box } from '../components/Grid';
 import { getI18nLink } from '../components/I18nFormatters';
 import Image from '../components/Image';
 import OpenEmailProviderButton from '../components/OpenEmailProviderButton';
@@ -45,7 +44,9 @@ class ResetPasswordSent extends Component {
               />
             </P>
           )}
-          <OpenEmailProviderButton email={email}>{button => <Box mt={3}>{button}</Box>}</OpenEmailProviderButton>
+          <OpenEmailProviderButton email={email}>
+            {button => <div className="mt-3">{button}</div>}
+          </OpenEmailProviderButton>
           <P fontSize="16px" lineHeight="24px" color="black.800" fontWeight={500} my={4}>
             <FormattedMessage
               id="signinLinkSent."

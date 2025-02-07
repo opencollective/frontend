@@ -5,7 +5,6 @@ import { themeGet } from '@styled-system/theme-get';
 import styled, { css } from 'styled-components';
 
 import Container from './Container';
-import { Flex } from './Grid';
 import Link from './Link';
 import StyledLinkButton from './StyledLinkButton';
 import { H1 } from './Text';
@@ -110,9 +109,9 @@ const NotificationBar = ({ title, description, type, actions, inline, dismiss, i
 
           {actions && (
             <Container display={inline ? 'inline-flex' : 'block'} mx="4px">
-              <Flex justifyContent="center" gridGap="8px">
+              <div className="flex justify-center gap-2">
                 {Array.isArray(actions) ? actions.map(action => action) : actions}
-              </Flex>
+              </div>
             </Container>
           )}
         </Container>

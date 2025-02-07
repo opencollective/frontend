@@ -18,7 +18,6 @@ import { EmbedContributionFlowUrlQueryHelper } from '../../components/contributi
 import { getContributionFlowMetadata } from '../../components/contribution-flow/utils';
 import EmbeddedPage from '../../components/EmbeddedPage';
 import ErrorPage from '../../components/ErrorPage';
-import { Box } from '../../components/Grid';
 import Loading from '../../components/Loading';
 import { withStripeLoader } from '../../components/StripeProvider';
 import { withUser } from '../../components/UserProvider';
@@ -127,7 +126,7 @@ class EmbedContributionFlowPage extends React.Component<{
       return <ContributionBlocker blocker={contributionBlocker} account={account} />;
     } else {
       return (
-        <Box height="100%" pt={3}>
+        <div className="h-full pt-3">
           <ContributionFlowContainer
             isEmbed
             collective={account}
@@ -158,7 +157,7 @@ class EmbedContributionFlowPage extends React.Component<{
               })
             }
           />
-        </Box>
+        </div>
       );
     }
   }

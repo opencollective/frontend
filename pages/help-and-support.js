@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { Flex } from '../components/Grid';
 import BrowseTopics from '../components/help-and-support/BrowseTopicSection';
 import ContactForm from '../components/help-and-support/ContactSection';
 import ContactUsSuccess from '../components/help-and-support/ContactUsSuccess';
@@ -48,7 +47,7 @@ const renderFormContent = formConfirmation => {
           />
         }
         actions={
-          <Flex flexDirection={['column', 'row']}>
+          <div className="flex flex-col sm:flex-row">
             <Link href="/help">
               <StyledButton minWidth={208} buttonStyle="marketingSecondary" whiteSpace="nowrap">
                 <FormattedMessage id="helpAndSupport.visitHelp" defaultMessage="Visit Help & Support" />
@@ -59,13 +58,12 @@ const renderFormContent = formConfirmation => {
               buttonSize="medium"
               minWidth={208}
               buttonStyle="marketing"
-              mt={['16px', 0]}
-              ml={[0, '16px']}
+              className="mt-4 sm:ml-4 sm:mt-0"
               openInNewTab
             >
               <FormattedMessage id="helpAndSupport.viewDocumentation" defaultMessage="View Documentation" />
             </StyledLink>
-          </Flex>
+          </div>
         }
       />
     </React.Fragment>

@@ -17,7 +17,6 @@ import { useToast } from './ui/useToast';
 import Avatar from './Avatar';
 import CollectivePicker from './CollectivePicker';
 import CollectivePickerAsync from './CollectivePickerAsync';
-import { Box, Flex } from './Grid';
 import HTMLContent from './HTMLContent';
 import { getI18nLink } from './I18nFormatters';
 import Link from './Link';
@@ -180,7 +179,7 @@ const getAccountInput = collective => {
 
 const ConfirmButtons = ({ onClose, onBack, onSubmit, isSubmitting, canSubmit, isOSCHost }) => {
   return (
-    <Flex justifyContent="flex-end" width="100%">
+    <div className="flex w-full justify-end">
       <StyledButton
         buttonType="button"
         onClick={onBack || onClose}
@@ -229,7 +228,7 @@ const ConfirmButtons = ({ onClose, onBack, onSubmit, isSubmitting, canSubmit, is
           <FormattedMessage id="actions.submitApplication" defaultMessage="Submit application" />
         </StyledButton>
       )}
-    </Flex>
+    </div>
   );
 };
 
@@ -347,38 +346,38 @@ const ApplyToHostModal = ({ hostSlug, collective, onClose, onSuccess, router, ..
                 {loading ? (
                   <LoadingPlaceholder width="100%" height={163} />
                 ) : host ? (
-                  <Flex flexDirection="column" alignItems="center" width="100%">
+                  <div className="flex w-full flex-col items-center">
                     <Avatar collective={host} type={host.type} radius={64} />
                     <H1 fontSize="20px" lineHeight="28px" color="black.900" mt={3} mb={3}>
                       {host.name}
                     </H1>
-                    <Flex justifyContent="center" width="100%" gap="32px" flexWrap="wrap">
-                      <Flex flexDirection="column">
+                    <div className="flex w-full flex-wrap justify-center gap-8">
+                      <div className="flex flex-col">
                         <P fontWeight="400" fontSize="12px" lineHeight="18px" color="black.600" mb={1}>
                           <FormattedMessage id="HostSince" defaultMessage="Host since" />
                         </P>
                         <P fontSize="16px" fontWeight="500" lineHeight="24px">
                           <FormattedDate value={host.createdAt} month="short" year="numeric" />
                         </P>
-                      </Flex>
-                      <Flex flexDirection="column">
+                      </div>
+                      <div className="flex flex-col">
                         <P fontWeight="400" fontSize="12px" lineHeight="18px" color="black.600" mb={1}>
                           <FormattedMessage id="Currency" defaultMessage="Currency" />
                         </P>
                         <P fontSize="16px" fontWeight="500" lineHeight="24px">
                           {host.currency}
                         </P>
-                      </Flex>
-                      <Flex flexDirection="column">
+                      </div>
+                      <div className="flex flex-col">
                         <P fontWeight="400" fontSize="12px" lineHeight="18px" color="black.600" mb={1}>
                           <FormattedMessage id="HostFee" defaultMessage="Host fee" />
                         </P>
                         <P fontSize="16px" fontWeight="500" lineHeight="24px">
                           {host.hostFeePercent}%
                         </P>
-                      </Flex>
-                    </Flex>
-                    <Box my={3}>
+                      </div>
+                    </div>
+                    <div className="my-3">
                       {useTwoSteps && (
                         <StepsProgress steps={Object.values(STEPS)} focus={step} onStepSelect={setStep}>
                           {({ step }) => (
@@ -388,8 +387,8 @@ const ApplyToHostModal = ({ hostSlug, collective, onClose, onSuccess, router, ..
                           )}
                         </StepsProgress>
                       )}
-                    </Box>
-                  </Flex>
+                    </div>
+                  </div>
                 ) : null}
               </ModalHeader>
 
@@ -414,7 +413,7 @@ const ApplyToHostModal = ({ hostSlug, collective, onClose, onSuccess, router, ..
                     )}
                     {step === STEPS.APPLY && (
                       <React.Fragment>
-                        <Box>
+                        <div>
                           <StyledInputFormikField name="collective">
                             {({ form, field }) => (
                               <div>
@@ -443,15 +442,15 @@ const ApplyToHostModal = ({ hostSlug, collective, onClose, onSuccess, router, ..
                                       data-cy="host-apply-new-collective-link"
                                     >
                                       <StyledButton borderRadius="14px" width="100%">
-                                        <Flex alignItems="center">
+                                        <div className="flex items-center">
                                           <PlusCircle size={24} />
-                                          <Box ml="16px" fontSize="11px">
+                                          <div className="ml-4 text-xs">
                                             <FormattedMessage
                                               id="Collective.CreateNew"
                                               defaultMessage="Create new Collective"
                                             />
-                                          </Box>
-                                        </Flex>
+                                          </div>
+                                        </div>
                                       </StyledButton>
                                     </Link>
                                   )}
@@ -459,17 +458,17 @@ const ApplyToHostModal = ({ hostSlug, collective, onClose, onSuccess, router, ..
                               </div>
                             )}
                           </StyledInputFormikField>
-                        </Box>
+                        </div>
                         {!isOSCHost && (
                           <React.Fragment>
                             <StyledHr my="18px" width="100%" borderColor="black.300" />
                             {host?.policies?.COLLECTIVE_MINIMUM_ADMINS?.numberOfAdmins > 1 && (
                               <React.Fragment>
-                                <Box>
+                                <div>
                                   <P fontSize="13px" lineHeight="16px" fontWeight="600" color="black.700">
                                     <FormattedMessage defaultMessage="Minimum Administrators Required" id="ceGKEG" />
                                   </P>
-                                  <Flex mt={1} width="100%">
+                                  <div className="mt-1 flex w-full">
                                     <P
                                       my={2}
                                       fontSize="9px"
@@ -485,11 +484,11 @@ const ApplyToHostModal = ({ hostSlug, collective, onClose, onSuccess, router, ..
                                           values.inviteMembers.length
                                         }/${host.policies.COLLECTIVE_MINIMUM_ADMINS.numberOfAdmins})`}
                                     </P>
-                                    <Flex flexGrow={1} alignItems="center">
+                                    <div className="flex flex-grow items-center">
                                       <StyledHr width="100%" ml={2} borderColor="black.300" />
-                                    </Flex>
-                                  </Flex>
-                                  <Flex width="100%" flexWrap="wrap" data-cy="profile-card">
+                                    </div>
+                                  </div>
+                                  <div className="flex w-full flex-wrap" data-cy="profile-card">
                                     {values.collective?.admins?.nodes.map(admin => (
                                       <OnboardingProfileCard key={admin.account.id} collective={admin.account} />
                                     ))}
@@ -514,8 +513,8 @@ const ApplyToHostModal = ({ hostSlug, collective, onClose, onSuccess, router, ..
                                         }
                                       />
                                     ))}
-                                  </Flex>
-                                  <Flex mt={1} width="100%">
+                                  </div>
+                                  <div className="mt-1 flex w-full">
                                     <P
                                       my={2}
                                       fontSize="9px"
@@ -528,11 +527,11 @@ const ApplyToHostModal = ({ hostSlug, collective, onClose, onSuccess, router, ..
                                         defaultMessage="Invite Administrators"
                                       />
                                     </P>
-                                    <Flex flexGrow={1} alignItems="center">
+                                    <div className="flex flex-grow items-center">
                                       <StyledHr width="100%" ml={2} borderColor="black.300" />
-                                    </Flex>
-                                  </Flex>
-                                  <Box>
+                                    </div>
+                                  </div>
+                                  <div>
                                     <CollectivePickerAsync
                                       inputId="onboarding-admin-picker"
                                       creatable
@@ -554,7 +553,7 @@ const ApplyToHostModal = ({ hostSlug, collective, onClose, onSuccess, router, ..
                                         ]);
                                       }}
                                     />
-                                  </Box>
+                                  </div>
                                   {host?.policies?.COLLECTIVE_MINIMUM_ADMINS && (
                                     <MessageBox type="info" mt={3} fontSize="13px">
                                       <FormattedMessage
@@ -564,7 +563,7 @@ const ApplyToHostModal = ({ hostSlug, collective, onClose, onSuccess, router, ..
                                       />
                                     </MessageBox>
                                   )}
-                                </Box>
+                                </div>
                                 <StyledHr my="18px" width="100%" borderColor="black.300" />
                               </React.Fragment>
                             )}
@@ -596,7 +595,7 @@ const ApplyToHostModal = ({ hostSlug, collective, onClose, onSuccess, router, ..
                             {host.termsUrl && (
                               <StyledInputFormikField name="areTosChecked">
                                 {({ form, field }) => (
-                                  <Flex flexDirection="column" mx={1} mt={18}>
+                                  <div className="mx-1 mt-5 flex flex-col">
                                     <StyledCheckbox
                                       name="tos"
                                       label={
@@ -618,7 +617,7 @@ const ApplyToHostModal = ({ hostSlug, collective, onClose, onSuccess, router, ..
                                       onChange={({ checked }) => form.setFieldValue('areTosChecked', checked)}
                                       error={field.error}
                                     />
-                                  </Flex>
+                                  </div>
                                 )}
                               </StyledInputFormikField>
                             )}
@@ -637,7 +636,7 @@ const ApplyToHostModal = ({ hostSlug, collective, onClose, onSuccess, router, ..
               </ModalBody>
               <ModalFooter isFullWidth>
                 {step === STEPS.INFORMATION && (
-                  <Flex justifyContent="flex-end">
+                  <div className="flex justify-end">
                     <StyledButton
                       data-cy="host-apply-modal-next"
                       buttonStyle="primary"
@@ -645,7 +644,7 @@ const ApplyToHostModal = ({ hostSlug, collective, onClose, onSuccess, router, ..
                     >
                       <FormattedMessage id="Pagination.Next" defaultMessage="Next" />
                     </StyledButton>
-                  </Flex>
+                  </div>
                 )}
                 {step === STEPS.APPLY && (
                   <ConfirmButtons
