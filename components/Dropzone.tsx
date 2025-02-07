@@ -150,7 +150,7 @@ const Dropzone = ({
           {isLoading && !isNil(loadingProgress) && <div>{loadingProgress}%</div>}
         </div>
       ) : (
-        <div className="relative w-full max-w-full">
+        <div className="relative flex h-full w-full max-w-full justify-center">
           {isDragActive ? (
             <div className="flex flex-col items-center gap-2 text-xs">
               <Upload size={20} />
@@ -254,7 +254,7 @@ const Dropzone = ({
                   <UploadedFilePreview size={previewSize || size} url={value} border="none" />
                   {showReplaceAction && (
                     <div
-                      className="absolute -mt-6 box-border flex h-6 w-full cursor-pointer items-center justify-center bg-foreground/50 p-2 text-xs leading-none text-background hover:bg-foreground/60"
+                      className="absolute bottom-0 box-border flex h-6 w-full cursor-pointer items-center justify-center bg-foreground/50 p-2 text-xs leading-none text-background hover:bg-foreground/60"
                       onClick={dropProps.onClick}
                       role="button"
                       tabIndex={0}
