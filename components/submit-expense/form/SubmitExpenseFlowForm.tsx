@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import { cn } from '../../../lib/utils';
 import { ExpenseStatus } from '@/lib/graphql/types/v2/schema';
 
-import ExpenseInviteWelcome, { ExpenseInviteRecipientNote } from '@/components/expenses/ExpenseInviteWelcome';
+import ExpenseInviteWelcome from '@/components/expenses/ExpenseInviteWelcome';
 
 import { Button } from '../../ui/Button';
 import { Step } from '../SubmitExpenseFlowSteps';
@@ -50,9 +50,6 @@ export function SubmitExpenseFlowForm(props: SubmitExpenseFlowFormProps) {
           onExpenseInviteDeclined={props.onExpenseInviteDeclined}
         />
       )}
-      {form.options.expense?.status === ExpenseStatus.DRAFT && form.options.expense?.draft?.recipientNote && (
-        <ExpenseInviteNotesSection inViewChange={onInViewChange} form={form} />
-      )}
       <WhoIsPayingSection inViewChange={onInViewChange} {...WhoIsPayingSection.getFormProps(form)} />
       <WhoIsGettingPaidSection inViewChange={onInViewChange} {...WhoIsGettingPaidSection.getFormProps(form)} />
       <PayoutMethodSection inViewChange={onInViewChange} {...PayoutMethodSection.getFormProps(form)} />
@@ -90,19 +87,6 @@ function ExpenseInviteWelcomeSection(props: ExpenseInviteWelcomeSectionProps) {
         draftKey={props.form.startOptions.draftKey}
         onExpenseInviteDeclined={props.onExpenseInviteDeclined}
       />
-    </FormSectionContainer>
-  );
-}
-
-type ExpenseInviteNotesSectionProps = {
-  form: ExpenseForm;
-  inViewChange: (inView: boolean, entry: IntersectionObserverEntry) => void;
-};
-
-function ExpenseInviteNotesSection(props: ExpenseInviteNotesSectionProps) {
-  return (
-    <FormSectionContainer step={Step.INVITE_NOTE} inViewChange={props.inViewChange}>
-      <ExpenseInviteRecipientNote expense={props.form.options.expense} />
     </FormSectionContainer>
   );
 }

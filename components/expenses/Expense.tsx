@@ -52,7 +52,7 @@ import { expensePageQuery } from './graphql/queries';
 import { ConfirmOCRValues } from './ConfirmOCRValues';
 import ExpenseForm, { msg as expenseFormMsg, prepareExpenseForSubmit } from './ExpenseForm';
 import ExpenseInviteNotificationBanner from './ExpenseInviteNotificationBanner';
-import ExpenseInviteWelcome, { ExpenseInviteRecipientNote } from './ExpenseInviteWelcome';
+import ExpenseInviteWelcome from './ExpenseInviteWelcome';
 import ExpenseMissingReceiptNotificationBanner from './ExpenseMissingReceiptNotificationBanner';
 import ExpenseNotesForm from './ExpenseNotesForm';
 import ExpenseRecurringBanner from './ExpenseRecurringBanner';
@@ -129,7 +129,7 @@ function Expense(props) {
     (LoggedInUser && LoggedInUser.hasPreviewFeatureEnabled(PREVIEW_FEATURE_KEYS.NEW_EXPENSE_FLOW)) ||
     router.query.newExpenseFlow;
 
-  const [isSubmittionFlowOpen, setIsSubmittionFlowOpen] = React.useState(false);
+  const [isSubmissionFlowOpen, setIsSubmissionFlowOpen] = React.useState(false);
 
   const [state, setState] = useState({
     error: error || null,
@@ -618,25 +618,14 @@ function Expense(props) {
                 !isRecurring &&
                 draftKey &&
                 expense?.draft?.recipientNote)) && (
-              <React.Fragment>
-                <ExpenseInviteWelcome
-                  onContinueSubmissionClick={() => {
-                    setIsSubmittionFlowOpen(true);
-                  }}
-                  className="mb-4 rounded-md border border-[#DCDDE0] px-6 py-3"
-                  expense={expense}
-                  draftKey={draftKey}
-                />
-                {expense?.draft?.recipientNote && (
-                  <div className="mb-3 text-lg font-bold">
-                    <FormattedMessage defaultMessage="Invitation note" id="WcjKTY" />
-                  </div>
-                )}
-                <ExpenseInviteRecipientNote
-                  className="mb-4 rounded-md border border-[#DCDDE0] px-6 py-3"
-                  expense={expense}
-                />
-              </React.Fragment>
+              <ExpenseInviteWelcome
+                onContinueSubmissionClick={() => {
+                  setIsSubmissionFlowOpen(true);
+                }}
+                className="mb-6"
+                expense={expense}
+                draftKey={draftKey}
+              />
             )}
           <ExpenseSummary
             expense={status === PAGE_STATUS.EDIT_SUMMARY ? editedExpense : expense}
@@ -844,10 +833,10 @@ function Expense(props) {
         </Fragment>
       )}
 
-      {isSubmittionFlowOpen && (
+      {isSubmissionFlowOpen && (
         <SubmitExpenseFlow
           onClose={submitted => {
-            setIsSubmittionFlowOpen(false);
+            setIsSubmissionFlowOpen(false);
             if (submitted) {
               refetch();
             }

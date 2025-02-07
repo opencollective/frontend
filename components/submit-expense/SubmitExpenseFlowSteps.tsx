@@ -17,7 +17,6 @@ type SubmitExpenseFlowStepsProps = {
 
 export enum Step {
   INVITE_WELCOME = 'INVITE_WELCOME',
-  INVITE_NOTE = 'INVITE_NOTE',
   WHO_IS_PAYING = 'WHO_IS_PAYING',
   WHO_IS_GETTING_PAID = 'WHO_IS_GETTING_PAID',
   PAYOUT_METHOD = 'PAYOUT_METHOD',
@@ -51,17 +50,12 @@ const StepValues: Record<Step, Path<ExpenseFormValues>[]> = {
   [Step.EXPENSE_TITLE]: ['title', 'acknowledgedCollectiveTitleExpensePolicy', 'acknowledgedHostTitleExpensePolicy'],
   [Step.SUMMARY]: [],
   [Step.INVITE_WELCOME]: [],
-  [Step.INVITE_NOTE]: [],
 };
 
 export const StepTitles: Record<Step, MessageDescriptor> = {
   [Step.INVITE_WELCOME]: defineMessage({
     defaultMessage: 'Invitation',
     id: 'GM/hd6',
-  }),
-  [Step.INVITE_NOTE]: defineMessage({
-    defaultMessage: 'Invitation Note',
-    id: 'aqqLMi',
   }),
   [Step.WHO_IS_PAYING]: defineMessage({
     defaultMessage: 'Who is paying',

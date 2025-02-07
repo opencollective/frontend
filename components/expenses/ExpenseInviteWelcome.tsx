@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { FormattedMessage } from 'react-intl';
 
 import type { AccountHoverCardFieldsFragment } from '../../lib/graphql/types/v2/graphql';
+import { cn } from '@/lib/utils';
 
 import { AccountHoverCard } from '../AccountHoverCard';
 import Avatar from '../Avatar';
@@ -33,7 +34,7 @@ type ExpenseInviteWelcomeProps = {
 
 export default function ExpenseInviteWelcome(props: ExpenseInviteWelcomeProps) {
   return (
-    <div className={clsx('items-center gap-4 md:flex', props.className)}>
+    <div className={clsx('items-start gap-4 border-l-4 border-blue-400 bg-blue-50 px-6 py-6 md:flex', props.className)}>
       <Image
         className="hidden object-contain md:block"
         alt=""
@@ -51,6 +52,9 @@ export default function ExpenseInviteWelcome(props: ExpenseInviteWelcomeProps) {
             id="5YI3tk"
           />
         </div>
+
+        <ExpenseInviteRecipientNote className="my-6" expense={props.expense} />
+
         {(props.expense.permissions.canDeclineExpenseInvite || props.onContinueSubmissionClick) && (
           <div className="mt-2 flex gap-2">
             {props.expense.permissions.canDeclineExpenseInvite && (
@@ -63,7 +67,7 @@ export default function ExpenseInviteWelcome(props: ExpenseInviteWelcomeProps) {
               </div>
             )}
             {props.onContinueSubmissionClick && (
-              <Button size="xs" onClick={() => props.onContinueSubmissionClick()}>
+              <Button size="sm" onClick={() => props.onContinueSubmissionClick()}>
                 <FormattedMessage defaultMessage="Continue submission" id="rfhXwf" />
               </Button>
             )}
@@ -90,26 +94,18 @@ type ExpenseInviteRecipientNoteProps = {
   };
 };
 
-export function ExpenseInviteRecipientNote(props: ExpenseInviteRecipientNoteProps) {
+function ExpenseInviteRecipientNote(props: ExpenseInviteRecipientNoteProps) {
   return (
     props.expense.draft?.recipientNote && (
-      <div className={props.className}>
-        <div className="mb-3">
+      <div className={cn('space-y-3 rounded-lg border bg-background p-4', props.className)}>
+        <div className="">
           <AccountHoverCard
             account={props.expense.createdByAccount}
             trigger={
               <div className="flex items-center gap-2 truncate">
-                <Avatar collective={props.expense.createdByAccount} radius={24} />
+                <Avatar collective={props.expense.createdByAccount} radius={32} />
                 <div>
-                  <div className="text-sm font-medium">
-                    <FormattedMessage
-                      defaultMessage="By {userName}"
-                      id="ByUser"
-                      values={{
-                        userName: props.expense.createdByAccount.name,
-                      }}
-                    />
-                  </div>
+                  <div className="text-sm font-medium">{props.expense.createdByAccount.name}</div>
                   <div className="text-xs text-muted-foreground">
                     <DateTime value={props.expense.createdAt} />
                   </div>

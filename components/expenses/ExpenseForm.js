@@ -56,7 +56,7 @@ import ExpenseFormItems from './ExpenseFormItems';
 import ExpenseFormPayeeInviteNewStep, { validateExpenseFormPayeeInviteNewStep } from './ExpenseFormPayeeInviteNewStep';
 import ExpenseFormPayeeSignUpStep from './ExpenseFormPayeeSignUpStep';
 import ExpenseFormPayeeStep, { checkStepOneCompleted } from './ExpenseFormPayeeStep';
-import ExpenseInviteWelcome, { ExpenseInviteRecipientNote } from './ExpenseInviteWelcome';
+import ExpenseInviteWelcome from './ExpenseInviteWelcome';
 import { prepareExpenseItemForSubmit, validateExpenseItem } from './ExpenseItemForm';
 import ExpenseRecurringBanner from './ExpenseRecurringBanner';
 import ExpenseSummaryAdditionalInformation from './ExpenseSummaryAdditionalInformation';
@@ -640,19 +640,7 @@ const ExpenseFormBody = ({
     <Form ref={formRef}>
       {(expense?.permissions?.canDeclineExpenseInvite ||
         (expense?.status === ExpenseStatus.DRAFT && expense?.draft?.recipientNote)) && (
-        <React.Fragment>
-          <ExpenseInviteWelcome
-            className="mb-8 rounded-md border border-[#DCDDE0] px-6 py-3"
-            expense={expense}
-            draftKey={router.query.key}
-          />
-          {expense?.draft?.recipientNote && (
-            <div className="mb-3 text-lg font-bold">
-              <FormattedMessage defaultMessage="Invitation note" id="WcjKTY" />
-            </div>
-          )}
-          <ExpenseInviteRecipientNote className="mb-4 rounded-md border border-[#DCDDE0] px-6 py-3" expense={expense} />
-        </React.Fragment>
+        <ExpenseInviteWelcome className="mb-8" expense={expense} draftKey={router.query.key} />
       )}
       {!isCreditCardCharge && (
         <ExpenseTypeRadioSelect
