@@ -5,7 +5,6 @@ import { Undo } from '@styled-icons/fa-solid/Undo';
 import { themeGet } from '@styled-system/theme-get';
 import dayjs from 'dayjs';
 import { cloneDeep, debounce, get, includes, orderBy, uniqBy, update } from 'lodash';
-import { FilePenLine } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { createPortal } from 'react-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -29,12 +28,11 @@ import ConfirmationModal from '../ConfirmationModal';
 import Container from '../Container';
 import CommentForm from '../conversations/CommentForm';
 import Thread from '../conversations/Thread';
-import { TaxInformationFormDialog } from '../dashboard/sections/tax-information/TaxInformationFormDialog';
 import { useDrawerActionsContainer } from '../Drawer';
 import FilesViewerModal from '../FilesViewerModal';
 import { Box, Flex } from '../Grid';
 import HTMLContent from '../HTMLContent';
-import { getI18nLink, WebsiteName } from '../I18nFormatters';
+import { WebsiteName } from '../I18nFormatters';
 import CommentIcon from '../icons/CommentIcon';
 import PrivateInfoIcon from '../icons/PrivateInfoIcon';
 import Link from '../Link';
@@ -58,6 +56,7 @@ import ExpenseNotesForm from './ExpenseNotesForm';
 import ExpenseRecurringBanner from './ExpenseRecurringBanner';
 import ExpenseSummary from './ExpenseSummary';
 import PrivateCommentsMessage from './PrivateCommentsMessage';
+import TaxFormMessage from './TaxFormMessage';
 
 const getVariableFromProps = props => {
   const firstOfCurrentYear = dayjs(new Date(new Date().getFullYear(), 0, 1))
@@ -150,7 +149,6 @@ function Expense(props) {
   const [openUrl, setOpenUrl] = useState(null);
   const [replyingToComment, setReplyingToComment] = useState(null);
   const [hasConfirmedOCR, setConfirmedOCR] = useState(false);
-  const [hasTaxInformationForm, setHasTaxInformationForm] = React.useState(false);
   const hasItemsWithOCR = Boolean(state.editedExpense?.items?.some(itemHasOCR));
   const mustConfirmOCR = hasItemsWithOCR && !hasConfirmedOCR;
   const pollingInterval = 60;
@@ -541,67 +539,7 @@ function Expense(props) {
           {formatErrorMessage(intl, state.error)}
         </MessageBox>
       )}
-      {showTaxFormMsg && (
-        <MessageBox type="warning" withIcon={true} mb={4}>
-          <div>
-            {LoggedInUser?.isAdminOfCollective(expense.payee) ? (
-              <div>
-                <strong>
-                  <FormattedMessage defaultMessage="We need your tax information before we can pay you." id="a6tGTW" />
-                </strong>
-                <p className="my-2">
-                  <FormattedMessage
-                    defaultMessage="United States regulations require US entities to collect certain information from payees for tax reporting purposes, even if the payee is outside the US."
-                    id="H/ROIG"
-                  />
-                </p>
-                <StyledButton
-                  buttonSize="tiny"
-                  buttonStyle="primary"
-                  className="mt-2"
-                  onClick={() => setHasTaxInformationForm(true)}
-                >
-                  <FilePenLine className="mr-1 inline-block" size={14} />
-                  <span>
-                    <FormattedMessage defaultMessage="Fill Tax Information" id="TxJpk1" />
-                  </span>
-                </StyledButton>
-                <TaxInformationFormDialog
-                  account={expense.payee}
-                  open={hasTaxInformationForm}
-                  onOpenChange={setHasTaxInformationForm}
-                  onSuccess={refetch}
-                />
-              </div>
-            ) : (
-              <div>
-                <strong>
-                  <FormattedMessage
-                    defaultMessage="This expense requires the payee to provide their tax information before it can be paid."
-                    id="XNW4Sq"
-                  />
-                </strong>
-                <p className="my-2">
-                  <FormattedMessage
-                    defaultMessage="United States regulations require US entities to collect certain information from payees for tax reporting purposes, even if the payee is outside the US."
-                    id="H/ROIG"
-                  />{' '}
-                  <FormattedMessage
-                    defaultMessage="See <HelpDocsLink>help docs</HelpDocsLink> for more information."
-                    id="f2Ypkz"
-                    values={{
-                      HelpDocsLink: getI18nLink({
-                        href: 'https://docs.opencollective.com/help/expenses-and-getting-paid/tax-information',
-                        openInNewTab: true,
-                      }),
-                    }}
-                  />
-                </p>
-              </div>
-            )}
-          </div>
-        </MessageBox>
-      )}
+      {showTaxFormMsg && <TaxFormMessage expense={expense} refetch={refetch} />}
       {status === PAGE_STATUS.VIEW &&
         ((expense?.status === ExpenseStatus.UNVERIFIED && state.createdUser) ||
           (isDraft && !isRecurring && !draftKey)) && (
