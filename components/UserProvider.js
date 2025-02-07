@@ -138,6 +138,13 @@ class UserProvider extends React.Component {
               allowRecovery: true,
             });
 
+            // An empty result means the prompt is already open elsewhere. This could either be due to
+            // React strict mode calling lifecycle methods twice or a developer mistake. The safest option is to early
+            // return and let the other prompt handle the result.
+            if (!result) {
+              return;
+            }
+
             const LoggedInUser = await getLoggedInUser({
               token: getFromLocalStorage(LOCAL_STORAGE_KEYS.TWO_FACTOR_AUTH_TOKEN),
               twoFactorAuthenticatorCode: result.code,
