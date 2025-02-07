@@ -49,6 +49,18 @@ export const RICH_ERROR_MESSAGES = defineMessages({
     id: 'Error.FieldRequired',
     defaultMessage: 'This field is required',
   },
+  format: {
+    id: 'FormError.pattern',
+    defaultMessage: 'This value is not formatted properly',
+  },
+  enum: {
+    id: 'FormError.enum',
+    defaultMessage: 'Must be one of: {options}',
+  },
+  invalidValue: {
+    id: 'FormError.InvalidValue',
+    defaultMessage: 'Invalid value',
+  },
 });
 
 const isEmpty = value => {
@@ -139,6 +151,12 @@ export const verifyURLPattern = (errors, data, field) => {
   }
 
   return errors;
+};
+
+export const verifyFormat = (errors, data, field, regex, customMessage) => {
+  if (!errors[field] && data[field] && !regex.test(data[field])) {
+    set(errors, field, createError(ERROR.FORM_FIELD_PATTERN, { message: customMessage }));
+  }
 };
 
 /**

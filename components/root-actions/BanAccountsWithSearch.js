@@ -145,16 +145,7 @@ const BanAccountsWithSearch = () => {
 
   return (
     <div>
-      <DashboardHeader title="Search & Ban Accounts" className="mb-10" />
-      <Alert className="relative mb-8 flex items-center gap-2 bg-destructive/5 fade-in" variant="destructive">
-        <AlertTitle className="flex items-center">Dangerous Action</AlertTitle>
-        <AlertDescription>
-          Please be super careful with the action below, and double check everything you do.
-        </AlertDescription>
-      </Alert>
-      <Box width="276px">
-        <SearchBar placeholder="Search accounts" onSubmit={setSearchTerm} disabled={loading || submitting} />
-      </Box>
+      <SearchBar placeholder="Search accounts" onSubmit={setSearchTerm} disabled={loading || submitting} />
 
       {error ? (
         <MessageBoxGraphqlError error={error} />
