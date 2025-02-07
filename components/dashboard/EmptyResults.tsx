@@ -11,7 +11,7 @@ export function EmptyResults({
   entityType,
   otherActions,
 }: {
-  onResetFilters: (e) => void;
+  onResetFilters?: (e) => void;
   hasFilters: boolean;
   otherActions?: React.ReactNode;
   entityType?:
@@ -25,7 +25,8 @@ export function EmptyResults({
     | 'TAX_FORM'
     | 'UPDATES'
     | 'PROJECTS'
-    | 'TRANSACTIONS';
+    | 'TRANSACTIONS'
+    | 'PAYMENT_METHODS';
 }) {
   return (
     <div className="flex flex-col items-center gap-6 py-6 sm:py-12" data-cy="zero-results-message">
@@ -39,7 +40,7 @@ export function EmptyResults({
           width={160}
         />
       </div>
-      <h3 className="text-2xl text-foreground">
+      <h3 className="text-foreground text-2xl">
         {hasFilters ? (
           <FormattedMessage
             id="filter.NoMatchingResults"
@@ -57,7 +58,7 @@ export function EmptyResults({
 
       {hasFilters && (
         <React.Fragment>
-          <p className="text-center text-balance text-muted-foreground">
+          <p className="text-muted-foreground text-balance text-center">
             <FormattedMessage
               id="filter.NoMatchingResults.subtitle"
               defaultMessage="We can't find any {type, select, EXPENSES {expenses} CONTRIBUTIONS {contributions} VIRTUAL_CARDS {virtual cards} VIRTUAL_CARD_REQUESTS {virtual card requests} TRANSACTIONS {transactions} AGREEMENTS {agreements} COLLECTIVES {collectives} HOST_APPLICATIONS {host applications} UPDATES {updates} other {results}} matching the given filters."

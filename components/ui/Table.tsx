@@ -105,7 +105,7 @@ const TableActionsButton = React.forwardRef<HTMLButtonElement, React.ButtonHTMLA
     <button
       ref={ref}
       className={cn(
-        'flex h-8 w-8 items-center justify-center rounded-lg border border-transparent bg-transparent text-slate-500 ring-2 shadow-xs shadow-transparent ring-transparent transition-colors group-hover/row:border-slate-200 group-hover/row:bg-white hover:text-slate-950 hover:shadow-slate-200 focus:outline-hidden focus-visible:ring-black active:ring-black disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 data-[state=open]:ring-black',
+        'flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-transparent bg-transparent text-slate-500 ring-2 shadow-xs shadow-transparent ring-transparent transition-colors group-hover/row:border-slate-200 group-hover/row:bg-white hover:text-slate-950 hover:shadow-slate-200 focus:outline-hidden focus-visible:ring-black active:ring-black disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 data-[state=open]:ring-black',
         className,
       )}
       {...props}

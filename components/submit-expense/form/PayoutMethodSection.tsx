@@ -208,7 +208,7 @@ export const PayoutMethodFormContent = memoWithGetFormProps(function PayoutMetho
   );
 }, getFormProps);
 
-function generatePayoutMethodName(type, data) {
+export function generatePayoutMethodName(type, data) {
   switch (type) {
     case PayoutMethodType.PAYPAL:
       return data.email;
@@ -232,9 +232,9 @@ function generatePayoutMethodName(type, data) {
   }
 }
 
-function NewPayoutMethodOptionWrapper() {
+export function NewPayoutMethodOptionWrapper(props) {
   const form = useFormikContext() as ExpenseForm;
-  return <NewPayoutMethodOption {...NewPayoutMethodOption.getFormProps(form)} />;
+  return <NewPayoutMethodOption {...props} {...NewPayoutMethodOption.getFormProps(form)} />;
 }
 
 type NewPayoutMethodOptionProps = ReturnType<typeof getNewPayoutMethodOptionFormProps>;
@@ -378,7 +378,7 @@ const NewPayoutMethodOption = memoWithGetFormProps(function NewPayoutMethodOptio
   );
 }, getNewPayoutMethodOptionFormProps);
 
-function PayoutMethodRadioGroupItemWrapper(props: PayoutMethodRadioGroupItemProps) {
+export function PayoutMethodRadioGroupItemWrapper(props: PayoutMethodRadioGroupItemProps) {
   const form = useFormikContext() as ExpenseForm;
 
   return <PayoutMethodRadioGroupItem {...props} {...PayoutMethodRadioGroupItem.getFormProps(form)} />;
@@ -399,12 +399,19 @@ type PayoutMethodRadioGroupItemProps = {
   onPaymentMethodDeleted: (deletedPayoutMethodId) => void;
   onPaymentMethodEdited: (newPayoutMethodId: string) => void;
   isEditable?: boolean;
+  Component?: React.ComponentType<{
+    value?: string;
+    showSubcontent?: boolean;
+    asChild?: boolean;
+    subContent: React.ReactNode;
+  }>;
 };
 
 // eslint-disable-next-line prefer-arrow-callback
-const PayoutMethodRadioGroupItem = memoWithGetFormProps(function PayoutMethodRadioGroupItem(
+export const PayoutMethodRadioGroupItem = memoWithGetFormProps(function PayoutMethodRadioGroupItem(
   props: PayoutMethodRadioGroupItemProps & ReturnType<typeof getPayoutMethodRadioGroupItemFormProps>,
 ) {
+  const Component = props.Component || RadioGroupCard;
   const intl = useIntl();
   const { toast } = useToast();
 
@@ -616,8 +623,9 @@ const PayoutMethodRadioGroupItem = memoWithGetFormProps(function PayoutMethodRad
 
   return (
     <React.Fragment>
-      <RadioGroupCard
+      <Component
         value={props.payoutMethod.id}
+        data-disabled={props.disabled}
         showSubcontent={isOpen}
         asChild
         subContent={
@@ -777,7 +785,7 @@ const PayoutMethodRadioGroupItem = memoWithGetFormProps(function PayoutMethodRad
             </Button>
           </div>
         )}
-      </RadioGroupCard>
+      </Component>
     </React.Fragment>
   );
 }, getPayoutMethodRadioGroupItemFormProps);

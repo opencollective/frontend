@@ -204,8 +204,8 @@ export const SECTION_LABELS = defineMessages({
     defaultMessage: 'Team',
   },
   [ALL_SECTIONS.PAYMENT_METHODS]: {
-    id: 'editCollective.menu.paymentMethods',
-    defaultMessage: 'Payment Methods',
+    id: 'editCollective.menu.paymentInformation',
+    defaultMessage: 'Payment Information',
   },
   [ALL_SECTIONS.TIERS]: {
     id: 'Tiers',

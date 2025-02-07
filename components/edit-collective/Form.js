@@ -42,7 +42,7 @@ import FiscalHosting from './sections/FiscalHosting';
 import GiftCards from './sections/GiftCards';
 import Host from './sections/Host';
 import HostVirtualCardsSettings from './sections/HostVirtualCardsSettings';
-import ManagePaymentMethods from './sections/ManagePaymentMethods';
+import PaymentInformation from './sections/payment-info';
 import PaymentReceipts from './sections/PaymentReceipts';
 import Policies from './sections/Policies';
 import ReceivingMoney from './sections/ReceivingMoney';
@@ -415,7 +415,7 @@ class EditCollectiveForm extends React.Component {
         );
 
       case ALL_SECTIONS.PAYMENT_METHODS:
-        return <ManagePaymentMethods account={collective} />;
+        return <PaymentInformation account={collective} />;
 
       case ALL_SECTIONS.TIERS:
         return (
