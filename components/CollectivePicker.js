@@ -62,15 +62,16 @@ const CollectiveLabelTextContainer = styled.div`
  * Default label builder used to render a collective. For sections titles and custom options,
  * this will just return the default label.
  */
-export const DefaultCollectiveLabel = ({ value: collective }) =>
-  !collective ? (
+export const DefaultCollectiveLabel = ({ value: collective }, context) => {
+  const selected = (context?.selectValue ?? []).some(o => o.value.slug === collective.slug);
+  return !collective ? (
     <Span fontSize="12px" lineHeight="18px" color="black.500">
       <FormattedMessage defaultMessage="No collective" id="159cQ8" />
     </Span>
   ) : (
     <Flex alignItems="center">
       <Avatar collective={collective} radius={16} />
-      <CollectiveLabelTextContainer>
+      <CollectiveLabelTextContainer role="option" value={collective.slug} aria-selected={selected}>
         <Span fontSize="12px" fontWeight="500" lineHeight="18px" color="black.700">
           {truncate(collective.name, { length: 40 })}
         </Span>
@@ -80,6 +81,7 @@ export const DefaultCollectiveLabel = ({ value: collective }) =>
       </CollectiveLabelTextContainer>
     </Flex>
   );
+};
 
 DefaultCollectiveLabel.propTypes = {
   value: PropTypes.shape({

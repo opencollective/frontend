@@ -57,6 +57,7 @@ const Dropzone = ({
   kind = null,
   showReplaceAction = true,
   className = '',
+  id,
   ...props
 }: DropzoneProps) => {
   const { toast } = useToast();
@@ -133,7 +134,7 @@ const Dropzone = ({
       {...(value ? omit(dropProps, ['onClick']) : dropProps)}
       style={{ height: size, width: size, minHeight: size || minHeight }}
     >
-      <input name={name} disabled={props.disabled} {...getInputProps()} />
+      <input id={id} name={name} disabled={props.disabled} {...getInputProps()} />
       {isLoading || isUploading || isUploadingWithGraphQL ? (
         <div
           className="relative flex h-full w-full items-center justify-center"

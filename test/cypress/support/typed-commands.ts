@@ -1,5 +1,8 @@
 // eslint-disable-next-line spaced-comment
 /// <reference types="cypress" />
+
+import type { Message, MessageSummary } from 'cypress-mailpit/src/types';
+
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
@@ -10,6 +13,56 @@ declare global {
         options?: { maxAttempts?: number; wait?: number },
         attempts?: number,
       ): Chainable<T>;
+
+      login(params: {
+        email: string;
+        redirect?: string;
+        visitParams?: Partial<Cypress.VisitOptions>;
+        sendLink?: boolean;
+      }): Chainable<{ email: string; newsletterOptIn: false }>;
+
+      createCollective(params: {
+        email?: string;
+        slug?: string;
+        name?: string;
+        type?: string;
+      }): Chainable<{ slug: string }>;
+
+      createCollectiveV2(params: {
+        email?: string;
+        skipApproval?: boolean;
+        host?: { slug: string };
+        collective?: {
+          slug?: string;
+          name?: string;
+          type?: string;
+          location?: { country: string };
+          settings?: Record<string, unknown>;
+        };
+      }): Chainable<{ id: string; slug: string; name; description: string; settings: Record<string, unknown> }>;
+
+      signup(params: {
+        user?: { email?: string; name?: string };
+        redirect?: string;
+        visitParams?: Partial<Cypress.VisitOptions>;
+      }): Chainable<{ email: string }>;
+
+      getByDataCy: Chainable['get'];
+
+      createExpense(params: {
+        userEmail?: string;
+        account: { slug: string };
+        payee: { slug: string };
+        payoutMethod: {
+          type: string;
+          name: string;
+          data: Record<string, unknown>;
+        };
+      }): Chainable<{ legacyId: number }>;
+
+      openEmail(matcher: (summary: MessageSummary) => boolean): Chainable<Message>;
+
+      logout();
     }
   }
 }

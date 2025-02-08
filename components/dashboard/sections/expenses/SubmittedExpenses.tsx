@@ -62,7 +62,8 @@ const SubmittedExpenses = ({ accountSlug }: DashboardSectionProps) => {
     currency: data?.account?.currency,
   };
 
-  const hasNewSubmitExpenseFlow = LoggedInUser?.hasPreviewFeatureEnabled(PREVIEW_FEATURE_KEYS.NEW_EXPENSE_FLOW);
+  const hasNewSubmitExpenseFlow =
+    LoggedInUser?.hasPreviewFeatureEnabled(PREVIEW_FEATURE_KEYS.NEW_EXPENSE_FLOW) || router.query.newExpenseFlowEnabled;
 
   const pageRoute = `/dashboard/${accountSlug}/submitted-expenses`;
 

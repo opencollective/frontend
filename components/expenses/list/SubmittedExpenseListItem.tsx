@@ -155,7 +155,7 @@ export function SubmittedExpenseListItem(props: SubmittedExpenseListItemProps) {
       </div>
       <div className="flex items-center">
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          <DropdownMenuTrigger onClick={e => e.stopPropagation()} onPointerDown={e => e.stopPropagation()} asChild>
             <Button size="icon-xs" variant="outline">
               <Ellipsis className="h-4 w-4" />
             </Button>

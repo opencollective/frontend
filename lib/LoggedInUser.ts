@@ -235,7 +235,9 @@ class LoggedInUser {
     const isTurnedOn = earlyAccess[featureKey] === true;
     const isTurnedOff = earlyAccess[featureKey] === false;
     const isEnabledInEnv = !feature.env || (feature.env as string[]).includes(process.env.OC_ENV);
-    const isEnabledByDevEnv = feature.alwaysEnableInDev && ['development', 'staging'].includes(process.env.NODE_ENV);
+    const isEnabledByDevEnv =
+      feature.alwaysEnableInDev &&
+      (['development', 'staging'].includes(process.env.NODE_ENV) || ['e2e'].includes(process.env.OC_ENV));
 
     return (
       (isEnabledByDevEnv && !isTurnedOff) ||
@@ -261,7 +263,9 @@ class LoggedInUser {
         slug => slug === '*' || this.hasRole([MemberRole.ADMIN, MemberRole.MEMBER], { slug }),
       );
       const isEnabledInEnv = !feature.env || (feature.env as string[]).includes(process.env.OC_ENV);
-      const isEnabledByDevEnv = feature.alwaysEnableInDev && ['development', 'staging'].includes(process.env.NODE_ENV);
+      const isEnabledByDevEnv =
+        feature.alwaysEnableInDev &&
+        (['development', 'staging'].includes(process.env.NODE_ENV) || ['e2e'].includes(process.env.OC_ENV));
       const hasAccess = feature.hasAccess?.(this);
       return (
         isEnabledInEnv &&

@@ -6,6 +6,7 @@ import { CollectiveType } from '../../../lib/constants/collectives';
 import { ExpenseType } from '../../../lib/graphql/types/v2/schema';
 import { attachmentDropzoneParams } from '../../expenses/lib/attachments';
 import { ExpenseLockableFields } from '@/lib/graphql/types/v2/graphql';
+import useLoggedInUser from '@/lib/hooks/useLoggedInUser';
 
 import { FormField } from '@/components/FormField';
 
@@ -80,6 +81,8 @@ export const TypeOfExpenseSection = memoWithGetFormProps(function TypeOfExpenseS
     () => intl.formatMessage({ defaultMessage: 'Attach your invoice file', id: 'Oa/lhY' }),
     [intl],
   );
+
+  const { LoggedInUser } = useLoggedInUser();
 
   return (
     <FormSectionContainer
@@ -180,7 +183,7 @@ export const TypeOfExpenseSection = memoWithGetFormProps(function TypeOfExpenseS
         {!props.initialLoading && expenseTypeOption === ExpenseType.INVOICE && (
           <div className="mt-4 rounded-md border border-gray-300 p-4">
             <Label>
-              {props.isAdminOfPayee ? (
+              {props.isAdminOfPayee || !LoggedInUser ? (
                 <FormattedMessage defaultMessage="An invoice is required. Do you have one?" id="O+LW+y" />
               ) : (
                 <FormattedMessage

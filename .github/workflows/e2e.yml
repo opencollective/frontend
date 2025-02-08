@@ -44,7 +44,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        files: ['0*.js', '1*.js', '2*.js', '3*.js', '4*.js']
+        files: ['0*.(js|ts)', '1*.(js|ts)', '2*.(js|ts)', '3*.(js|ts)', '4*.(js|ts)']
 
     services:
       redis:

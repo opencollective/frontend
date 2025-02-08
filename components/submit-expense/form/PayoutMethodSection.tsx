@@ -112,7 +112,7 @@ export const PayoutMethodFormContent = memoWithGetFormProps(function PayoutMetho
       props.payoutMethodId !== '__newPayoutMethod' &&
       (!props.payoutMethodId || !payoutMethods.some(p => p.id === props.payoutMethodId))
     ) {
-      setFieldValue('payoutMethodId', payoutMethods.at(0)?.id);
+      setFieldValue('payoutMethodId', payoutMethods.at(0)?.id ?? '');
     }
 
     if (!props.initialLoading) {
@@ -135,7 +135,7 @@ export const PayoutMethodFormContent = memoWithGetFormProps(function PayoutMetho
   const onPaymentMethodDeleted = React.useCallback(
     async deletedPayoutMethodId => {
       if (deletedPayoutMethodId === props.payoutMethodId) {
-        setFieldValue('payoutMethodId', null);
+        setFieldValue('payoutMethodId', '');
       }
       await refresh();
     },
@@ -245,7 +245,7 @@ function getNewPayoutMethodOptionFormProps(form: ExpenseForm) {
     ...pick(form, ['setFieldValue', 'setFieldTouched', 'validateForm', 'refresh', 'isSubmitting']),
     ...pick(form.values, ['newPayoutMethod', 'payeeSlug']),
     ...pick(form.options, ['supportedPayoutMethods', 'host', 'loggedInAccount', 'payee']),
-    touchedNewPayoutMethod: form.touched.newPayoutMethod,
+    touchedNewPayoutMethodName: form.touched.newPayoutMethod?.name,
   };
 }
 
@@ -257,7 +257,7 @@ const NewPayoutMethodOption = memoWithGetFormProps(function NewPayoutMethodOptio
 
   const { setFieldValue, setFieldTouched, validateForm, refresh } = props;
   React.useEffect(() => {
-    if (!props.touchedNewPayoutMethod?.name) {
+    if (!props.touchedNewPayoutMethodName) {
       setFieldValue(
         'newPayoutMethod.name',
         generatePayoutMethodName(props.newPayoutMethod.type, props.newPayoutMethod.data),
@@ -269,7 +269,7 @@ const NewPayoutMethodOption = memoWithGetFormProps(function NewPayoutMethodOptio
     props.newPayoutMethod.data.email,
     props.newPayoutMethod.data.details,
     props.newPayoutMethod.data.currency,
-    props.touchedNewPayoutMethod?.name,
+    props.touchedNewPayoutMethodName,
     props.newPayoutMethod.data,
     setFieldValue,
   ]);
@@ -285,7 +285,7 @@ const NewPayoutMethodOption = memoWithGetFormProps(function NewPayoutMethodOptio
     {
       context: API_V2_CONTEXT,
       variables: {
-        payoutMethod: props.newPayoutMethod,
+        payoutMethod: { ...props.newPayoutMethod },
         payeeSlug: props.payeeSlug,
       },
     },

@@ -706,10 +706,7 @@ function buildFormSchema(
             return true;
           }
 
-          if (
-            !values.payeeSlug ||
-            (values.expenseTypeOption === ExpenseType.INVOICE && values.hasInvoiceOption === YesNoOption.YES)
-          ) {
+          if (values.expenseTypeOption === ExpenseType.INVOICE && values.hasInvoiceOption === YesNoOption.YES) {
             return typeof attachment === 'string' ? !!attachment : !!attachment?.url;
           }
           return true;
@@ -727,10 +724,7 @@ function buildFormSchema(
             return true;
           }
 
-          if (
-            !values.payeeSlug ||
-            (values.expenseTypeOption === ExpenseType.INVOICE && values.hasInvoiceOption === YesNoOption.YES)
-          ) {
+          if (values.expenseTypeOption === ExpenseType.INVOICE && values.hasInvoiceOption === YesNoOption.YES) {
             return !!invoiceNumber;
           }
           return true;
@@ -1595,7 +1589,7 @@ export function useExpenseForm(opts: {
       setFieldValue(
         'expenseItems',
         formOptions.expense.draft?.items?.map(ei => ({
-          url: ei.url,
+          attachment: ei.url,
           description: ei.description ?? '',
           incurredAt: dayjs.utc(ei.incurredAt).toISOString().substring(0, 10),
           amount: {

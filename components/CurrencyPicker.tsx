@@ -44,6 +44,7 @@ const CurrencyPicker = React.memo(
     availableCurrencies: string[];
     onChange: (selectedCurrency: string) => void;
     value?: string;
+    inputId?: string;
   } & Omit<React.ComponentProps<typeof ComboSelect>, 'options'>) {
     const intl = useIntl();
     const currencyOptions = React.useMemo(
@@ -52,7 +53,7 @@ const CurrencyPicker = React.memo(
     );
     return (
       <ComboSelect
-        id="currency-picker"
+        id={props.inputId || 'currency-picker'}
         data-cy="currency-picker"
         error={!value}
         isSearchable={availableCurrencies.length > 10}

@@ -190,61 +190,64 @@ const ExpenseItemsSection = React.memo(function ExpenseItemSection(
       <Label className="mb-4 font-bold">
         <FormattedMessage defaultMessage="Items" id="yNmV/R" />
       </Label>
-      {props.expenseItems.map(ei => (
-        <div
-          key={`${ei.description}-${ei.incurredAt}-${ei.amount?.valueInCents}`}
-          className="mb-2 border-b border-dotted border-gray-300 pb-2 text-sm last:mb-0 last:border-b-0"
-        >
-          <div className="flex items-center justify-between gap-4">
-            {ei.attachment && (
-              <div>
-                <UploadedFilePreview
-                  size={64}
-                  url={typeof ei.attachment === 'string' ? ei.attachment : ei.attachment.url}
-                  border="none"
-                />
-              </div>
-            )}
-            <div className="grow">
-              <div>
-                {ei.description || (
-                  <span className="text-muted-foreground">
-                    <FormattedMessage defaultMessage="Item description" id="1TNkWq" />
-                  </span>
-                )}
-              </div>
-              <div className="text-xs">{ei.incurredAt && <DateTime value={ei.incurredAt} dateStyle="medium" />}</div>
-            </div>
-            <div className="text-right">
-              <FormattedMoneyAmount
-                amount={
-                  props.expenseCurrency !== ei.amount?.currency
-                    ? ei.amount?.exchangeRate?.value
-                      ? Math.round(ei.amount?.valueInCents * ei.amount?.exchangeRate.value)
-                      : null
-                    : ei.amount?.valueInCents
-                }
-                currency={props.expenseCurrency}
-                showCurrencyCode
-                amountClassName="font-bold"
-              />
-              {props.expenseCurrency !== ei.amount.currency && (
-                <div className="mt-1 text-xs">
-                  <AmountWithExchangeRateInfo
-                    amount={ei.amount as React.ComponentProps<typeof AmountWithExchangeRateInfo>['amount']}
-                    invertIconPosition
-                    {...getExpenseExchangeRateWarningOrError(
-                      intl,
-                      ei.amount.exchangeRate,
-                      ei.amount.referenceExchangeRate,
-                    )}
+      <div role="list">
+        {props.expenseItems.map(ei => (
+          <div
+            role="listitem"
+            key={`${ei.description}-${ei.incurredAt}-${ei.amount?.valueInCents}`}
+            className="mb-2 border-b border-dotted border-gray-300 pb-2 text-sm last:mb-0 last:border-b-0"
+          >
+            <div className="flex items-center justify-between gap-4">
+              {ei.attachment && (
+                <div>
+                  <UploadedFilePreview
+                    size={64}
+                    url={typeof ei.attachment === 'string' ? ei.attachment : ei.attachment.url}
+                    border="none"
                   />
                 </div>
               )}
+              <div className="grow">
+                <div>
+                  {ei.description || (
+                    <span className="text-muted-foreground">
+                      <FormattedMessage defaultMessage="Item description" id="1TNkWq" />
+                    </span>
+                  )}
+                </div>
+                <div className="text-xs">{ei.incurredAt && <DateTime value={ei.incurredAt} dateStyle="medium" />}</div>
+              </div>
+              <div className="text-right">
+                <FormattedMoneyAmount
+                  amount={
+                    props.expenseCurrency !== ei.amount?.currency
+                      ? ei.amount?.exchangeRate?.value
+                        ? Math.round(ei.amount?.valueInCents * ei.amount?.exchangeRate.value)
+                        : null
+                      : ei.amount?.valueInCents
+                  }
+                  currency={props.expenseCurrency}
+                  showCurrencyCode
+                  amountClassName="font-bold"
+                />
+                {props.expenseCurrency !== ei.amount.currency && (
+                  <div className="mt-1 text-xs">
+                    <AmountWithExchangeRateInfo
+                      amount={ei.amount as React.ComponentProps<typeof AmountWithExchangeRateInfo>['amount']}
+                      invertIconPosition
+                      {...getExpenseExchangeRateWarningOrError(
+                        intl,
+                        ei.amount.exchangeRate,
+                        ei.amount.referenceExchangeRate,
+                      )}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
 
       <div className="flex justify-end">
         <div className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 text-right">
@@ -608,7 +611,7 @@ function RecurrenceOptionBox(props: { form: ExpenseForm }) {
               disabled={props.form.initialLoading || props.form.isSubmitting}
               onValueChange={newValue => setRecurrenceFrequencyEdit(newValue as RecurrenceFrequencyOption)}
             >
-              <SelectTrigger data-cy="language-switcher">
+              <SelectTrigger data-cy="expense-frequency">
                 <div className="flex items-center gap-2 overflow-hidden">
                   <span className="truncate">
                     <SelectValue placeholder={intl.formatMessage({ defaultMessage: 'Select one', id: 'aJxdzZ' })} />
@@ -620,19 +623,28 @@ function RecurrenceOptionBox(props: { form: ExpenseForm }) {
                 <SelectItem value={RecurrenceFrequencyOption.NONE}>
                   <FormattedMessage defaultMessage="None" id="450Fty" />
                 </SelectItem>
-                <SelectItem value={RecurrenceFrequencyOption.WEEK}>{RecurringExpenseIntervals.week}</SelectItem>
-                <SelectItem value={RecurrenceFrequencyOption.MONTH}>{RecurringExpenseIntervals.month}</SelectItem>
-                <SelectItem value={RecurrenceFrequencyOption.QUARTER}>{RecurringExpenseIntervals.quarter}</SelectItem>
-                <SelectItem value={RecurrenceFrequencyOption.YEAR}>{RecurringExpenseIntervals.year}</SelectItem>
+                <SelectItem data-cy="expense-frequency-option" value={RecurrenceFrequencyOption.WEEK}>
+                  {RecurringExpenseIntervals.week}
+                </SelectItem>
+                <SelectItem data-cy="expense-frequency-option" value={RecurrenceFrequencyOption.MONTH}>
+                  {RecurringExpenseIntervals.month}
+                </SelectItem>
+                <SelectItem data-cy="expense-frequency-option" value={RecurrenceFrequencyOption.QUARTER}>
+                  {RecurringExpenseIntervals.quarter}
+                </SelectItem>
+                <SelectItem data-cy="expense-frequency-option" value={RecurrenceFrequencyOption.YEAR}>
+                  {RecurringExpenseIntervals.year}
+                </SelectItem>
               </SelectContent>
             </Select>
 
             {recurrenceFrequency && recurrenceFrequency !== 'none' && (
               <React.Fragment>
-                <Label className="mt-4 mb-2">
+                <Label htmlFor="expenseRecurrenceEndAt" className="mt-4 mb-2">
                   <FormattedMessage defaultMessage="End Date" id="EndDate" />
                 </Label>
                 <Input
+                  id="expenseRecurrenceEndAt"
                   disabled={props.form.initialLoading || props.form.isSubmitting}
                   type="date"
                   value={recurrenceEndAt}
