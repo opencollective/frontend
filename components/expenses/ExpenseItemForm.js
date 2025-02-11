@@ -47,6 +47,10 @@ const msg = defineMessages({
     id: 'Fields.description',
     defaultMessage: 'Description',
   },
+  grossAmountLabel: {
+    id: 'bwZInO',
+    defaultMessage: 'Gross Amount',
+  },
   amountLabel: {
     id: 'Fields.amount',
     defaultMessage: 'Amount',
@@ -333,6 +337,7 @@ const ExpenseItemForm = ({
   ocrComparison,
   hasCurrencyPicker,
   amountIsLocked,
+  isSubjectToTax = false,
 }) => {
   const intl = useIntl();
   const form = useFormikContext();
@@ -476,7 +481,7 @@ const ExpenseItemForm = ({
                 name={getFieldName('amountV2')}
                 error={getError('amountV2')}
                 htmlFor={`${getFieldName('amountV2')}-amount`}
-                label={formatMessage(msg.amountLabel)}
+                label={formatMessage(isSubjectToTax ? msg.grossAmountLabel : msg.amountLabel)}
                 required
                 labelFontSize="13px"
                 inputType="number"
@@ -616,6 +621,8 @@ ExpenseItemForm.propTypes = {
   onUploadError: PropTypes.func.isRequired,
   /** Is it an invoice */
   isInvoice: PropTypes.bool,
+  /** Whether the item is subject to tax */
+  isSubjectToTax: PropTypes.bool,
   /** the item data. TODO: Rename to "item" */
   attachment: PropTypes.shape({
     id: PropTypes.string,
