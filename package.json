@@ -239,7 +239,7 @@
     "cypress-real-events": "^1.12.0",
     "cz-conventional-changelog": "^3.3.0",
     "dot-path-value": "^0.0.11",
-    "esbuild": "0.24.2",
+    "esbuild": "0.25.0",
     "eslint": "^8.57.0",
     "eslint-config-opencollective": "^4.0.0",
     "eslint-plugin-cypress": "^4.0.0",
