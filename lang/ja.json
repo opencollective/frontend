@@ -952,7 +952,7 @@
   "ContributionFlow.noSupportedPaymentMethods": "利用可能な支払いプロバイダがありません",
   "ContributionFlow.Payment": "支払い",
   "ContributionFlow.PersonalProfile": "個人プロフィール",
-  "ContributionFlow.StepProfileLoggedInForm.EmailInfo": "When you contribute to {collectiveName}, your email address will be visible by its administrators and by {hostName}, the legal entity collecting this contribution.",
+  "ContributionFlow.StepProfileLoggedInForm.EmailInfo": "When you contribute to {collectiveName}, your email address will be visible to its administrators and by {hostName}, the legal entity collecting this contribution.",
   "ContributionFlow.YourInfo": "あなたの情報",
   "contributionMonthlyAverageCount": "Monthly Avg. Number of Contributions",
   "contributionMonthlyAverageTotal": "Monthly Avg. Value of Contributions",

@@ -55,7 +55,7 @@ const StepProfileLoggedInForm = ({ profiles, onChange, collective, tier, data, s
           </h1>
           <p>
             <FormattedMessage
-              defaultMessage="When you contribute to {collectiveName}, your email address will be visible by its administrators and by {hostName}, the legal entity collecting this contribution."
+              defaultMessage="When you contribute to {collectiveName}, your email address will be visible to its administrators and by {hostName}, the legal entity collecting this contribution."
               id="ContributionFlow.StepProfileLoggedInForm.EmailInfo"
               values={{
                 collectiveName: collective.name,

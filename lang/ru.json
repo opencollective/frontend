@@ -952,7 +952,7 @@
   "ContributionFlow.noSupportedPaymentMethods": "Нет доступных платежных провайдеров",
   "ContributionFlow.Payment": "Оплата",
   "ContributionFlow.PersonalProfile": "Личный профиль",
-  "ContributionFlow.StepProfileLoggedInForm.EmailInfo": "When you contribute to {collectiveName}, your email address will be visible by its administrators and by {hostName}, the legal entity collecting this contribution.",
+  "ContributionFlow.StepProfileLoggedInForm.EmailInfo": "When you contribute to {collectiveName}, your email address will be visible to its administrators and by {hostName}, the legal entity collecting this contribution.",
   "ContributionFlow.YourInfo": "Ваша информация",
   "contributionMonthlyAverageCount": "Monthly Avg. Number of Contributions",
   "contributionMonthlyAverageTotal": "Monthly Avg. Value of Contributions",

@@ -952,7 +952,7 @@
   "ContributionFlow.noSupportedPaymentMethods": "没有可用的付款提供商",
   "ContributionFlow.Payment": "付款",
   "ContributionFlow.PersonalProfile": "个人资料",
-  "ContributionFlow.StepProfileLoggedInForm.EmailInfo": "When you contribute to {collectiveName}, your email address will be visible by its administrators and by {hostName}, the legal entity collecting this contribution.",
+  "ContributionFlow.StepProfileLoggedInForm.EmailInfo": "When you contribute to {collectiveName}, your email address will be visible to its administrators and by {hostName}, the legal entity collecting this contribution.",
   "ContributionFlow.YourInfo": "你的信息",
   "contributionMonthlyAverageCount": "Monthly Avg. Number of Contributions",
   "contributionMonthlyAverageTotal": "Monthly Avg. Value of Contributions",

@@ -952,7 +952,7 @@
   "ContributionFlow.noSupportedPaymentMethods": "Nie je k dispozícii žiadny poskytovateľ platieb",
   "ContributionFlow.Payment": "Platba",
   "ContributionFlow.PersonalProfile": "Osobný profil",
-  "ContributionFlow.StepProfileLoggedInForm.EmailInfo": "When you contribute to {collectiveName}, your email address will be visible by its administrators and by {hostName}, the legal entity collecting this contribution.",
+  "ContributionFlow.StepProfileLoggedInForm.EmailInfo": "When you contribute to {collectiveName}, your email address will be visible to its administrators and by {hostName}, the legal entity collecting this contribution.",
   "ContributionFlow.YourInfo": "Vaše informácie",
   "contributionMonthlyAverageCount": "Priemerný mesačný počet príspevkov",
   "contributionMonthlyAverageTotal": "Priemerná mesačná hodnota príspevkov",

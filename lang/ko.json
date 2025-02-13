@@ -952,7 +952,7 @@
   "ContributionFlow.noSupportedPaymentMethods": "There is no payment provider available",
   "ContributionFlow.Payment": "결제",
   "ContributionFlow.PersonalProfile": "개인 프로필",
-  "ContributionFlow.StepProfileLoggedInForm.EmailInfo": "When you contribute to {collectiveName}, your email address will be visible by its administrators and by {hostName}, the legal entity collecting this contribution.",
+  "ContributionFlow.StepProfileLoggedInForm.EmailInfo": "When you contribute to {collectiveName}, your email address will be visible to its administrators and by {hostName}, the legal entity collecting this contribution.",
   "ContributionFlow.YourInfo": "내 정보",
   "contributionMonthlyAverageCount": "Monthly Avg. Number of Contributions",
   "contributionMonthlyAverageTotal": "Monthly Avg. Value of Contributions",
