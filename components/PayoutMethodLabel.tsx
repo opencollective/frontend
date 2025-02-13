@@ -39,57 +39,50 @@ export function PayoutMethodLabel(props: PayoutMethodLabelProps) {
   }
 
   const pm = props.payoutMethod;
+  const customLabel = pm.name;
+  let defaultLabel: React.ReactNode;
 
-  let label: React.ReactNode = props.payoutMethod.name;
-
-  if (!label) {
-    switch (pm.type) {
-      case PayoutMethodType.PAYPAL:
-        label = pm.data?.email;
-        break;
-      case PayoutMethodType.ACCOUNT_BALANCE:
-        break;
-      case PayoutMethodType.BANK_ACCOUNT: {
-        if (pm.data?.details?.IBAN) {
-          label = `IBAN ${pm.data.details.IBAN}`;
-        } else if (pm.data?.details?.accountNumber) {
-          label = `A/N ${pm.data.details.accountNumber}`;
-        } else if (pm.data?.details?.clabe) {
-          label = `Clabe ${pm.data.details.clabe}`;
-        } else if (pm.data?.details?.bankgiroNumber) {
-          label = `Bankgiro ${pm.data.details.bankgiroNumber}`;
-        } else if (pm.data?.accountHolderName && pm.data?.currency) {
-          label = `${pm.data.accountHolderName} (${pm.data.currency})`;
-        }
-        break;
+  switch (pm.type) {
+    case PayoutMethodType.PAYPAL:
+      defaultLabel = pm.data?.email;
+      break;
+    case PayoutMethodType.ACCOUNT_BALANCE:
+      break;
+    case PayoutMethodType.BANK_ACCOUNT: {
+      if (pm.data?.details?.IBAN) {
+        defaultLabel = `IBAN ${pm.data.details.IBAN}`;
+      } else if (pm.data?.details?.accountNumber) {
+        defaultLabel = `A/N ${pm.data.details.accountNumber}`;
+      } else if (pm.data?.details?.clabe) {
+        defaultLabel = `Clabe ${pm.data.details.clabe}`;
+      } else if (pm.data?.details?.bankgiroNumber) {
+        defaultLabel = `Bankgiro ${pm.data.details.bankgiroNumber}`;
+      } else if (pm.data?.accountHolderName && pm.data?.currency) {
+        defaultLabel = `${pm.data.accountHolderName} (${pm.data.currency})`;
       }
-      case PayoutMethodType.OTHER: {
-        const content = truncate(pm.data?.content, { length: MAX_PAYOUT_OPTION_DATA_LENGTH }).replace(/\n|\t/g, ' ');
-        if (content) {
-          label = (
-            <span>
-              <FormattedMessage {...I18nPayoutMethodLabels[PayoutMethodType.OTHER]} /> - {content}
-            </span>
-          );
-        }
-        break;
+      break;
+    }
+    case PayoutMethodType.OTHER: {
+      const content = truncate(pm.data?.content, { length: MAX_PAYOUT_OPTION_DATA_LENGTH }).replace(/\n|\t/g, ' ');
+      if (content) {
+        defaultLabel = (
+          <span>
+            <FormattedMessage {...I18nPayoutMethodLabels[PayoutMethodType.OTHER]} /> - {content}
+          </span>
+        );
       }
+      break;
     }
   }
 
-  if (!label) {
-    label = <FormattedMessage {...I18nPayoutMethodLabels[pm.type]} />;
+  if (!defaultLabel) {
+    defaultLabel = <FormattedMessage {...I18nPayoutMethodLabels[pm.type]} />;
   }
 
-  if (props.showIcon) {
-    return (
-      <div className="flex min-h-8 items-center gap-2 whitespace-nowrap">
-        <PayoutMethodIcon payoutMethod={pm} />
-        &nbsp;
-        {label}
-      </div>
-    );
-  }
-
-  return label;
+  return (
+    <div className="flex min-h-8 items-center gap-2 whitespace-nowrap">
+      {props.showIcon && <PayoutMethodIcon payoutMethod={pm} />}
+      {defaultLabel} {customLabel ? <span className="text-muted-foreground">{customLabel}</span> : null}
+    </div>
+  );
 }

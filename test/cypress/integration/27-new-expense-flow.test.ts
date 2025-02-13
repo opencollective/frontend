@@ -617,10 +617,8 @@ function fillNewPayoutMethod(payoutMethod: {
       .click()
       .type(payoutMethod.data.content as string);
     cy.wait(400);
-    cy.contains('label', 'Name').click();
-    cy.get('input#input-newPayoutMethod\\.name').should('have.value', payoutMethod.data.content);
-    cy.get('input#input-newPayoutMethod\\.name').clear();
-    cy.get('input#input-newPayoutMethod\\.name').clear().type(payoutMethod.slug);
+    cy.contains('label', 'Label').click();
+    cy.get('input#input-newPayoutMethod\\.name').type(payoutMethod.slug);
     cy.get('input#input-newPayoutMethod\\.name').should('have.value', payoutMethod.slug);
 
     if (payoutMethod.save) {

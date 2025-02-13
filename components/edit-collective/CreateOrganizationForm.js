@@ -25,8 +25,8 @@ class CreateOrganizationForm extends React.Component {
         id: 'Fields.website',
         defaultMessage: 'Website',
       },
-      'order.organization.twitterHandle.description': {
-        id: 'tier.order.organization.twitterHandle.description',
+      'FormField.optional': {
+        id: 'FormField.optional',
         defaultMessage: 'optional',
       },
     });
@@ -74,7 +74,7 @@ class CreateOrganizationForm extends React.Component {
               name="organization_twitterHandle"
               pre="@"
               label="Twitter"
-              help={intl.formatMessage(this.messages['order.organization.twitterHandle.description'])}
+              help={intl.formatMessage(this.messages['FormField.optional'])}
               onChange={value => this.handleChange('twitterHandle', value)}
             />
           </Box>
