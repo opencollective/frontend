@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { truncate } from 'lodash';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { get, truncate } from 'lodash';
+import { FormattedDate, FormattedMessage, injectIntl } from 'react-intl';
 import styled, { css } from 'styled-components';
 
 import { CollectiveType } from '../lib/constants/collectives';
@@ -135,7 +135,13 @@ const ContributorCard = ({
         </LinkContributor>
         <Box mt={2}>
           {contributor.isAdmin || contributor.isCore ? (
-            <ContributorTag>{formatMemberRole(intl, getMainContributorRole(contributor))}</ContributorTag>
+            <React.Fragment>
+              <ContributorTag>{formatMemberRole(intl, getMainContributorRole(contributor))}</ContributorTag>
+              <P fontSize="10px" lineHeight="14px" fontWeight={400} color="#9D9FA3" mb={2}>
+                <FormattedMessage id="user.since.label" defaultMessage="Since" />:{' '}
+                <FormattedDate value={get(contributor, 'since')} />
+              </P>
+            </React.Fragment>
           ) : truncatedDescription ? (
             <P fontSize="12px" fontWeight="700" title={description} mb={1} textAlign="center">
               {truncatedDescription}
