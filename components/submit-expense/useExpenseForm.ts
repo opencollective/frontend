@@ -50,6 +50,7 @@ export enum InviteeAccountType {
 }
 
 type ExpenseItem = {
+  key?: string; // used to enable FlipMove animations (will either be a generated uuid on "Add item", or using the expense item id)
   description?: string;
   incurredAt?: string;
   amount?: {
@@ -1589,6 +1590,7 @@ export function useExpenseForm(opts: {
       setFieldValue(
         'expenseItems',
         formOptions.expense.draft?.items?.map(ei => ({
+          key: ei.id,
           attachment: ei.url,
           description: ei.description ?? '',
           incurredAt: dayjs.utc(ei.incurredAt).toISOString().substring(0, 10),
@@ -1609,6 +1611,7 @@ export function useExpenseForm(opts: {
       setFieldValue(
         'expenseItems',
         formOptions.expense.items?.map(ei => ({
+          key: ei.id,
           attachment: !startOptions.current.duplicateExpense ? ei.url : null,
           description: ei.description ?? '',
           incurredAt: !startOptions.current.duplicateExpense

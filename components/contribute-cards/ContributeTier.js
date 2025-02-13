@@ -95,7 +95,7 @@ const canContribute = (collective, LoggedInUser) => {
   if (!collective.isActive) {
     return false;
   } else if (collective.type === 'EVENT') {
-    return !isPastEvent(collective) || Boolean(LoggedInUser.isAdminOfCollectiveOrHost(collective));
+    return !isPastEvent(collective) || Boolean(LoggedInUser?.isAdminOfCollectiveOrHost(collective));
   } else {
     return true;
   }

@@ -21,6 +21,10 @@ const StyledTooltipContainer = styled(`div`)`
   color: white;
   background: #141414;
   box-shadow: 0px 4px 8px rgba(20, 20, 20, 0.16);
+
+  a {
+    text-decoration: underline;
+  }
 `;
 
 const Arrow = styled('div')`

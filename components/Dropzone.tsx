@@ -166,7 +166,12 @@ const Dropzone = ({
           ) : (
             <React.Fragment>
               {!value ? (
-                <div className={cn('px-2 text-sm', errorMsg ? 'text-destructive' : 'text-muted-foreground')}>
+                <div
+                  className={cn(
+                    'flex flex-col items-center justify-center px-2 text-sm text-balance',
+                    errorMsg ? 'text-destructive' : 'text-muted-foreground',
+                  )}
+                >
                   {errorMsg ? (
                     <div className="flex flex-col items-center gap-1">
                       <CircleAlert size={20} />

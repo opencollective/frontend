@@ -5,9 +5,11 @@ import type { CheckedState } from '@radix-ui/react-checkbox';
 import dayjs from 'dayjs';
 import { useFormikContext } from 'formik';
 import { get, pick, round } from 'lodash';
-import { Lock, Trash2 } from 'lucide-react';
+import { ArrowDown, ArrowUp, Lock, Plus, Trash2 } from 'lucide-react';
+import FlipMove from 'react-flip-move';
 import type { IntlShape } from 'react-intl';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { v4 as uuid } from 'uuid';
 
 import type { Currency, CurrencyExchangeRateInput } from '../../../lib/graphql/types/v2/schema';
 import { CurrencyExchangeRateSourceType, ExpenseLockableFields } from '../../../lib/graphql/types/v2/schema';
@@ -19,6 +21,7 @@ import {
   getTaxAmount,
   isTaxRateValid,
 } from '../../expenses/lib/utils';
+import { DISABLE_ANIMATIONS } from '@/lib/animations';
 
 import { FormField } from '@/components/FormField';
 import InputAmount from '@/components/InputAmount';
@@ -86,29 +89,66 @@ export const ExpenseItemsForm = memoWithGetFormProps(function ExpenseItemsForm(
 
   return (
     <React.Fragment>
-      <div role="list">
-        {!props.initialLoading &&
-          expenseItems?.map((ei, i) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <div key={i} role="listitem" className="flex gap-4">
-              <div className="grow">
-                <ExpenseItemWrapper index={i} isAmountLocked={isAmountLocked} isSubjectToTax={Boolean(props.taxType)} />
-              </div>
-              <div>
-                <Button
-                  onClick={() => {
-                    setFieldValue('expenseItems', [...expenseItems.slice(0, i), ...expenseItems.slice(i + 1)]);
-                  }}
-                  disabled={expenseItems.length === 1 || isAmountLocked || props.isSubmitting}
-                  variant="outline"
-                  size="icon-sm"
-                >
-                  <Trash2 size={16} />
-                </Button>
-              </div>
-            </div>
-          ))}
-      </div>
+      {!props.initialLoading && (
+        <div role="list">
+          <FlipMove enterAnimation="fade" leaveAnimation="fade" disableAllAnimations={DISABLE_ANIMATIONS}>
+            {expenseItems?.map((ei, i) => {
+              return (
+                // eslint-disable-next-line react/no-array-index-key
+                <div key={ei.key} id={ei.key} role="listitem" className="flex gap-4">
+                  <div className="grow">
+                    <ExpenseItemWrapper
+                      index={i}
+                      isAmountLocked={isAmountLocked}
+                      isSubjectToTax={Boolean(props.taxType)}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <Button
+                      onClick={() => {
+                        setFieldValue('expenseItems', [...expenseItems.slice(0, i), ...expenseItems.slice(i + 1)]);
+                      }}
+                      disabled={expenseItems.length === 1 || isAmountLocked || props.isSubmitting}
+                      variant="outline"
+                      size="icon-sm"
+                    >
+                      <Trash2 size={16} />
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        if (i > 0) {
+                          const newExpenseItems = [...expenseItems];
+                          [newExpenseItems[i - 1], newExpenseItems[i]] = [newExpenseItems[i], newExpenseItems[i - 1]];
+                          setFieldValue('expenseItems', newExpenseItems);
+                        }
+                      }}
+                      disabled={i === 0 || props.isSubmitting}
+                      variant="outline"
+                      size="icon-sm"
+                    >
+                      <ArrowUp size={16} />
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        if (i < expenseItems.length - 1) {
+                          const newExpenseItems = [...expenseItems];
+                          [newExpenseItems[i + 1], newExpenseItems[i]] = [newExpenseItems[i], newExpenseItems[i + 1]];
+                          setFieldValue('expenseItems', newExpenseItems);
+                        }
+                      }}
+                      disabled={i === expenseItems.length - 1 || props.isSubmitting}
+                      variant="outline"
+                      size="icon-sm"
+                    >
+                      <ArrowDown size={16} />
+                    </Button>
+                  </div>
+                </div>
+              );
+            })}
+          </FlipMove>
+        </div>
+      )}
 
       {props.initialLoading && (
         <div className="mb-4">
@@ -123,6 +163,7 @@ export const ExpenseItemsForm = memoWithGetFormProps(function ExpenseItemsForm(
             setFieldValue('expenseItems', [
               ...expenseItems,
               {
+                key: uuid(),
                 amount: { valueInCents: 0, currency: props.expenseCurrency },
                 description: '',
                 incurredAt: new Date().toISOString(),
@@ -131,7 +172,7 @@ export const ExpenseItemsForm = memoWithGetFormProps(function ExpenseItemsForm(
             ])
           }
         >
-          <FormattedMessage defaultMessage="Add item" id="KDO3hW" />
+          <Plus size={16} /> <FormattedMessage defaultMessage="Add item" id="KDO3hW" />
         </Button>
         <div>
           <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-right">
@@ -208,8 +249,8 @@ export const ExpenseItemsForm = memoWithGetFormProps(function ExpenseItemsForm(
 type ExpenseItemProps = {
   index: number;
   isAmountLocked?: boolean;
-  isSubjectToTax: boolean;
   item: ExpenseForm['values']['expenseItems'][number];
+  isSubjectToTax: boolean;
 } & ReturnType<typeof getExpenseItemProps>;
 
 function getExpenseItemProps(form: ExpenseForm) {
@@ -295,7 +336,11 @@ const ExpenseItem = memoWithGetFormProps(function ExpenseItem(props: ExpenseItem
             <div className="flex grow justify-center">
               <FormField
                 disabled={props.isSubmitting}
-                label={intl.formatMessage({ defaultMessage: 'Upload file', id: '6oOCCL' })}
+                label={
+                  props.isSubjectToTax
+                    ? intl.formatMessage({ defaultMessage: 'Gross Amount', id: 'bwZInO' })
+                    : intl.formatMessage({ defaultMessage: 'Amount', id: 'Fields.amount' })
+                }
                 name={`expenseItems.${props.index}.attachment`}
               >
                 {({ field }) => {
@@ -352,11 +397,7 @@ const ExpenseItem = memoWithGetFormProps(function ExpenseItem(props: ExpenseItem
               <div className="flex flex-col">
                 <FormField
                   disabled={props.isAmountLocked || props.isSubmitting}
-                  label={
-                    props.isSubjectToTax
-                      ? intl.formatMessage({ defaultMessage: 'Gross Amount', id: 'bwZInO' })
-                      : intl.formatMessage({ defaultMessage: 'Amount', id: 'Fields.amount' })
-                  }
+                  label={intl.formatMessage({ defaultMessage: 'Amount', id: 'Fields.amount' })}
                   name={`expenseItems.${props.index}.amount.valueInCents`}
                 >
                   {({ field }) => (

@@ -43,7 +43,7 @@ export function SubmittedExpense(props: SubmittedExpenseProps) {
   return (
     <div>
       {showTaxFormMsg && <TaxFormMessage expense={expense} refetch={query.refetch} />}
-      <div className="flex grow flex-col gap-8 px-4 sm:p-0 lg:flex-row">
+      <div className="flex grow flex-col gap-8 px-4 sm:p-0 sm:pb-12 lg:flex-row">
         <div className="flex-1 flex-grow-2">
           <ExpenseSummary
             onDelete={() => {}}
@@ -61,7 +61,7 @@ export function SubmittedExpense(props: SubmittedExpenseProps) {
             collective={expense?.account}
           />
         </div>
-        <div className="flex-1 md:max-w-96">
+        <div className="flex-1 pb-12 md:max-w-96">
           <CreateExpenseFAQ defaultOpen />
         </div>
       </div>

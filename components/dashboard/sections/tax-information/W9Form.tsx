@@ -74,7 +74,7 @@ export const W9TaxFormFields = ({ formik }: { formik: FormikProps<W9TaxFormValue
   return (
     <div className="flex flex-col gap-y-4">
       <div className="mt-2">
-        <p className="text-lg font-bold">Full name</p>
+        <p className="text-lg font-bold">Submitter Full name</p>
         <HintText>The name should match the name on your tax return.</HintText>
       </div>
       <StyledInputFormikField name="signer.firstName" label="First Name" />
@@ -208,7 +208,7 @@ export const W9TaxFormFields = ({ formik }: { formik: FormikProps<W9TaxFormValue
                   result of a failure to report all interest or dividends, or (c) the IRS has notified me that I am no
                   longer subject to backup withholding;
                 </li>
-                <li>I am a U.S. citizen or other U.S. person (defined above);</li>
+                <li>I am a U.S. citizen or other U.S. person (defined in the attached PDF);</li>
                 <li>
                   The FATCA code(s) entered on this form (if any) indicating that I am exempt from FATCA reporting is
                   correct.

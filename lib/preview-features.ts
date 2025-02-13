@@ -63,7 +63,6 @@ export const previewFeatures: PreviewFeature[] = [
   },
   {
     key: PREVIEW_FEATURE_KEYS.INLINE_EDIT_EXPENSE,
-    dependsOn: PREVIEW_FEATURE_KEYS.NEW_EXPENSE_FLOW,
     title: 'Inline edit expense',
     description: 'Inline edit expense in Dashboard',
     alwaysEnableInDev: true,

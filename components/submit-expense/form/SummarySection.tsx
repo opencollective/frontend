@@ -603,7 +603,7 @@ function RecurrenceOptionBox(props: { form: ExpenseForm }) {
         {isEditingRecurrence && (
           <div>
             <div className="my-4 border-t border-dotted border-gray-400" />
-            <Label className="mb-2">
+            <Label className="mb-2 block">
               <FormattedMessage defaultMessage="Frequency" id="Frequency" />
             </Label>
             <Select
@@ -640,7 +640,7 @@ function RecurrenceOptionBox(props: { form: ExpenseForm }) {
 
             {recurrenceFrequency && recurrenceFrequency !== 'none' && (
               <React.Fragment>
-                <Label htmlFor="expenseRecurrenceEndAt" className="mt-4 mb-2">
+                <Label htmlFor="expenseRecurrenceEndAt" className="mt-4 mb-2 block">
                   <FormattedMessage defaultMessage="End Date" id="EndDate" />
                 </Label>
                 <Input
