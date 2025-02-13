@@ -16,7 +16,6 @@ import { NAVBAR_CATEGORIES } from '../components/collective-navbar/constants';
 import { accountNavbarFieldsFragment } from '../components/collective-navbar/fragments';
 import { Sections } from '../components/collective-page/_constants';
 import ErrorPage from '../components/ErrorPage';
-import { Box } from '../components/Grid';
 import Header from '../components/Header';
 import Footer from '../components/navigation/Footer';
 import PageFeatureNotSupported from '../components/PageFeatureNotSupported';
@@ -266,7 +265,7 @@ export default function TransactionsPage(props) {
           selectedCategory={NAVBAR_CATEGORIES.BUDGET}
           selectedSection={accountType === CollectiveType.COLLECTIVE ? Sections.BUDGET : Sections.TRANSACTIONS}
         />
-        <Box maxWidth={1260} m="0 auto" px={[2, 3, 4]} my={[4, 5]} data-cy="transactions-page-content">
+        <div className="mx-auto my-4 max-w-[1260px] px-2 sm:my-5 sm:px-3 md:px-4" data-cy="transactions-page-content">
           <Transactions
             transactions={transactions}
             account={account}
@@ -277,7 +276,7 @@ export default function TransactionsPage(props) {
             refetch={refetch}
             router={router}
           />
-        </Box>
+        </div>
       </Body>
       <Footer />
     </TransactionPageWrapper>

@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { size } from 'styled-system';
 
 import Container from './Container';
-import { Box } from './Grid';
 
 /**
  * Returns a function that will return a unique key from iteratee. As we rely on
@@ -120,12 +119,10 @@ interface DefaultChildProps {
 }
 
 const DefaultChild = ({ value, radio }: DefaultChildProps) => (
-  <Box mb={2}>
-    <Box as="span" mr={2}>
-      {radio}
-    </Box>
+  <div className="mb-2">
+    <span className="mr-2">{radio}</span>
     {value}
-  </Box>
+  </div>
 );
 
 const StyledRadioList = ({

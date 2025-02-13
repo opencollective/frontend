@@ -2,16 +2,14 @@ import React from 'react';
 
 import LoadingGrid from '../components/LoadingGrid';
 
-import { Flex } from './Grid';
-
 const Loading = props => {
   return (
     <div className="Loading">
-      <Flex justifyContent={['center', 'center', 'flex-start']} flexWrap="wrap" {...props}>
-        <Flex py={3} width={1} justifyContent="center">
+      <div className="flex flex-wrap justify-center lg:justify-start" {...props}>
+        <div className="flex w-full justify-center py-3">
           <LoadingGrid />
-        </Flex>
-      </Flex>
+        </div>
+      </div>
     </div>
   );
 };

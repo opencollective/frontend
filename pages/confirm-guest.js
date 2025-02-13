@@ -10,7 +10,6 @@ import { removeGuestTokens } from '../lib/guest-accounts';
 import useLoggedInUser from '../lib/hooks/useLoggedInUser';
 
 import Container from '../components/Container';
-import { Box } from '../components/Grid';
 import { getI18nLink } from '../components/I18nFormatters';
 import Link from '../components/Link';
 import MessageBox from '../components/MessageBox';
@@ -92,9 +91,9 @@ const ConfirmGuestPage = () => {
       >
         {status === STATUS.SUBMITTING && (
           <Fragment>
-            <Box my={3}>
+            <div className="my-3">
               <Email size={42} color={theme.colors.primary[500]} />
-            </Box>
+            </div>
             <MessageBox type="info" isLoading>
               <FormattedMessage id="confirmEmail.validating" defaultMessage="Validating your email address..." />
             </MessageBox>
@@ -103,17 +102,17 @@ const ConfirmGuestPage = () => {
         {status === STATUS.SUCCESS && (
           <Fragment>
             <Container mb={3} pb={3} px={4} textAlign="center" boxShadow="0px 8px 8px -10px rgb(146 146 146 / 40%)">
-              <Box my={3}>
+              <div className="my-3">
                 <Email size={42} color={theme.colors.green[500]} />
-              </Box>
+              </div>
               <strong>
                 <FormattedMessage id="confirmEmail.success" defaultMessage="Your email has been confirmed" />
               </strong>
             </Container>
             <Container textAlign="center" p={2}>
-              <Box my={2}>
+              <div className="my-2">
                 <StyledSpinner size={32} />
-              </Box>
+              </div>
               {data?.confirmGuestAccount?.account && (
                 <P fontSize="13px" lineHeight="18px" textAlign="center">
                   <FormattedMessage id="confirmGuest.redirecting" defaultMessage="Redirecting to your profile..." />
@@ -135,9 +134,9 @@ const ConfirmGuestPage = () => {
         )}
         {status === STATUS.ERROR && (
           <Fragment>
-            <Box my={3}>
+            <div className="my-3">
               <Email size={42} color={theme.colors.red[500]} />
-            </Box>
+            </div>
             <MessageBoxGraphqlError error={error} />
           </Fragment>
         )}

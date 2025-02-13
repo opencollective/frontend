@@ -9,7 +9,6 @@ import { getCountryDisplayName, getFlagEmoji } from '../lib/i18n/countries';
 
 import Avatar from './Avatar';
 import Container from './Container';
-import { Box, Flex } from './Grid';
 import I18nCollectiveTags from './I18nCollectiveTags';
 import LinkCollective from './LinkCollective';
 import StyledCard from './StyledCard';
@@ -195,13 +194,13 @@ const StyledCollectiveCard = ({
               </P>
             )}
 
-            <Flex my={2} alignItems="center">
+            <div className="my-2 flex items-center">
               {collective.location?.country && (
-                <Box mr={1}>
+                <div className="mr-1">
                   {getFlagEmoji(collective.location?.country)}
                   <Span ml={1}></Span>
                   {getCountryDisplayName(intl, collective.location?.country)}
-                </Box>
+                </div>
               )}
               {collective.isFrozen ? (
                 <StyledTag display="inline-block" variant="rounded-right">
@@ -218,7 +217,7 @@ const StyledCollectiveCard = ({
               ) : (
                 tag
               )}
-            </Flex>
+            </div>
           </Container>
           {children}
         </Container>

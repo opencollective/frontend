@@ -9,7 +9,6 @@ import { isSuspiciousUserAgent, RobotsDetector } from '../lib/robots-detector';
 import { isValidRelativeUrl } from '../lib/utils';
 
 import Body from '../components/Body';
-import { Flex } from '../components/Grid';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
 import LoadingGrid from '../components/LoadingGrid';
@@ -132,7 +131,7 @@ class SigninPage extends React.Component {
 
     if (this.state.isRobot && token) {
       return (
-        <Flex flexDirection="column" alignItems="center" px={3} pb={3}>
+        <div className="flex flex-col items-center px-3 pb-3">
           <P fontSize="30px" mb={3}>
             <span role="img" aria-label="Robot Emoji">
               🤖
@@ -145,7 +144,7 @@ class SigninPage extends React.Component {
             />
           </P>
           <Loading />
-        </Flex>
+        </div>
       );
     } else if ((loadingLoggedInUser || this.state.success) && token) {
       return <Loading />;
@@ -203,9 +202,7 @@ class SigninPage extends React.Component {
           showProfileAndChangelogMenu={false}
         />
         <Body>
-          <Flex flexDirection="column" alignItems="center" my={[4, 6]} p={2}>
-            {this.renderContent()}
-          </Flex>
+          <div className="my-4 flex flex-col items-center p-2 md:my-6">{this.renderContent()}</div>
         </Body>
       </div>
     );

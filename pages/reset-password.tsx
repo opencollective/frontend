@@ -10,7 +10,6 @@ import useLoggedInUser from '../lib/hooks/useLoggedInUser';
 import Avatar from '../components/Avatar';
 import Body from '../components/Body';
 import Container from '../components/Container';
-import { Box, Flex } from '../components/Grid';
 import Header from '../components/Header';
 import I18nFormatters, { getI18nLink } from '../components/I18nFormatters';
 import Image from '../components/Image';
@@ -98,16 +97,16 @@ const ResetPasswordPage = ({ token }: { token: string }) => {
         showProfileAndChangelogMenu={false}
       />
       <Body>
-        <Flex flexDirection="column" alignItems="center" my={[4, 6]}>
+        <div className="my-[4, 6] flex flex-col items-center">
           <Card className="w-full max-w-md px-4 py-5">
-            <Flex justifyContent="center">
+            <div className="flex justify-center">
               <Image
                 alt="Open Collective Logo"
                 src="/static/images/oc-logo-watercolor-256.png"
                 height={64}
                 width={64}
               />
-            </Flex>
+            </div>
 
             <h1 className="mt-3 text-center text-2xl font-semibold">
               <FormattedMessage defaultMessage="Reset Password" id="xl27nc" />
@@ -147,20 +146,20 @@ const ResetPasswordPage = ({ token }: { token: string }) => {
                   submitResetPassword();
                 }}
               >
-                <Flex my={4}>
+                <div className="my-4 flex">
                   <Avatar collective={data.loggedInAccount} radius={40} mr={2} />
-                  <Box>
+                  <div>
                     <P color="black.800" fontWeight="500" fontSize="14px" lineHeight="20px">
                       {data.loggedInAccount.name}
                     </P>
                     <P mt="2px" wordBreak="break-all" color="black.700" fontSize="13px">
                       {data.loggedInAccount.email}
                     </P>
-                  </Box>
-                </Flex>
+                  </div>
+                </div>
 
                 <StyledInput
-                  style={{ display: 'none' }}
+                  className="hidden"
                   id="email"
                   readOnly
                   autoComplete="email"
@@ -224,15 +223,15 @@ const ResetPasswordPage = ({ token }: { token: string }) => {
 
                 <PasswordStrengthBar alwaysShow password={password} onChangeScore={score => setPasswordScore(score)} />
 
-                <Flex justifyContent="center" mb="24px" mt="26px">
+                <div className="mb-6 mt-[26px] flex justify-center">
                   <Button disabled={!password} loading={passwordLoading} type="submit" size="default">
                     <FormattedMessage id="actions.continue" defaultMessage="Continue" />
                   </Button>
-                </Flex>
+                </div>
               </Container>
             )}
           </Card>
-        </Flex>
+        </div>
       </Body>
     </React.Fragment>
   );

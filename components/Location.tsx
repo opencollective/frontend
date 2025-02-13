@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { isURL } from 'validator';
 
 import Container from './Container';
-import { Flex } from './Grid';
 import Map from './Map';
 import StyledLink from './StyledLink';
 import { P } from './Text';
@@ -33,13 +32,13 @@ function Location({ location, showTitle = true }: Readonly<LocationProps>) {
   if (name === 'Online') {
     if (address && isURL(address)) {
       return (
-        <Flex flexDirection="column" alignItems="center">
+        <div className="flex flex-col items-center">
           <P textAlign="center">
             <StyledLink openInNewTabNoFollow href={address}>
               {address}
             </StyledLink>
           </P>
-        </Flex>
+        </div>
       );
     } else {
       return (

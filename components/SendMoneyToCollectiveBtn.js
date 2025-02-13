@@ -10,7 +10,6 @@ import { collectiveBalanceFragment } from '../lib/graphql/v1/fragments';
 import { compose } from '../lib/utils';
 
 import { toast } from './ui/useToast';
-import { Flex } from './Grid';
 import StyledButton from './StyledButton';
 
 class SendMoneyToCollectiveBtn extends React.Component {
@@ -104,7 +103,7 @@ class SendMoneyToCollectiveBtn extends React.Component {
     const { locale } = intl;
     return (
       <div className="SendMoneyToCollectiveBtn">
-        <Flex justifyContent="center" mb={1}>
+        <div className="mb-1 flex justify-center">
           {customButton ? (
             customButton({
               onClick: this.props.confirmTransfer || this.onClick,
@@ -139,7 +138,7 @@ class SendMoneyToCollectiveBtn extends React.Component {
               )}
             </StyledButton>
           )}
-        </Flex>
+        </div>
       </div>
     );
   }

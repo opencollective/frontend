@@ -19,7 +19,6 @@ import { NAVBAR_CATEGORIES } from '../components/collective-navbar/constants';
 import { accountNavbarFieldsFragment } from '../components/collective-navbar/fragments';
 import Container from '../components/Container';
 import ErrorPage from '../components/ErrorPage';
-import { Box, Flex } from '../components/Grid';
 import Header from '../components/Header';
 import Link from '../components/Link';
 import Footer from '../components/navigation/Footer';
@@ -188,7 +187,7 @@ export default function UpdatesPage(props: InferGetServerSidePropsType<typeof ge
         />
 
         <div className="mx-auto max-w-[1260px] px-2 py-8 sm:px-4 sm:py-16 md:px-8">
-          <Flex flexWrap="wrap" alignItems="center" pr={2} justifyContent="space-between">
+          <div className="flex flex-wrap items-center justify-between pr-2">
             <Container padding="0.5rem 0" my={4}>
               <H1 fontSize="40px" fontWeight="normal" textAlign="left" mb={2}>
                 <FormattedMessage id="updates" defaultMessage="Updates" />
@@ -207,7 +206,7 @@ export default function UpdatesPage(props: InferGetServerSidePropsType<typeof ge
                 </StyledButton>
               </Link>
             )}
-          </Flex>
+          </div>
           <UpdateFilters
             values={router.query}
             onChange={queryParams =>
@@ -217,7 +216,7 @@ export default function UpdatesPage(props: InferGetServerSidePropsType<typeof ge
               })
             }
           />
-          <Box mt={4} mb={5}>
+          <div className="mb-5 mt-4">
             <Updates
               collective={collective}
               updates={updates}
@@ -234,7 +233,7 @@ export default function UpdatesPage(props: InferGetServerSidePropsType<typeof ge
                 />
               </div>
             )}
-          </Box>
+          </div>
         </div>
       </Body>
 

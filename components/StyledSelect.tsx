@@ -16,7 +16,6 @@ import type { BorderProps, BorderRadiusProps, LayoutProps, SpaceProps, Typograph
 import { layout, space, typography } from 'styled-system';
 
 import Container from './Container';
-import { Flex } from './Grid';
 import SearchIcon from './SearchIcon';
 import StyledHr from './StyledHr';
 import StyledTag from './StyledTag';
@@ -129,7 +128,7 @@ const DropdownSearchIndicator = (props: DropdownIndicatorProps) => {
 
 const GroupHeading = ({ children, ...props }: GroupHeadingProps) => (
   <ReactSelectComponents.GroupHeading {...props}>
-    <Flex justifyContent="space-between" alignItems="center" mr={2}>
+    <div className="mr-2 flex items-center justify-between">
       <P
         fontWeight="600"
         fontSize="9px"
@@ -142,7 +141,7 @@ const GroupHeading = ({ children, ...props }: GroupHeadingProps) => (
         {children}
       </P>
       <StyledHr flex="1" borderStyle="solid" borderColor="black.300" />
-    </Flex>
+    </div>
   </ReactSelectComponents.GroupHeading>
 );
 

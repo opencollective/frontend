@@ -8,7 +8,6 @@ import { isRelativeHref, isTrustedRedirectURL } from '../lib/url-helpers';
 import { isValidRelativeUrl, parseToBoolean } from '../lib/utils';
 
 import Container from '../components/Container';
-import { Flex } from '../components/Grid';
 import Link from '../components/Link';
 import Loading from '../components/Loading';
 import Page from '../components/Page';
@@ -79,7 +78,7 @@ const ExternalRedirectPage = () => {
 
   return (
     <Page noRobots>
-      <Flex justifyContent="center" alignItems="center" py={[4, 5, 6]}>
+      <div className="flex items-center justify-center py-4 sm:py-5 lg:py-6">
         {isReady ? (
           <StyledCard maxWidth={450}>
             <Container p={3}>
@@ -98,7 +97,7 @@ const ExternalRedirectPage = () => {
                 />
               </P>
             </Container>
-            <Container display="flex" justifyContent="flex-end" backgroundColor="black.100" p={1}>
+            <Container className="flex justify-end bg-[#F7F8FA] p-1">
               <a
                 href={query.url}
                 onClick={e => {
@@ -137,7 +136,7 @@ const ExternalRedirectPage = () => {
         ) : (
           <Loading />
         )}
-      </Flex>
+      </div>
     </Page>
   );
 };

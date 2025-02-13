@@ -14,12 +14,10 @@ import { addParentToURLIfMissing, getCollectivePageCanonicalURL } from '../lib/u
 import CollectiveNavbar from '../components/collective-navbar';
 import { NAVBAR_CATEGORIES } from '../components/collective-navbar/constants';
 import { accountNavbarFieldsFragment } from '../components/collective-navbar/fragments';
-import Container from '../components/Container';
 import CommentForm from '../components/conversations/CommentForm';
 import { commentFieldsFragment } from '../components/conversations/graphql';
 import Thread from '../components/conversations/Thread';
 import ErrorPage from '../components/ErrorPage';
-import { Box, Flex } from '../components/Grid';
 import CommentIcon from '../components/icons/CommentIcon';
 import Page from '../components/Page';
 import StyledUpdate from '../components/StyledUpdate';
@@ -193,7 +191,7 @@ export default function UpdatePage(props: InferGetServerSidePropsType<typeof get
         selectedCategory={NAVBAR_CATEGORIES.CONNECT}
       />
 
-      <Container py={4} maxWidth={1260} m="0 auto" px={[0, null, null, 4]}>
+      <div className="mx-auto max-w-[1260px] px-0 py-4 md:px-4">
         <StyledUpdate
           key={update.id}
           collective={account}
@@ -204,9 +202,9 @@ export default function UpdatePage(props: InferGetServerSidePropsType<typeof get
           isReloadingData={queryResult.loading}
         />
         {update.userCanSeeUpdate && (
-          <Box pl={[0, 5]}>
+          <div className="pl-0 md:pl-5">
             {comments.length > 0 && (
-              <Container mb={3} pt={3} maxWidth={700} borderTop="1px solid #eee">
+              <div className="mb-3 max-w-[700px] border-t border-neutral-50 pt-3">
                 <Thread
                   collective={account}
                   hasMore={comments.length < totalCommentsCount}
@@ -215,26 +213,26 @@ export default function UpdatePage(props: InferGetServerSidePropsType<typeof get
                   onCommentDeleted={() => queryResult.refetch()}
                   getClickedComment={setReplyingToComment}
                 />
-              </Container>
+              </div>
             )}
             {update.publishedAt && (
-              <Flex mt="40px" maxWidth={700}>
-                <Box display={['none', null, 'block']} flex="0 0" p={3}>
+              <div className="mt-10 flex max-w-[700px]">
+                <div className="hidden flex-none p-3 md:block">
                   <CommentIcon size={24} color="lightgrey" />
-                </Box>
-                <Box flex="1 1" maxWidth={[null, null, 'calc(100% - 56px)']} p={1}>
+                </div>
+                <div className="flex-1 p-1 md:max-w-[calc(100%-56px)]">
                   <CommentForm
                     id="new-update"
                     replyingToComment={replyingToComment}
                     UpdateId={update.id}
                     onSuccess={() => queryResult.refetch()}
                   />
-                </Box>
-              </Flex>
+                </div>
+              </div>
             )}
-          </Box>
+          </div>
         )}
-      </Container>
+      </div>
     </Page>
   );
 }

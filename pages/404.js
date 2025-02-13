@@ -9,7 +9,7 @@ import Page from '../components/Page';
 export default function Custom404() {
   return (
     <Page data-cy="error-page">
-      <Container py={[5, 6]}>
+      <Container className="py-5 md:py-6">
         <NotFound />
       </Container>
     </Page>

@@ -5,7 +5,6 @@ import { Question } from '@styled-icons/remix-line/Question';
 import { FormattedMessage } from 'react-intl';
 
 import PrivateInfoIcon from './icons/PrivateInfoIcon';
-import { Box, Flex } from './Grid';
 import StyledTooltip from './StyledTooltip';
 import { P, Span } from './Text';
 
@@ -66,11 +65,13 @@ const StyledInputField = ({
     </Span>
   );
 
-  const containerFlexDirection = flexDirection ?? (isCheckbox ? 'row-reverse' : 'column');
-  const containerJustifyContent = justifyContent ?? 'flex-end';
+  const containerFlexDirection = flexDirection ?? (isCheckbox ? 'flex-row-reverse' : 'flex-col');
+  const containerJustifyContent = justifyContent ?? 'justify-end';
+  const containerAlignItems = alignItems ? `items-${alignItems}` : '';
+
   return (
-    <Box data-cy={`InputField-${name || htmlFor || 'unknown'}`} {...props}>
-      <Flex alignItems={alignItems} flexDirection={containerFlexDirection} justifyContent={containerJustifyContent}>
+    <div data-cy={`InputField-${name || htmlFor || 'unknown'}`} {...props}>
+      <div className={`flex ${containerFlexDirection} ${containerJustifyContent} ${containerAlignItems}`}>
         {label && (
           <P
             as="label"
@@ -131,17 +132,17 @@ const StyledInputField = ({
               placeholder,
             })
           : children}
-      </Flex>
+      </div>
       {error && typeof error === 'string' && (
-        <Box pt={2} lineHeight="1em">
+        <div className="pt-2 leading-none">
           <ExclamationCircle color="#E03F6A" size={16} />
           <Span ml={1} color="black.700" fontSize="0.9em" css={{ verticalAlign: 'middle' }}>
             {error}
           </Span>
-        </Box>
+        </div>
       )}
       {hint && hintPosition === 'below' && <div className="mt-1 text-xs font-light text-gray-600">{hint}</div>}
-    </Box>
+    </div>
   );
 };
 
@@ -176,13 +177,24 @@ StyledInputField.propTypes = {
   labelFontSize: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.array]),
   /** Font weight for the label */
   labelFontWeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.array]),
+  /** Color for the label */
   labelColor: PropTypes.string,
   /** Anything here will be passed down to label */
   labelProps: PropTypes.object,
   /** Help text that will appear next to the label (a small question mark with help text shown when hovered) */
   helpText: PropTypes.node,
-  /** All props from `Box` */
-  ...Box.propTypes,
+  /** If true, will hide the (optional) label tag */
+  hideOptionalLabel: PropTypes.bool,
+  /** The indicator to use for required fields ('*' or 'label') */
+  requiredIndicator: PropTypes.oneOf(['*', 'label']),
+  /** The flex direction for the container */
+  flexDirection: PropTypes.string,
+  /** The justify content value for the container */
+  justifyContent: PropTypes.string,
+  /** The align items value for the container */
+  alignItems: PropTypes.string,
+  /** Placeholder text for the input */
+  placeholder: PropTypes.string,
 };
 
 export default StyledInputField;

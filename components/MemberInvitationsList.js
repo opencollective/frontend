@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
-import { Box, Flex } from './Grid';
 import MessageBox from './MessageBox';
 import ReplyToMemberInvitationCard from './ReplyToMemberInvitationCard';
 
@@ -30,17 +29,17 @@ const MemberInvitationsList = ({ invitations, selectedInvitationId }) => {
   }
 
   return (
-    <Flex flexDirection="column" alignItems="center">
+    <div className="flex flex-col items-center">
       {invitations.map(invitation => (
-        <Box key={invitation.id} mb={5}>
+        <div key={invitation.id} className="mb-5">
           <ReplyToMemberInvitationCard
             invitation={invitation}
             isSelected={invitation.id === selectedInvitationId}
             redirectOnAccept={invitations.length === 1}
           />
-        </Box>
+        </div>
       ))}
-    </Flex>
+    </div>
   );
 };
 

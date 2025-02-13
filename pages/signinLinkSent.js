@@ -3,12 +3,10 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { isEmail } from 'validator';
 
-import { Box } from '../components/Grid';
 import { getI18nLink } from '../components/I18nFormatters';
 import Image from '../components/Image';
 import OpenEmailProviderButton from '../components/OpenEmailProviderButton';
 import Page from '../components/Page';
-import { P } from '../components/Text';
 
 class SignInLinkSent extends Component {
   static async getInitialProps({ res, query = {}, router }) {
@@ -33,20 +31,22 @@ class SignInLinkSent extends Component {
       <Page title="Login Link Sent" noRobots showFooter={false}>
         <div className="flex flex-col items-center px-4 pt-8 pb-32 text-center sm:pt-16">
           <Image src="/static/images/sign-in-illustration.png" width={624} height={372} />
-          <P fontSize="32px" lineHeight="40px" fontWeight={700} color="black.900">
+          <div className="text-3xl font-bold leading-[40px] text-foreground">
             <FormattedMessage id="SignIn.LinkSent" defaultMessage="Your magic link is on its way!" />
-          </P>
+          </div>
           {isValidEmail && (
-            <P fontSize="20px" lineHeight="28px" color="black.800" fontWeight={500} mt={4}>
+            <div className="mt-4 text-xl font-medium leading-[28px] text-neutral-700">
               <FormattedMessage
                 defaultMessage="We've sent it to {email}"
                 id="Yh1nOL"
                 values={{ email: <strong>{email}</strong> }}
               />
-            </P>
+            </div>
           )}
-          <OpenEmailProviderButton email={email}>{button => <Box mt={3}>{button}</Box>}</OpenEmailProviderButton>
-          <P color="black.800" fontSize="16px" fontWeight={500} lineHeight="24px" my={4}>
+          <OpenEmailProviderButton email={email}>
+            {button => <div className="mt-3">{button}</div>}
+          </OpenEmailProviderButton>
+          <div className="my-4 text-base font-medium leading-6 text-neutral-700">
             <FormattedMessage
               id="SignIn.SuccessDetails"
               defaultMessage="You’ll be redirected from the link in the email, you can safely close this tab."
@@ -62,7 +62,7 @@ class SignInLinkSent extends Component {
                 }),
               }}
             />
-          </P>
+          </div>
         </div>
       </Page>
     );
