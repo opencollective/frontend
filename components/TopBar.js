@@ -13,11 +13,9 @@ import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 
 import useLoggedInUser from '../lib/hooks/useLoggedInUser';
-import { PREVIEW_FEATURE_KEYS } from '../lib/preview-features';
 import theme from '../lib/theme';
 
 import ChangelogTrigger from './changelog/ChangelogTrigger';
-import DynamicTopBar from './navigation/preview/TopBar';
 import ProfileMenu from './navigation/ProfileMenu';
 import NewTopBar from './navigation/TopBar';
 import Container from './Container';
@@ -81,7 +79,6 @@ const TopBar = ({
   menuItems = { solutions: true, product: true, company: true, docs: true },
   showProfileAndChangelogMenu = true,
   account,
-  navTitle,
 }) => {
   const [showSearchModal, setShowSearchModal] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -99,10 +96,6 @@ const TopBar = ({
     const regex = new RegExp(`^${route}(/.*)?$`);
     return regex.test(router.asPath);
   };
-
-  if (LoggedInUser?.hasPreviewFeatureEnabled(PREVIEW_FEATURE_KEYS.DYNAMIC_TOP_BAR)) {
-    return <DynamicTopBar {...{ account, navTitle }} />;
-  }
 
   const onDashboardRoute = isRouteActive('/dashboard');
   const homeRoutes = [

@@ -9,11 +9,9 @@ import type { TransactionsTableQueryVariables } from '../../../../lib/graphql/ty
 import { DateTimeField } from '../../../../lib/graphql/types/v2/schema';
 import { useDrawer } from '../../../../lib/hooks/useDrawer';
 import useLocalStorage from '../../../../lib/hooks/useLocalStorage';
-import useLoggedInUser from '../../../../lib/hooks/useLoggedInUser';
 import type { useQueryFilterReturnType } from '../../../../lib/hooks/useQueryFilter';
 import { i18nExpenseType } from '../../../../lib/i18n/expense';
 import { i18nTransactionKind } from '../../../../lib/i18n/transaction';
-import { PREVIEW_FEATURE_KEYS } from '../../../../lib/preview-features';
 
 import { AccountHoverCard } from '../../../AccountHoverCard';
 import Avatar from '../../../Avatar';
@@ -269,8 +267,6 @@ export default function TransactionsTable({
   refetchList,
 }: TransactionsTableProps) {
   const [hoveredGroup, setHoveredGroup] = React.useState<string | null>(null);
-  const { LoggedInUser } = useLoggedInUser();
-  const hasDynamicTopBar = LoggedInUser?.hasPreviewFeatureEnabled(PREVIEW_FEATURE_KEYS.DYNAMIC_TOP_BAR);
 
   const defaultColumnVisibility = {
     clearedAt: false,
@@ -304,7 +300,6 @@ export default function TransactionsTable({
         }}
         onHoverRow={row => setHoveredGroup(row?.original?.group ?? null)}
         rowHasIndicator={row => row.original.group === hoveredGroup}
-        fullWidth={hasDynamicTopBar}
         mobileTableView
         columnVisibility={columnVisibility}
         setColumnVisibility={setColumnVisibility}

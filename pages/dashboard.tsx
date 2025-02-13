@@ -1,6 +1,5 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
-import { clsx } from 'clsx';
 import { useRouter } from 'next/router';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -21,8 +20,6 @@ import {
 import { DashboardContext } from '../components/dashboard/DashboardContext';
 import DashboardSection from '../components/dashboard/DashboardSection';
 import { getMenuItems } from '../components/dashboard/Menu';
-import DashboardTopBar from '../components/dashboard/preview/DashboardTopBar';
-import SubMenu from '../components/dashboard/preview/SubMenu';
 import { adminPanelQuery } from '../components/dashboard/queries';
 import AdminPanelSideBar from '../components/dashboard/SideBar';
 import Link from '../components/Link';
@@ -154,13 +151,10 @@ const DashboardPage = () => {
   const account = isRootProfile && isRootUser ? ROOT_PROFILE_ACCOUNT : data?.account;
   const selectedSection = section || getDefaultSectionForAccount(account, LoggedInUser);
 
-  const useDynamicTopBar = LoggedInUser?.hasPreviewFeatureEnabled(PREVIEW_FEATURE_KEYS.DYNAMIC_TOP_BAR);
-
   // Keep track of last visited workspace account and sections
   React.useEffect(() => {
     if (activeSlug && activeSlug !== workspace.slug) {
-      if (LoggedInUser && !useDynamicTopBar) {
-        // this is instead configured as "default" account in NewAccountSwitcher
+      if (LoggedInUser) {
         setWorkspace({ slug: activeSlug });
       }
     }
@@ -187,14 +181,6 @@ const DashboardPage = () => {
   const titleBase = intl.formatMessage({ id: 'Dashboard', defaultMessage: 'Dashboard' });
   const menuItems = account ? getMenuItems({ intl, account, LoggedInUser }) : [];
   const accountIdentifier = account && (account.name || `@${account.slug}`);
-
-  let subMenu = null;
-  const parentMenuItem = menuItems.find(
-    item => 'subMenu' in item && item.subMenu?.find(item => item.section === selectedSection),
-  );
-  if (parentMenuItem && 'subMenu' in parentMenuItem) {
-    subMenu = parentMenuItem.subMenu;
-  }
 
   return (
     <DashboardContext.Provider
@@ -230,7 +216,7 @@ const DashboardPage = () => {
               </MessageBox>
               {!LoggedInUser && <SignInOrJoinFree defaultForm="signin" disableSignup />}
             </div>
-          ) : !useDynamicTopBar ? (
+          ) : (
             <div
               className="flex min-h-[600px] flex-col justify-center gap-6 px-4 py-6 md:flex-row lg:gap-12 lg:py-8 xl:px-6"
               data-cy="admin-panel-container"
@@ -243,43 +229,6 @@ const DashboardPage = () => {
                 <TwoFactorAuthRequiredMessage className="lg:mt-16" />
               ) : (
                 <div className="max-w-(--breakpoint-xl) min-w-0 flex-1">
-                  <DashboardSection
-                    section={selectedSection}
-                    isLoading={isLoading}
-                    account={account}
-                    subpath={subpath}
-                  />
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className={'flex min-h-[600px] flex-col items-stretch gap-6 pb-10'} data-cy="admin-panel-container">
-              <DashboardTopBar isLoading={isLoading} account={account} menuItems={menuItems} />
-
-              {LoggedInUser && require2FAForAdmins(account) && !LoggedInUser.hasTwoFactorAuth ? (
-                <TwoFactorAuthRequiredMessage className="lg:mt-16" />
-              ) : (
-                <div
-                  className={clsx(
-                    'mx-auto grid w-full max-w-(--breakpoint-2xl) grid-cols-1 justify-center px-3 xl:px-6',
-                    ['host-transactions', 'transactions', 'overview'].includes(selectedSection)
-                      ? 'lg:grid-cols-[minmax(0,1fr)_minmax(0,1536px)_minmax(0,1fr)]'
-                      : subMenu
-                        ? 'lg:grid-cols-[minmax(200px,1fr)_minmax(0,1024px)_minmax(0,1fr)]'
-                        : 'lg:grid-cols-[minmax(0,1fr)_minmax(0,1024px)_minmax(0,1fr)]',
-                  )}
-                >
-                  {subMenu ? (
-                    <SubMenu
-                      className="mb-4 lg:mr-4"
-                      subMenu={subMenu}
-                      account={account}
-                      selectedSection={selectedSection}
-                    />
-                  ) : (
-                    <div />
-                  )}
-
                   <DashboardSection
                     section={selectedSection}
                     isLoading={isLoading}
