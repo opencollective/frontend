@@ -58,7 +58,7 @@ export const previewFeatures: PreviewFeature[] = [
     title: 'New expense submission flow',
     description: 'Improved expense submission flow in Dashboard',
     alwaysEnableInDev: true,
-    publicBeta: false,
+    publicBeta: true,
     closedBetaAccessFor: [...PLATFORM_ACCOUNTS, ...FIRST_PARTY_HOSTS],
   },
   {

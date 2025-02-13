@@ -125,8 +125,9 @@ function Expense(props) {
   const intl = useIntl();
   const router = useRouter();
   const isNewExpenseSubmissionFlow =
-    (LoggedInUser && LoggedInUser.hasPreviewFeatureEnabled(PREVIEW_FEATURE_KEYS.NEW_EXPENSE_FLOW)) ||
-    router.query.newExpenseFlowEnabled;
+    [expenseTypes.INVOICE, expenseTypes.RECEIPT].includes(data?.expense?.type) &&
+    ((LoggedInUser && LoggedInUser.hasPreviewFeatureEnabled(PREVIEW_FEATURE_KEYS.NEW_EXPENSE_FLOW)) ||
+      router.query.newExpenseFlowEnabled);
 
   const [isSubmissionFlowOpen, setIsSubmissionFlowOpen] = React.useState(false);
 

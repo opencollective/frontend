@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import type { ExpensePageExpenseFieldsFragment } from '../../../lib/graphql/types/v2/graphql';
-import { ExpenseStatus } from '../../../lib/graphql/types/v2/schema';
+import { ExpenseStatus, ExpenseType } from '../../../lib/graphql/types/v2/schema';
 import useClipboard from '../../../lib/hooks/useClipboard';
 import useLoggedInUser from '../../../lib/hooks/useLoggedInUser';
 import { i18nExpenseType } from '../../../lib/i18n/expense';
@@ -47,6 +47,11 @@ export function SubmittedExpenseListItem(props: SubmittedExpenseListItemProps) {
   const router = useRouter();
   const hasNewSubmitExpenseFlow =
     LoggedInUser?.hasPreviewFeatureEnabled(PREVIEW_FEATURE_KEYS.NEW_EXPENSE_FLOW) || router.query.newExpenseFlowEnabled;
+
+  const canDuplicateExpense =
+    hasNewSubmitExpenseFlow &&
+    [ExpenseType.INVOICE, ExpenseType.RECEIPT].includes(props.expense.type) &&
+    props.expense.status !== ExpenseStatus.DRAFT;
 
   const clipboard = useClipboard();
   const intl = useIntl();
@@ -177,7 +182,7 @@ export function SubmittedExpenseListItem(props: SubmittedExpenseListItemProps) {
                 <FormattedMessage id="CopyLink" defaultMessage="Copy link" />
               )}
             </DropdownMenuItem>
-            {props.expense.status !== ExpenseStatus.DRAFT && hasNewSubmitExpenseFlow && (
+            {canDuplicateExpense && (
               <DropdownMenuItem onClick={onDuplicateClick}>
                 <Copy className="h-4 w-4" />
                 <FormattedMessage defaultMessage="Duplicate Expense" id="MXaO+R" />
