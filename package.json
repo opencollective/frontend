@@ -109,6 +109,7 @@
     "react": "18.3.1",
     "react-animate-height": "3.2.3",
     "react-apexcharts": "1.4.1",
+    "react-currency-input-field": "4.0.0-alpha.2",
     "react-day-picker": "9.4.0",
     "react-dom": "18.3.1",
     "react-dropzone": "14.2.3",

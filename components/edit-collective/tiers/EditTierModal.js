@@ -260,7 +260,6 @@ function FormFields({ collective, values, hideTypeSelect }) {
                     : null,
                 )
               }
-              onBlur={() => form.setFieldTouched(field.name, true)}
             />
           )}
         </StyledInputFormikField>
@@ -310,7 +309,6 @@ function FormFields({ collective, values, hideTypeSelect }) {
                     : null,
                 )
               }
-              onBlur={() => form.setFieldTouched(field.name, true)}
             />
           )}
         </StyledInputFormikField>
@@ -341,7 +339,6 @@ function FormFields({ collective, values, hideTypeSelect }) {
                     : null,
                 )
               }
-              onBlur={() => form.setFieldTouched(field.name, true)}
             />
           )}
         </StyledInputFormikField>
@@ -411,7 +408,6 @@ function FormFields({ collective, values, hideTypeSelect }) {
                   : null,
               )
             }
-            onBlur={() => form.setFieldTouched(field.name, true)}
           />
         )}
       </StyledInputFormikField>

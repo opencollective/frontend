@@ -149,34 +149,19 @@ const StepDetails = ({ onChange, stepDetails, collective, tier, showPlatformTip,
             }}
           />
           {isOtherAmountSelected && (
-            <Flex justifyContent="space-between" alignItems="center" mt={2}>
+            <Flex justifyContent="space-between" alignItems="center" mt={2} gap="8px" flexDirection={['column', 'row']}>
               <StyledInputAmount
                 name="custom-amount"
-                type="number"
                 currency={currency}
                 value={stepDetails?.amount}
                 width={1}
                 min={minAmount}
                 currencyDisplay="full"
                 prependProps={{ color: 'black.500' }}
+                className="sm:max-w-[50%]"
                 required
-                onChange={(value, event) => {
-                  // Increase/Decrease the amount by $0.5 instead of $0.01 when using the arrows
-                  // inputEvent.inputType is `insertReplacementText` when the value is changed using the arrows
-                  if (event.nativeEvent.inputType === 'insertReplacementText') {
-                    const previousValue = stepDetails?.amount;
-                    const isTopArrowClicked = value - previousValue === 1;
-                    const isBottomArrowClicked = value - previousValue === -1;
-                    // We use value in cents, 1 cent is already increased/decreased by the input field itself when arrow was clicked
-                    // so we need to increase/decrease the value by 49 cents to get the desired increament/decreament of $0.5
-                    const valueChange = 49;
-
-                    if (isTopArrowClicked) {
-                      value = Math.round((value + valueChange) / 50) * 50;
-                    } else if (isBottomArrowClicked) {
-                      value = Math.round((value - valueChange) / 50) * 50;
-                    }
-                  }
+                step={0.5}
+                onChange={value => {
                   dispatchChange('amount', value);
                 }}
               />

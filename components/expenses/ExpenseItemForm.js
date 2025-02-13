@@ -510,7 +510,6 @@ const ExpenseItemForm = ({
                           exchangeRate={field.value?.exchangeRate}
                           minFxRate={referenceExchangeRate?.value * (1 - FX_RATE_ERROR_THRESHOLD) || undefined}
                           maxFxRate={referenceExchangeRate?.value * (1 + FX_RATE_ERROR_THRESHOLD) || undefined}
-                          showErrorIfEmpty={false} // Validation is already done in `ExpenseForm`
                           onExchangeRateChange={exchangeRate => {
                             setFieldValue(field.name, {
                               ...field.value,

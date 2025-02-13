@@ -3,14 +3,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { getEmojiByCurrencyCode } from 'country-currency-emoji-flags';
 import { clamp, isNil, isUndefined, round } from 'lodash';
+import { CurrencyInput } from 'react-currency-input-field';
+import { useIntl } from 'react-intl';
 
 import { Currency } from '../lib/constants/currency';
-import { floatAmountToCents, getCurrencySymbol, getDefaultCurrencyPrecision } from '../lib/currency-utils';
+import {
+  centsAmountToFloat,
+  floatAmountToCents,
+  getCurrencySymbol,
+  getDefaultCurrencyPrecision,
+} from '../lib/currency-utils';
 import { cn } from '../lib/utils';
 
 import { Separator } from './ui/Separator';
 import { StyledCurrencyPicker } from './StyledCurrencyPicker';
-import StyledInput from './StyledInput';
 import StyledSpinner from './StyledSpinner';
 
 const formatCurrencyName = (currency, currencyDisplay) => {
@@ -21,34 +27,6 @@ const formatCurrencyName = (currency, currencyDisplay) => {
   } else {
     return `${getCurrencySymbol(currency)} ${currency}`;
   }
-};
-
-const parseValueFromEvent = (e, precision, ignoreComma = false) => {
-  if (e.target.value === '') {
-    return null;
-  } else {
-    const parsedNumber = parseFloat(ignoreComma ? e.target.value.replace(',', '') : e.target.value);
-    return isNaN(parsedNumber) ? NaN : parsedNumber.toFixed(precision);
-  }
-};
-
-/** Formats value is valid, fallbacks on rawValue otherwise */
-const getValue = (value, rawValue, isEmpty) => {
-  if (isEmpty) {
-    return '';
-  }
-
-  return isNaN(value) || value === null ? rawValue : value / 100;
-};
-
-const getError = (curVal, minAmount, required) => {
-  return Boolean((required && isNil(curVal)) || (minAmount && curVal < minAmount));
-};
-
-/** Prevent changing the value when scrolling on the input */
-const ignoreOnWheel = e => {
-  e.preventDefault();
-  e.target.blur();
 };
 
 /** Returns the minimum width for an amount input, auto-adjusting to the number of digits */
@@ -68,13 +46,15 @@ const useAmountInputMinWidth = (value, max = 1000000000) => {
 };
 
 const ConvertedAmountInput = ({ inputId, exchangeRate, onChange, baseAmount, minFxRate, maxFxRate }) => {
+  const intl = useIntl();
   const precision = getDefaultCurrencyPrecision(exchangeRate.toCurrency);
   const targetAmount = round((baseAmount || 0) * exchangeRate.value, precision);
-  const [isEditing, setEditing] = React.useState(false);
-  const [rawValue, setRawValue] = React.useState(targetAmount / 100 || '');
-  const minWidth = useAmountInputMinWidth(targetAmount / 100);
-  const value = getValue(targetAmount, rawValue, false);
   const isBaseAmountInvalid = isNaN(baseAmount) || isNil(baseAmount);
+  const [rawValue, setRawValue] = React.useState(centsAmountToFloat(targetAmount) || '');
+  const minWidth = useAmountInputMinWidth(targetAmount / 100);
+  const intlConfig = React.useMemo(() => {
+    return { locale: intl.locale, currency: exchangeRate.toCurrency };
+  }, [intl, exchangeRate.toCurrency]);
 
   const getLimitAmountFromFxRate = fxRate => {
     return round(((baseAmount || 0) * fxRate) / 100.0, precision);
@@ -83,29 +63,35 @@ const ConvertedAmountInput = ({ inputId, exchangeRate, onChange, baseAmount, min
   return (
     <div className="flex flex-auto px-2 text-sm whitespace-nowrap text-neutral-500">
       <span className="mr-1 align-middle">= {exchangeRate.toCurrency} </span>
-      <input
+      <CurrencyInput
         className="w-full flex-auto [appearance:textfield] rounded px-[2px] focus:text-neutral-800 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+        allowDecimals={precision !== 0}
+        decimalScale={precision === 0 ? undefined : precision} // The `undefined` thingy can be removed once https://github.com/cchanxzy/react-currency-input-field/pull/385 is resolved
+        decimalsLimit={precision}
+        prefix="​" // Use a zero-width space, see https://github.com/cchanxzy/react-currency-input-field/issues/222
+        intlConfig={intlConfig}
         style={{ minWidth }}
         name={inputId}
         id={inputId}
-        type="number"
-        inputMode="decimal"
         step={1 / 10 ** precision} // Precision=2 -> 0.01, Precision=0 -> 1
         min={minFxRate ? getLimitAmountFromFxRate(minFxRate) : 1 / 10 ** precision}
-        max={maxFxRate ? getLimitAmountFromFxRate(maxFxRate) : undefined}
-        value={isBaseAmountInvalid ? '' : isEditing ? value : value.toFixed(precision)}
-        onWheel={ignoreOnWheel}
+        max={maxFxRate ? getLimitAmountFromFxRate(maxFxRate) : Number.MAX_SAFE_INTEGER / 100}
+        value={
+          isBaseAmountInvalid
+            ? ''
+            : typeof rawValue === 'string' && rawValue.match(/[,.]$/)
+              ? rawValue
+              : centsAmountToFloat(targetAmount)
+        }
         required
         placeholder={!precision ? '--' : `--.${'-'.repeat(precision)}`}
         disabled={isBaseAmountInvalid}
-        onChange={e => {
-          setEditing(true);
-          setRawValue(e.target.value);
-          const convertedAmount = parseFloat(e.target.value);
-          if (!convertedAmount) {
+        onValueChange={(_strValue, _formattedValue, values) => {
+          setRawValue(values.value);
+          if (!values.float) {
             onChange({ ...exchangeRate, value: null });
           } else {
-            const newFxRate = round((convertedAmount * 100) / (baseAmount || 1), 8);
+            const newFxRate = round((values.float * 100) / (baseAmount || 1), 8);
             onChange({
               ...exchangeRate,
               value: newFxRate,
@@ -114,9 +100,6 @@ const ConvertedAmountInput = ({ inputId, exchangeRate, onChange, baseAmount, min
               date: null,
             });
           }
-        }}
-        onBlur={() => {
-          setEditing(false);
         }}
       />
       <span className="ml-1">{getEmojiByCurrencyCode(exchangeRate.toCurrency)}</span>
@@ -158,17 +141,19 @@ const CURRENCY_PICKER_STYLES = {
  * An input for amount inputs. Accepts all props from [StyledInputGroup](/#!/StyledInputGroup).
  */
 const StyledInputAmount = ({
+  id = 'amount',
   currency,
   currencyDisplay = 'SYMBOL',
   name = 'amount',
   min = 0,
-  max = 100000000000,
+  max = Number.MAX_SAFE_INTEGER / 100,
+  required = false,
+  disabled = false,
   precision = getDefaultCurrencyPrecision(currency),
+  step = 1 / 10 ** precision,
   defaultValue = undefined,
   value,
-  onBlur = undefined,
   onChange,
-  isEmpty = false,
   hasCurrencyPicker = false,
   onCurrencyChange = undefined,
   availableCurrencies = Currency,
@@ -177,43 +162,29 @@ const StyledInputAmount = ({
   onExchangeRateChange = undefined,
   minFxRate = undefined,
   maxFxRate = undefined,
-  showErrorIfEmpty = true,
   className = null,
   suffix = null,
-  ...props
+  error = false,
 }) => {
-  const [rawValue, setRawValue] = React.useState(value || defaultValue || '');
-  const isControlled = !isUndefined(value);
-  const curValue = isControlled ? getValue(value, rawValue, isEmpty) : undefined;
+  const intl = useIntl();
+  const [rawValue, setRawValue] = React.useState(
+    () => centsAmountToFloat(value) || centsAmountToFloat(defaultValue) || '',
+  );
   const minAmount = precision !== 0 ? min / 10 ** precision : min / 100;
-  const disabled = props.disabled || loadingExchangeRate;
   const canUseExchangeRate = Boolean(!loadingExchangeRate && exchangeRate && exchangeRate.fromCurrency === currency);
-  const minWidth = useAmountInputMinWidth(curValue, max);
+  const minWidth = useAmountInputMinWidth(value, max);
 
-  const dispatchValue = (e, parsedValue) => {
-    if (isControlled) {
-      setRawValue(e.target.value);
-    }
-    if (onChange) {
-      const valueWithIgnoredComma = parseValueFromEvent(e, precision, true);
-      if (parsedValue === null || isNaN(parsedValue)) {
-        onChange(parsedValue, e);
-      } else if (!e.target.checkValidity() || parsedValue !== valueWithIgnoredComma) {
-        onChange(isNaN(e.target.value) ? NaN : null, e);
-      } else {
-        onChange(floatAmountToCents(parsedValue), e);
-      }
-    }
-  };
+  const intlConfig = React.useMemo(() => {
+    return { locale: intl.locale, currency: currency };
+  }, [intl, currency]);
 
+  const roundedMaxAmount = Math.floor(centsAmountToFloat(max));
   return (
     <div
       className={cn(
         'flex flex-wrap items-center overflow-hidden rounded border border-neutral-200 focus-within:border-blue-500 focus-within:bg-blue-100 hover:border-blue-300',
         className,
-        {
-          'border-red-500': props.error,
-        },
+        { 'border-red-500': error },
       )}
     >
       <div className="flex flex-auto basis-1/2">
@@ -224,69 +195,64 @@ const StyledInputAmount = ({
         ) : (
           <div className="bg-neutral-50 text-neutral-800">
             <StyledCurrencyPicker
-              data-cy={`${props.id}-currency-picker`}
-              inputId={`${props.id}-currency-picker`}
+              data-cy={`${id}-currency-picker`}
+              inputId={`${id}-currency-picker`}
               onChange={onCurrencyChange}
               value={currency}
               availableCurrencies={availableCurrencies}
-              disabled={disabled}
+              disabled={disabled || loadingExchangeRate}
               minWidth="95px"
               styles={CURRENCY_PICKER_STYLES}
             />
           </div>
         )}
-        <StyledInput
-          {...props}
-          disabled={disabled}
-          width="100%"
-          type="number"
-          flex="auto"
-          inputMode="decimal"
-          step={1 / 10 ** precision}
-          alignSelf="stretch"
+        <CurrencyInput
+          allowDecimals={precision !== 0}
+          decimalScale={precision === 0 ? undefined : precision} // The `undefined` thingy can be removed once https://github.com/cchanxzy/react-currency-input-field/pull/385 is resolved
+          decimalsLimit={precision}
+          disabled={disabled || loadingExchangeRate}
+          className={cn(
+            'w-full flex-auto self-stretch rounded-none pl-2 outline-0',
+            canUseExchangeRate ? 'pr-1' : 'pr-2',
+          )}
+          step={step ?? 1 / 10 ** precision}
           style={{ minWidth }}
+          required={required}
           name={name}
           min={minAmount}
-          max={max / 100}
-          error={props.error || (showErrorIfEmpty && getError(curValue, minAmount, props.required))}
-          defaultValue={isUndefined(defaultValue) ? undefined : defaultValue / 100}
-          value={curValue}
-          hideSpinners={canUseExchangeRate}
-          borderRadius={null}
-          px={null}
-          pr={canUseExchangeRate ? 1 : 2}
-          pl={2}
-          bare
-          onWheel={ignoreOnWheel}
-          onChange={e => {
-            e.stopPropagation();
-            dispatchValue(e, parseValueFromEvent(e, precision));
-          }}
-          onBlur={e => {
-            // Clean number if valid (ie. 41.1 -> 41.10)
-            const parsedNumber = parseValueFromEvent(e, precision);
-            const valueWithIgnoredComma = parseValueFromEvent(e, precision, true);
-            if (
-              e.target.checkValidity() &&
-              !(typeof parsedNumber === 'number' && isNaN(parsedNumber)) &&
-              parsedNumber !== null &&
-              valueWithIgnoredComma === parsedNumber
-            ) {
-              e.target.value = parsedNumber.toString();
-              dispatchValue(e, parsedNumber);
+          max={roundedMaxAmount}
+          maxLength={roundedMaxAmount.toString().length}
+          prefix="​" // Use a zero-width space, see https://github.com/cchanxzy/react-currency-input-field/issues/222
+          intlConfig={intlConfig}
+          defaultValue={isUndefined(defaultValue) ? undefined : centsAmountToFloat(defaultValue)}
+          value={typeof rawValue === 'string' && rawValue.match(/[,.]$/) ? rawValue : centsAmountToFloat(value)} // Fallback to rawValue if it's an unterminated string (ending with a separator)
+          onKeyDown={e => {
+            // Increase/Decrease the amount by a custom non-round  instead of $0.01 when using the arrows
+            // This functions is called AFTER
+            if ((e.key === 'ArrowUp' || e.key === 'ArrowDown') && step < 1 && step !== 1 / 10 ** precision) {
+              // We use value in cents, 1 cent is already increased/decreased by the input field itself when arrow was clicked
+              // so we need to increase/decrease the value by 49 cents to get the desired increment/decrement of $0.5
+              if (e.key === 'ArrowUp') {
+                onChange(Math.round((value + 49) / 50) * 50);
+              } else if (e.key === 'ArrowDown') {
+                onChange(Math.round((value - 49) / 50) * 50);
+              }
             }
-
-            if (onBlur) {
-              onBlur(e);
+          }}
+          onValueChange={(_strValue, _formattedValue, values) => {
+            console.log('values', values);
+            setRawValue(values.value);
+            if (onChange) {
+              onChange(floatAmountToCents(values.float));
             }
           }}
         />
       </div>
       {canUseExchangeRate && (
-        <div className="flex h-[38px] flex-auto basis-1/2 items-center" data-cy={`${props.id}-converted`}>
+        <div className="flex h-[38px] flex-auto basis-1/2 items-center" data-cy={`${id}-converted`}>
           <Separator orientation="vertical" className="h-6" />
           <ConvertedAmountInput
-            inputId={`${props.id}-converted-input`}
+            inputId={`${id}-converted-input`}
             exchangeRate={exchangeRate}
             onChange={onExchangeRateChange}
             baseAmount={value}
