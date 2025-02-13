@@ -82,7 +82,12 @@ export function SubmitExpenseFlow(props: SubmitExpenseFlowProps) {
       }
     `,
     {
-      context: API_V2_CONTEXT,
+      context: {
+        ...API_V2_CONTEXT,
+        headers: {
+          'x-is-new-expense-flow': 'true',
+        },
+      },
     },
   );
 
@@ -102,7 +107,12 @@ export function SubmitExpenseFlow(props: SubmitExpenseFlowProps) {
       }
     `,
     {
-      context: API_V2_CONTEXT,
+      context: {
+        ...API_V2_CONTEXT,
+        headers: {
+          'x-is-new-expense-flow': 'true',
+        },
+      },
     },
   );
 
@@ -119,7 +129,12 @@ export function SubmitExpenseFlow(props: SubmitExpenseFlowProps) {
       }
     `,
     {
-      context: API_V2_CONTEXT,
+      context: {
+        ...API_V2_CONTEXT,
+        headers: {
+          'x-is-new-expense-flow': 'true',
+        },
+      },
     },
   );
 
