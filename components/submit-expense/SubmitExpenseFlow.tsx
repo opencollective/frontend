@@ -152,11 +152,13 @@ export function SubmitExpenseFlow(props: SubmitExpenseFlowProps) {
 
         const attachedFiles = values.additionalAttachments.map(a => ({
           url: typeof a === 'string' ? a : a?.url,
+          isInvoice: false,
         }));
 
         if (values.hasInvoiceOption === YesNoOption.YES && values.expenseTypeOption === ExpenseType.INVOICE) {
           attachedFiles.push({
             url: typeof values.invoiceFile === 'string' ? values.invoiceFile : values.invoiceFile?.url,
+            isInvoice: true,
           });
         }
 

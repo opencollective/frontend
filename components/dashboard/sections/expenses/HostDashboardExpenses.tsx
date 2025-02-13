@@ -307,11 +307,11 @@ const HostExpenses = ({ accountSlug: hostSlug }: DashboardSectionProps) => {
             }}
             useDrawer
             openExpenseLegacyId={Number(router.query.openExpenseId)}
-            setOpenExpenseLegacyId={legacyId => {
+            setOpenExpenseLegacyId={(legacyId, attachmentUrl) => {
               router.push(
                 {
                   pathname: pageRoute,
-                  query: getQueryParams({ ...query, openExpenseId: legacyId }),
+                  query: getQueryParams({ ...query, openExpenseId: legacyId, attachmentUrl }),
                 },
                 undefined,
                 { shallow: true },

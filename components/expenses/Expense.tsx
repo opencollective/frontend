@@ -146,7 +146,7 @@ function Expense(props) {
     createdUser: null,
     showFilesViewerModal: false,
   });
-  const [openUrl, setOpenUrl] = useState(null);
+  const [openUrl, setOpenUrl] = useState(router.query.attachmentUrl as string);
   const [replyingToComment, setReplyingToComment] = useState(null);
   const [hasConfirmedOCR, setConfirmedOCR] = useState(false);
   const hasItemsWithOCR = Boolean(state.editedExpense?.items?.some(itemHasOCR));
