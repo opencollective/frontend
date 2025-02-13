@@ -909,6 +909,11 @@ interface Account {
     isActive: Boolean
     accountType: [AccountType]
     searchTerm: String
+
+    """
+    Order of the results. Defaults to createdAt DESC.
+    """
+    orderBy: OrderByInput! = { field: CREATED_AT, direction: DESC }
   ): AccountCollection!
 
   """
@@ -3430,6 +3435,11 @@ type Host implements Account & AccountWithContributions {
     isActive: Boolean
     accountType: [AccountType]
     searchTerm: String
+
+    """
+    Order of the results. Defaults to createdAt DESC.
+    """
+    orderBy: OrderByInput! = { field: CREATED_AT, direction: DESC }
   ): AccountCollection!
 
   """
@@ -4431,6 +4441,16 @@ enum OrderByFieldType {
   MEMBER_COUNT
   TOTAL_CONTRIBUTED
   NAME
+
+  """
+  Order by start date
+  """
+  STARTS_AT
+
+  """
+  Order by end date
+  """
+  ENDS_AT
 }
 
 """
@@ -7356,6 +7376,11 @@ type ExpenseAttachedFile {
   url: URL
 
   """
+  If the file was uploaded as an invoice
+  """
+  isInvoice: Boolean!
+
+  """
   The file info associated with this item (if any)
   """
   info: FileInfo
@@ -8655,6 +8680,11 @@ type Bot implements Account {
     isActive: Boolean
     accountType: [AccountType]
     searchTerm: String
+
+    """
+    Order of the results. Defaults to createdAt DESC.
+    """
+    orderBy: OrderByInput! = { field: CREATED_AT, direction: DESC }
   ): AccountCollection!
 
   """
@@ -9528,6 +9558,11 @@ type Collective implements Account & AccountWithHost & AccountWithContributions 
     isActive: Boolean
     accountType: [AccountType]
     searchTerm: String
+
+    """
+    Order of the results. Defaults to createdAt DESC.
+    """
+    orderBy: OrderByInput! = { field: CREATED_AT, direction: DESC }
   ): AccountCollection!
 
   """
@@ -10950,6 +10985,11 @@ type Event implements Account & AccountWithHost & AccountWithContributions & Acc
     isActive: Boolean
     accountType: [AccountType]
     searchTerm: String
+
+    """
+    Order of the results. Defaults to createdAt DESC.
+    """
+    orderBy: OrderByInput! = { field: CREATED_AT, direction: DESC }
   ): AccountCollection!
 
   """
@@ -12090,6 +12130,11 @@ type Individual implements Account {
     isActive: Boolean
     accountType: [AccountType]
     searchTerm: String
+
+    """
+    Order of the results. Defaults to createdAt DESC.
+    """
+    orderBy: OrderByInput! = { field: CREATED_AT, direction: DESC }
   ): AccountCollection!
 
   """
@@ -12378,7 +12423,7 @@ type ContributorProfile {
     inCollectiveCurrency: Boolean = false
 
     """
-    The date since when to calculate the total
+    The date since when to calculate the total. Defaults to the start of the current year.
     """
     since: DateTime
   ): Amount
@@ -13200,6 +13245,11 @@ type Organization implements Account & AccountWithContributions {
     isActive: Boolean
     accountType: [AccountType]
     searchTerm: String
+
+    """
+    Order of the results. Defaults to createdAt DESC.
+    """
+    orderBy: OrderByInput! = { field: CREATED_AT, direction: DESC }
   ): AccountCollection!
 
   """
@@ -14188,6 +14238,11 @@ type Vendor implements Account & AccountWithContributions {
     isActive: Boolean
     accountType: [AccountType]
     searchTerm: String
+
+    """
+    Order of the results. Defaults to createdAt DESC.
+    """
+    orderBy: OrderByInput! = { field: CREATED_AT, direction: DESC }
   ): AccountCollection!
 
   """
@@ -17819,6 +17874,11 @@ type Fund implements Account & AccountWithHost & AccountWithContributions {
     isActive: Boolean
     accountType: [AccountType]
     searchTerm: String
+
+    """
+    Order of the results. Defaults to createdAt DESC.
+    """
+    orderBy: OrderByInput! = { field: CREATED_AT, direction: DESC }
   ): AccountCollection!
 
   """
@@ -18839,6 +18899,11 @@ type Project implements Account & AccountWithHost & AccountWithContributions & A
     isActive: Boolean
     accountType: [AccountType]
     searchTerm: String
+
+    """
+    Order of the results. Defaults to createdAt DESC.
+    """
+    orderBy: OrderByInput! = { field: CREATED_AT, direction: DESC }
   ): AccountCollection!
 
   """
@@ -21998,6 +22063,11 @@ input ExpenseAttachedFileInput {
   URL of the file
   """
   url: URL!
+
+  """
+  Is the attached file an invoice?
+  """
+  isInvoice: Boolean! = false
 }
 
 """

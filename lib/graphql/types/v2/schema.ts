@@ -174,6 +174,7 @@ export type AccountChildrenAccountsArgs = {
   isActive?: InputMaybe<Scalars['Boolean']['input']>;
   limit?: Scalars['Int']['input'];
   offset?: Scalars['Int']['input'];
+  orderBy?: OrderByInput;
   searchTerm?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -1562,6 +1563,7 @@ export type BotChildrenAccountsArgs = {
   isActive?: InputMaybe<Scalars['Boolean']['input']>;
   limit?: Scalars['Int']['input'];
   offset?: Scalars['Int']['input'];
+  orderBy?: OrderByInput;
   searchTerm?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -2065,6 +2067,7 @@ export type CollectiveChildrenAccountsArgs = {
   isActive?: InputMaybe<Scalars['Boolean']['input']>;
   limit?: Scalars['Int']['input'];
   offset?: Scalars['Int']['input'];
+  orderBy?: OrderByInput;
   searchTerm?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -4056,6 +4059,7 @@ export type EventChildrenAccountsArgs = {
   isActive?: InputMaybe<Scalars['Boolean']['input']>;
   limit?: Scalars['Int']['input'];
   offset?: Scalars['Int']['input'];
+  orderBy?: OrderByInput;
   searchTerm?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -4544,6 +4548,8 @@ export type ExpenseAttachedFile = {
   id: Scalars['String']['output'];
   /** The file info associated with this item (if any) */
   info?: Maybe<FileInfo>;
+  /** If the file was uploaded as an invoice */
+  isInvoice: Scalars['Boolean']['output'];
   /**
    * The original filename
    * @deprecated 2023-01-23: We're moving this field to "file.name"
@@ -4555,6 +4561,8 @@ export type ExpenseAttachedFile = {
 export type ExpenseAttachedFileInput = {
   /** ID of the file */
   id?: InputMaybe<Scalars['String']['input']>;
+  /** Is the attached file an invoice? */
+  isInvoice?: Scalars['Boolean']['input'];
   /**
    * Original filename
    * @deprecated 2023-02-02: This must now be provided when uploading the file. This parameter will be ignored.
@@ -5242,6 +5250,7 @@ export type FundChildrenAccountsArgs = {
   isActive?: InputMaybe<Scalars['Boolean']['input']>;
   limit?: Scalars['Int']['input'];
   offset?: Scalars['Int']['input'];
+  orderBy?: OrderByInput;
   searchTerm?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -5834,6 +5843,7 @@ export type HostChildrenAccountsArgs = {
   isActive?: InputMaybe<Scalars['Boolean']['input']>;
   limit?: Scalars['Int']['input'];
   offset?: Scalars['Int']['input'];
+  orderBy?: OrderByInput;
   searchTerm?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -6750,6 +6760,7 @@ export type IndividualChildrenAccountsArgs = {
   isActive?: InputMaybe<Scalars['Boolean']['input']>;
   limit?: Scalars['Int']['input'];
   offset?: Scalars['Int']['input'];
+  orderBy?: OrderByInput;
   searchTerm?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -8727,12 +8738,16 @@ export enum OrderByFieldType {
   ACTIVITY = 'ACTIVITY',
   BALANCE = 'BALANCE',
   CREATED_AT = 'CREATED_AT',
+  /** Order by end date */
+  ENDS_AT = 'ENDS_AT',
   HOSTED_COLLECTIVES_COUNT = 'HOSTED_COLLECTIVES_COUNT',
   HOST_RANK = 'HOST_RANK',
   LAST_CHARGED_AT = 'LAST_CHARGED_AT',
   MEMBER_COUNT = 'MEMBER_COUNT',
   NAME = 'NAME',
   RANK = 'RANK',
+  /** Order by start date */
+  STARTS_AT = 'STARTS_AT',
   TOTAL_CONTRIBUTED = 'TOTAL_CONTRIBUTED'
 }
 
@@ -9095,6 +9110,7 @@ export type OrganizationChildrenAccountsArgs = {
   isActive?: InputMaybe<Scalars['Boolean']['input']>;
   limit?: Scalars['Int']['input'];
   offset?: Scalars['Int']['input'];
+  orderBy?: OrderByInput;
   searchTerm?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -10138,6 +10154,7 @@ export type ProjectChildrenAccountsArgs = {
   isActive?: InputMaybe<Scalars['Boolean']['input']>;
   limit?: Scalars['Int']['input'];
   offset?: Scalars['Int']['input'];
+  orderBy?: OrderByInput;
   searchTerm?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -12296,6 +12313,7 @@ export type VendorChildrenAccountsArgs = {
   isActive?: InputMaybe<Scalars['Boolean']['input']>;
   limit?: Scalars['Int']['input'];
   offset?: Scalars['Int']['input'];
+  orderBy?: OrderByInput;
   searchTerm?: InputMaybe<Scalars['String']['input']>;
 };
 
