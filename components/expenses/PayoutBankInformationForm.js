@@ -17,6 +17,7 @@ import { I18nSupportLink } from '../I18nFormatters';
 import { InfoTooltipIcon } from '../InfoTooltipIcon';
 import MessageBox from '../MessageBox';
 import StyledSpinner from '../StyledSpinner';
+import { Separator } from '../ui/Separator';
 
 const formatStringOptions = strings => strings.map(s => ({ label: s, value: s }));
 const formatTransferWiseSelectOptions = values => values.map(({ key, name }) => ({ value: key, label: name }));
@@ -223,7 +224,7 @@ FieldGroup.propTypes = {
   field: PropTypes.object.isRequired,
 };
 
-const DetailsForm = ({ disabled, getFieldName, formik, host, currency }) => {
+const DetailsForm = ({ disabled, getFieldName, formik, host, currency, alwaysSave }) => {
   const intl = useIntl();
   const needsRefetchRef = React.useRef(false);
   const { loading, error, data, refetch } = useQuery(requiredFieldsQuery, {
@@ -353,7 +354,7 @@ const DetailsForm = ({ disabled, getFieldName, formik, host, currency }) => {
       </FormField>
 
       {transactionMethod && (
-        <div>
+        <React.Fragment>
           <div className="mt-6 flex-1">
             <p className="text-base font-semibold">
               <FormattedMessage id="PayoutBankInformationForm.AccountInfo" defaultMessage="Account Information" />
@@ -372,7 +373,7 @@ const DetailsForm = ({ disabled, getFieldName, formik, host, currency }) => {
               refetch={doRefetchOnChange}
             />
           ))}
-        </div>
+        </React.Fragment>
       )}
       {Boolean(addressFields.length) && (
         <React.Fragment>
@@ -403,6 +404,25 @@ const DetailsForm = ({ disabled, getFieldName, formik, host, currency }) => {
           ))}
         </React.Fragment>
       )}
+      {transactionMethod && alwaysSave && (
+        <React.Fragment>
+          <Separator className="my-6" />
+          <FormField
+            disabled={disabled}
+            name={getFieldName('name')}
+            label={intl.formatMessage({ defaultMessage: 'Label', id: 'PayoutMethod.New.customLabel' })}
+            hint={intl.formatMessage({
+              defaultMessage: 'Give this payout method a label that will help you identify it',
+              id: 'PayoutMethod.New.customLabel.hint',
+            })}
+            placeholder={intl.formatMessage({
+              defaultMessage: 'e.g., Main Bank Account',
+              id: 'PayoutMethod.New.customLabel.placeholder.bankAccount',
+            })}
+            required={false}
+          />
+        </React.Fragment>
+      )}
     </div>
   );
 };
@@ -415,6 +435,7 @@ DetailsForm.propTypes = {
   currency: PropTypes.string.isRequired,
   formik: PropTypes.object.isRequired,
   getFieldName: PropTypes.func.isRequired,
+  alwaysSave: PropTypes.bool,
 };
 
 const availableCurrenciesQuery = gql`
@@ -455,6 +476,7 @@ const PayoutBankInformationForm = ({
   ignoreBlockedCurrencies,
   optional,
   disabled,
+  alwaysSave,
 }) => {
   const { data, loading } = useQuery(availableCurrenciesQuery, {
     context: API_V2_CONTEXT,
@@ -579,6 +601,7 @@ const PayoutBankInformationForm = ({
           formik={formik}
           getFieldName={getFieldName}
           host={wiseHost}
+          alwaysSave={alwaysSave}
         />
       )}
       {!selectedCurrency && !currencies?.length && (
@@ -605,6 +628,7 @@ PayoutBankInformationForm.propTypes = {
   disabled: PropTypes.bool,
   isNew: PropTypes.bool,
   optional: PropTypes.bool,
+  alwaysSave: PropTypes.bool,
   ignoreBlockedCurrencies: PropTypes.bool,
   getFieldName: PropTypes.func.isRequired,
   /** Enforces a fixedCurrency */

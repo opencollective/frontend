@@ -986,25 +986,7 @@ function buildFormSchema(
             message: 'Required',
           },
         ),
-      name: z
-        .string()
-        .nullish()
-        .refine(
-          name => {
-            if (['__invite', '__inviteSomeone', '__inviteExistingUser'].includes(values.payeeSlug)) {
-              return true;
-            }
-
-            if (values.payoutMethodId === '__newPayoutMethod') {
-              return !!name;
-            }
-
-            return true;
-          },
-          {
-            message: 'Required',
-          },
-        ),
+      name: z.string().nullish(),
       data: z
         .object({
           currency: z
