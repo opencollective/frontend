@@ -264,7 +264,8 @@ const ExpenseMoreActionsButton = ({
                 <FormattedMessage id="Edit" defaultMessage="Edit" />
               </Action>
             )}
-            {permissions.canSeeInvoiceInfo &&
+            {!props.hasAttachedInvoiceFile &&
+              permissions.canSeeInvoiceInfo &&
               [expenseTypes.INVOICE, expenseTypes.SETTLEMENT].includes(expense?.type) && (
                 <ExpenseInvoiceDownloadHelper expense={expense} collective={expense.account} onError={onError}>
                   {({ isLoading, downloadInvoice }) => (
@@ -345,6 +346,7 @@ const ExpenseMoreActionsButton = ({
 
 ExpenseMoreActionsButton.propTypes = {
   isDisabled: PropTypes.bool,
+  hasAttachedInvoiceFile: PropTypes.bool,
   expense: PropTypes.shape({
     id: PropTypes.string.isRequired,
     legacyId: PropTypes.number.isRequired,

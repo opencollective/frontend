@@ -182,9 +182,9 @@ const ExpensesList = ({
                   onDelete={onDelete}
                   onProcess={onProcess}
                   selected={!openExpenseLegacyId && selectedExpenseIndex === idx}
-                  expandExpense={e => {
+                  expandExpense={(e, attachmentUrl) => {
                     e.preventDefault();
-                    setOpenExpenseLegacyId(expense.legacyId);
+                    setOpenExpenseLegacyId(expense.legacyId, attachmentUrl);
                   }}
                   useDrawer={useDrawer}
                 />

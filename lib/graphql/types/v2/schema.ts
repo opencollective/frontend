@@ -4548,6 +4548,8 @@ export type ExpenseAttachedFile = {
   id: Scalars['String']['output'];
   /** The file info associated with this item (if any) */
   info?: Maybe<FileInfo>;
+  /** If the file was uploaded as an invoice */
+  isInvoice: Scalars['Boolean']['output'];
   /**
    * The original filename
    * @deprecated 2023-01-23: We're moving this field to "file.name"
@@ -4559,6 +4561,8 @@ export type ExpenseAttachedFile = {
 export type ExpenseAttachedFileInput = {
   /** ID of the file */
   id?: InputMaybe<Scalars['String']['input']>;
+  /** Is the attached file an invoice? */
+  isInvoice?: Scalars['Boolean']['input'];
   /**
    * Original filename
    * @deprecated 2023-02-02: This must now be provided when uploading the file. This parameter will be ignored.

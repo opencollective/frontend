@@ -7376,6 +7376,11 @@ type ExpenseAttachedFile {
   url: URL
 
   """
+  If the file was uploaded as an invoice
+  """
+  isInvoice: Boolean!
+
+  """
   The file info associated with this item (if any)
   """
   info: FileInfo
@@ -22058,6 +22063,11 @@ input ExpenseAttachedFileInput {
   URL of the file
   """
   url: URL!
+
+  """
+  Is the attached file an invoice?
+  """
+  isInvoice: Boolean! = false
 }
 
 """

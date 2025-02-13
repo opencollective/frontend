@@ -17,6 +17,7 @@ import { FormField } from '../FormField';
 import { FormikZod } from '../FormikZod';
 import { AdditionalAttachments, ExpenseItemsForm } from '../submit-expense/form/ExpenseItemsSection';
 import { PayoutMethodFormContent } from '../submit-expense/form/PayoutMethodSection';
+import { InvoiceFormOption } from '../submit-expense/form/TypeOfExpenseSection';
 import { WhoIsGettingPaidForm } from '../submit-expense/form/WhoIsGettingPaidSection';
 import { InviteeAccountType, useExpenseForm, YesNoOption } from '../submit-expense/useExpenseForm';
 import { Button } from '../ui/Button';
@@ -48,6 +49,8 @@ const RenderFormFields = ({ field, onSubmit, expense }) => {
       return <EditPayee onSubmit={onSubmit} expense={expense} />;
     case 'attachments':
       return <EditAttachments onSubmit={onSubmit} expense={expense} />;
+    case 'invoiceFile':
+      return <EditInvoiceFile onSubmit={onSubmit} expense={expense} />;
   }
 };
 const EditPayee = ({ expense, onSubmit }) => {
@@ -235,10 +238,19 @@ const EditAttachments = ({ expense, onSubmit }) => {
     pickSchemaFields: { expenseAttachedFiles: true },
   });
   const transformedOnSubmit = values => {
+    const attachedFiles = values.additionalAttachments.map(a => ({
+      url: typeof a === 'string' ? a : a?.url,
+    }));
+
+    if (values.hasInvoiceOption === YesNoOption.YES && values.invoiceFile) {
+      attachedFiles.push({
+        url: typeof values.invoiceFile === 'string' ? values.invoiceFile : values.invoiceFile?.url,
+        isInvoice: true,
+      });
+    }
+
     const editValues = {
-      attachedFiles: values.additionalAttachments.map(a => ({
-        url: typeof a === 'string' ? a : a?.url,
-      })),
+      attachedFiles,
     };
     return onSubmit(editValues);
   };
@@ -279,6 +291,70 @@ const EditAttachments = ({ expense, onSubmit }) => {
     </FormikProvider>
   );
 };
+
+const EditInvoiceFile = ({ expense, onSubmit }) => {
+  const formRef = React.useRef<HTMLFormElement>();
+  const startOptions = React.useRef({
+    expenseId: expense.legacyId,
+    isInlineEdit: true,
+    pickSchemaFields: { invoiceFile: true, invoiceNumber: true },
+  });
+  const transformedOnSubmit = values => {
+    const attachedFiles = values.additionalAttachments.map(a => ({
+      url: typeof a === 'string' ? a : a?.url,
+    }));
+
+    if (values.hasInvoiceOption === YesNoOption.YES && values.invoiceFile) {
+      attachedFiles.push({
+        url: typeof values.invoiceFile === 'string' ? values.invoiceFile : values.invoiceFile?.url,
+        isInvoice: true,
+      });
+    }
+
+    const editValues = {
+      attachedFiles,
+      reference: values.invoiceNumber,
+    };
+    return onSubmit(editValues);
+  };
+
+  const expenseForm = useExpenseForm({
+    formRef,
+    initialValues: {
+      inviteeAccountType: InviteeAccountType.INDIVIDUAL,
+      expenseItems: [
+        {
+          amount: {
+            valueInCents: 0,
+            currency: 'USD',
+          },
+          description: '',
+        },
+      ],
+      additionalAttachments: [],
+      hasInvoiceOption: YesNoOption.YES,
+      inviteeNewIndividual: {},
+      inviteeNewOrganization: {
+        organization: {},
+      },
+      newPayoutMethod: {
+        data: {},
+      },
+    },
+    startOptions: startOptions.current,
+    onSubmit: transformedOnSubmit,
+  });
+
+  return (
+    <FormikProvider value={expenseForm}>
+      <form className="space-y-4" ref={formRef} onSubmit={e => e.preventDefault()}>
+        <InvoiceFormOption {...InvoiceFormOption.getFormProps(expenseForm)} />
+        <EditExpenseActionButtons loading={expenseForm.initialLoading} handleSubmit={expenseForm.handleSubmit} />
+      </form>
+    </FormikProvider>
+  );
+};
+
 const EditExpenseItems = ({ expense, onSubmit }) => {
   const formRef = React.useRef<HTMLFormElement>();
   const startOptions = React.useRef({
@@ -395,7 +471,7 @@ export default function EditExpenseDialog({
   goToLegacyEdit,
 }: {
   expense: Expense;
-  field: 'title' | 'expenseItems' | 'payoutMethod' | 'payee' | 'type' | 'attachments';
+  field: 'title' | 'expenseItems' | 'payoutMethod' | 'payee' | 'type' | 'attachments' | 'invoiceFile';
   title: string;
   description?: string;
   dialogContentClassName?: string;

@@ -1,4 +1,6 @@
+/* eslint-disable prefer-arrow-callback */
 import React from 'react';
+import { useFormikContext } from 'formik';
 import { pick } from 'lodash';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -35,8 +37,6 @@ function getFormProps(form: ExpenseForm) {
     ...pick(form.options, ['isAdminOfPayee', 'account', 'host', 'payee', 'lockedFields']),
     ...pick(form.values, [
       'expenseTypeOption',
-      'invoiceFile',
-      'hasInvoiceOption',
       'acknowledgedCollectiveReceiptExpensePolicy',
       'acknowledgedCollectiveInvoiceExpensePolicy',
       'acknowledgedHostInvoiceExpensePolicy',
@@ -45,44 +45,12 @@ function getFormProps(form: ExpenseForm) {
   };
 }
 
-// eslint-disable-next-line prefer-arrow-callback
 export const TypeOfExpenseSection = memoWithGetFormProps(function TypeOfExpenseSection(
   props: TypeOfExpenseSectionProps,
 ) {
-  const intl = useIntl();
   const expenseTypeOption = props.expenseTypeOption;
-  const { toast } = useToast();
 
   const isTypeLocked = props.lockedFields?.includes?.(ExpenseLockableFields.TYPE);
-  const { setFieldValue } = props;
-
-  const onGraphQLSuccess = React.useCallback(
-    uploadResults => {
-      setFieldValue('invoiceFile', uploadResults[0].file);
-    },
-    [setFieldValue],
-  );
-
-  const onSuccess = React.useCallback(
-    files => {
-      setFieldValue('invoiceFile', files ? files[0] : null);
-    },
-    [setFieldValue],
-  );
-
-  const onReject = React.useCallback(
-    msg => {
-      toast({ variant: 'error', message: msg });
-    },
-    [toast],
-  );
-
-  const attachInvoiceLabel = React.useMemo(
-    () => intl.formatMessage({ defaultMessage: 'Attach your invoice file', id: 'Oa/lhY' }),
-    [intl],
-  );
-
-  const { LoggedInUser } = useLoggedInUser();
 
   return (
     <FormSectionContainer
@@ -180,83 +148,138 @@ export const TypeOfExpenseSection = memoWithGetFormProps(function TypeOfExpenseS
           </div>
         )}
 
-        {!props.initialLoading && expenseTypeOption === ExpenseType.INVOICE && (
-          <div className="mt-4 rounded-md border border-gray-300 p-4">
-            <Label>
-              {props.isAdminOfPayee || !LoggedInUser ? (
-                <FormattedMessage defaultMessage="An invoice is required. Do you have one?" id="O+LW+y" />
-              ) : (
-                <FormattedMessage
-                  defaultMessage="The person you are inviting to submit this expense will be asked to provide an invoice. Do you have one?"
-                  id="Sioe6W"
-                />
-              )}
-            </Label>
-            <Tabs
-              value={props.hasInvoiceOption}
-              onValueChange={newValue => props.setFieldValue('hasInvoiceOption', newValue as YesNoOption)}
-              className="space-y-4"
-            >
-              <TabsList className="flex-wrap">
-                <TabsTrigger value={YesNoOption.YES} disabled={props.isSubmitting}>
-                  <FormattedMessage defaultMessage="Yes, I have an invoice" id="woKQYE" />
-                </TabsTrigger>
-                <TabsTrigger value={YesNoOption.NO} disabled={props.isSubmitting}>
-                  <FormattedMessage defaultMessage="No, generate an invoice for me" id="67idHB" />
-                </TabsTrigger>
-              </TabsList>
-              <TabsContent value={YesNoOption.YES}>
-                <div className="flex items-start gap-4">
-                  <div className="h-16 grow basis-0">
-                    <div>
-                      <FormField
-                        required={props.isAdminOfPayee || props.payee?.type === CollectiveType.VENDOR}
-                        disabled={props.isSubmitting}
-                        name="invoiceFile"
-                        isPrivate
-                        label={attachInvoiceLabel}
-                      >
-                        {({ field }) => (
-                          <MemoizedDropzone
-                            {...field}
-                            {...attachmentDropzoneParams}
-                            kind="EXPENSE_ATTACHED_FILE"
-                            name="invoice"
-                            className="min-h-16"
-                            minHeight={64}
-                            showActions
-                            useGraphQL={true}
-                            parseDocument={false}
-                            isMulti={false}
-                            value={typeof props.invoiceFile === 'string' ? props.invoiceFile : props.invoiceFile?.url}
-                            onGraphQLSuccess={onGraphQLSuccess}
-                            onSuccess={onSuccess}
-                            onReject={onReject}
-                          />
-                        )}
-                      </FormField>
-                    </div>
-                  </div>
-                  <div className="grow basis-0">
-                    <FormField
-                      required={props.isAdminOfPayee || props.payee?.type === CollectiveType.VENDOR}
-                      disabled={props.isSubmitting}
-                      name="invoiceNumber"
-                      isPrivate
-                      label={intl.formatMessage({ defaultMessage: 'Invoice number', id: 'ijDMrP' })}
-                      placeholder="e.g. INV 001"
-                      hint={intl.formatMessage({
-                        defaultMessage: 'The unique identifier mentioned on your invoice',
-                        id: 'lct/39',
-                      })}
-                    />
-                  </div>
-                </div>
-              </TabsContent>
-            </Tabs>
-          </div>
-        )}
+        {!props.initialLoading && expenseTypeOption === ExpenseType.INVOICE && <InvoiceFormOptionWrapper />}
       </React.Fragment>
     </FormSectionContainer>
   );
 }, getFormProps);
+
+function InvoiceFormOptionWrapper() {
+  const form = useFormikContext() as ExpenseForm;
+
+  return <InvoiceFormOption {...InvoiceFormOption.getFormProps(form)} />;
+}
+
+function getInvoiceFormProps(form: ExpenseForm) {
+  return {
+    setFieldValue: form.setFieldValue,
+    initialLoading: form.initialLoading,
+    isSubmitting: form.isSubmitting,
+    ...pick(form.options, ['isAdminOfPayee', 'payee']),
+    ...pick(form.values, ['invoiceFile', 'hasInvoiceOption']),
+  };
+}
+
+type InvoiceFormOptionProps = ReturnType<typeof getInvoiceFormProps>;
+
+export const InvoiceFormOption = memoWithGetFormProps(function InvoiceFormOption(props: InvoiceFormOptionProps) {
+  const intl = useIntl();
+  const { LoggedInUser } = useLoggedInUser();
+
+  const { toast } = useToast();
+
+  const { setFieldValue } = props;
+
+  const onGraphQLSuccess = React.useCallback(
+    uploadResults => {
+      setFieldValue('invoiceFile', uploadResults[0].file);
+    },
+    [setFieldValue],
+  );
+
+  const onSuccess = React.useCallback(
+    files => {
+      setFieldValue('invoiceFile', files ? files[0] : null);
+    },
+    [setFieldValue],
+  );
+
+  const onReject = React.useCallback(
+    msg => {
+      toast({ variant: 'error', message: msg });
+    },
+    [toast],
+  );
+
+  const attachInvoiceLabel = React.useMemo(
+    () => intl.formatMessage({ defaultMessage: 'Attach your invoice file', id: 'Oa/lhY' }),
+    [intl],
+  );
+
+  return (
+    <div className="mt-4 rounded-md border border-gray-300 p-4">
+      <Label>
+        {props.isAdminOfPayee || !LoggedInUser ? (
+          <FormattedMessage defaultMessage="An invoice is required. Do you have one?" id="O+LW+y" />
+        ) : (
+          <FormattedMessage
+            defaultMessage="The person you are inviting to submit this expense will be asked to provide an invoice. Do you have one?"
+            id="Sioe6W"
+          />
+        )}
+      </Label>
+      <Tabs
+        value={props.hasInvoiceOption}
+        onValueChange={newValue => props.setFieldValue('hasInvoiceOption', newValue as YesNoOption)}
+        className="space-y-4"
+      >
+        <TabsList className="flex-wrap">
+          <TabsTrigger value={YesNoOption.YES} disabled={props.isSubmitting || props.initialLoading}>
+            <FormattedMessage defaultMessage="Yes, I have an invoice" id="woKQYE" />
+          </TabsTrigger>
+          <TabsTrigger value={YesNoOption.NO} disabled={props.isSubmitting || props.initialLoading}>
+            <FormattedMessage defaultMessage="No, generate an invoice for me" id="67idHB" />
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value={YesNoOption.YES}>
+          <div className="flex items-start gap-4">
+            <div className="h-16 grow basis-0">
+              <div>
+                <FormField
+                  required={props.isAdminOfPayee || props.payee?.type === CollectiveType.VENDOR}
+                  disabled={props.isSubmitting || props.initialLoading}
+                  name="invoiceFile"
+                  isPrivate
+                  label={attachInvoiceLabel}
+                >
+                  {({ field }) => (
+                    <MemoizedDropzone
+                      {...field}
+                      {...attachmentDropzoneParams}
+                      kind="EXPENSE_ATTACHED_FILE"
+                      name="invoice"
+                      className="min-h-16"
+                      minHeight={64}
+                      showActions
+                      useGraphQL={true}
+                      parseDocument={false}
+                      isMulti={false}
+                      value={typeof props.invoiceFile === 'string' ? props.invoiceFile : props.invoiceFile?.url}
+                      onGraphQLSuccess={onGraphQLSuccess}
+                      onSuccess={onSuccess}
+                      onReject={onReject}
+                    />
+                  )}
+                </FormField>
+              </div>
+            </div>
+            <div className="grow basis-0">
+              <FormField
+                required={props.isAdminOfPayee || props.payee?.type === CollectiveType.VENDOR}
+                disabled={props.isSubmitting || props.initialLoading}
+                name="invoiceNumber"
+                isPrivate
+                label={intl.formatMessage({ defaultMessage: 'Invoice number', id: 'ijDMrP' })}
+                placeholder="e.g. INV 001"
+                hint={intl.formatMessage({
+                  defaultMessage: 'The unique identifier mentioned on your invoice',
+                  id: 'lct/39',
+                })}
+              />
+            </div>
+          </div>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}, getInvoiceFormProps);

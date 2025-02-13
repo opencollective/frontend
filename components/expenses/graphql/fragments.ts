@@ -349,6 +349,7 @@ export const expensePageExpenseFieldsFragment = gql`
       id
       url
       name
+      isInvoice
       info {
         id
         type
@@ -846,6 +847,7 @@ export const expensesListAdminFieldsFragment = gql`
       id
       url
       name
+      isInvoice
       info {
         id
         type

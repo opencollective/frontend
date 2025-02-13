@@ -641,6 +641,7 @@ function fillTypeOfExpense(opts: { expenseType: 'invoice' | 'reimbursement'; has
       .should('be.checked');
     if (opts.expenseType === 'invoice') {
       if (opts.hasInvoice) {
+        cy.contains('Yes, I have an invoice').click();
         cy.contains('Attach your invoice file').selectFile(getReceiptFixture({ fileName: 'invoice0.jpg' }));
         cy.contains('Clear').should('exist');
         cy.contains('Invoice number').click().type('INV0001');

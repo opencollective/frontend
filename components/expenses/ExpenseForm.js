@@ -186,7 +186,9 @@ export const prepareExpenseForSubmit = expenseData => {
     payee,
     payeeLocation,
     payoutMethod,
-    attachedFiles: keepAttachedFiles ? expenseData.attachedFiles?.map(file => pick(file, ['id', 'url', 'name'])) : [],
+    attachedFiles: keepAttachedFiles
+      ? expenseData.attachedFiles?.map(file => pick(file, ['id', 'url', 'name', 'isInvoice']))
+      : [],
     tax: expenseData.taxes?.filter(tax => !tax.isDisabled).map(tax => pick(tax, ['type', 'rate', 'idNumber'])),
     items: expenseData.items.map(item => prepareExpenseItemForSubmit(expenseData, item)),
     accountingCategory: !expenseData.accountingCategory ? null : pick(expenseData.accountingCategory, ['id']),
@@ -895,7 +897,12 @@ const ExpenseFormBody = ({
                             defaultMessage="If you already have an invoice document, you can upload it here."
                           />
                         }
-                        onChange={attachedFiles => formik.setFieldValue('attachedFiles', attachedFiles)}
+                        onChange={attachedFiles =>
+                          formik.setFieldValue(
+                            'attachedFiles',
+                            attachedFiles.map((f, i) => ({ ...f, isInvoice: i === 0 })),
+                          )
+                        }
                         form={formik}
                         defaultValue={values.attachedFiles}
                       />
