@@ -237,6 +237,7 @@ class ExpenseFormItems extends React.PureComponent {
             ocrComparison={itemsOCRComparisons[attachment.id]}
             hasCurrencyPicker={itemsHaveCurrencyPicker}
             amountIsLocked={amountIsLocked}
+            isSubjectToTax={Boolean(taxType)}
           />
         ))}
         {/** Do not display OCR warnings for OCR charges since date/amount can't be changed */}

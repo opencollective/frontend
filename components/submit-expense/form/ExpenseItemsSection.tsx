@@ -97,7 +97,11 @@ export const ExpenseItemsForm = memoWithGetFormProps(function ExpenseItemsForm(
                 // eslint-disable-next-line react/no-array-index-key
                 <div key={ei.key} id={ei.key} role="listitem" className="flex gap-4">
                   <div className="grow">
-                    <ExpenseItemWrapper index={i} isAmountLocked={isAmountLocked} />
+                    <ExpenseItemWrapper
+                      index={i}
+                      isAmountLocked={isAmountLocked}
+                      isSubjectToTax={Boolean(props.taxType)}
+                    />
                   </div>
                   <div className="flex flex-col gap-1">
                     <Button
@@ -246,6 +250,7 @@ type ExpenseItemProps = {
   index: number;
   isAmountLocked?: boolean;
   item: ExpenseForm['values']['expenseItems'][number];
+  isSubjectToTax: boolean;
 } & ReturnType<typeof getExpenseItemProps>;
 
 function getExpenseItemProps(form: ExpenseForm) {
@@ -255,13 +260,14 @@ function getExpenseItemProps(form: ExpenseForm) {
   };
 }
 
-function ExpenseItemWrapper(props: { index: number; isAmountLocked?: boolean }) {
+function ExpenseItemWrapper(props: { index: number; isAmountLocked?: boolean; isSubjectToTax: boolean }) {
   const form = useFormikContext() as ExpenseForm;
   return (
     <ExpenseItem
       index={props.index}
       item={get(form.values, `expenseItems.${props.index}`)}
       isAmountLocked={props.isAmountLocked}
+      isSubjectToTax={props.isSubjectToTax}
       {...ExpenseItem.getFormProps(form)}
     />
   );
@@ -330,7 +336,11 @@ const ExpenseItem = memoWithGetFormProps(function ExpenseItem(props: ExpenseItem
             <div className="flex grow justify-center">
               <FormField
                 disabled={props.isSubmitting}
-                label={intl.formatMessage({ defaultMessage: 'Upload file', id: '6oOCCL' })}
+                label={
+                  props.isSubjectToTax
+                    ? intl.formatMessage({ defaultMessage: 'Gross Amount', id: 'bwZInO' })
+                    : intl.formatMessage({ defaultMessage: 'Amount', id: 'Fields.amount' })
+                }
                 name={`expenseItems.${props.index}.attachment`}
               >
                 {({ field }) => {
