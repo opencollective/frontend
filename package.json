@@ -208,7 +208,7 @@
     "@cypress/code-coverage": "^3.12.39",
     "@formatjs/cli": "^6.2.12",
     "@graphql-codegen/add": "^5.0.2",
-    "@graphql-codegen/cli": "5.0.3",
+    "@graphql-codegen/cli": "5.0.5",
     "@graphql-codegen/client-preset": "^4.2.6",
     "@graphql-eslint/eslint-plugin": "^3.20.1",
     "@next/bundle-analyzer": "^14.2.3",
