@@ -340,8 +340,12 @@ const getTotalYearlyAmount = stepDetails => {
  */
 export const getRequiredInformation = (stepProfile, stepDetails, collective, profiles = [], tier) => {
   let totalAmount = getTotalYearlyAmount(stepDetails);
-  const selectedProfile = profiles.find(p => p.account.id === stepProfile?.id);
+  let selectedProfile = profiles.find(p => p.account.id === stepProfile?.id);
   if (selectedProfile) {
+    // If incognito, use the user individual profile
+    if (stepProfile.isIncognito) {
+      selectedProfile = profiles[0];
+    }
     totalAmount += selectedProfile.totalContributedToHost?.valueInCents || 0;
   }
   const thresholds = collective?.policies?.CONTRIBUTOR_INFO_THRESHOLDS;
