@@ -10,7 +10,7 @@ import memoizeOne from 'memoize-one';
 import { defineMessages, FormattedMessage, injectIntl } from 'react-intl';
 import styled from 'styled-components';
 
-import { isPrepaid } from '../lib/constants/payment-methods';
+import { isPrepaid, PAYMENT_METHOD_SERVICE, PAYMENT_METHOD_TYPE } from '../lib/constants/payment-methods';
 import { gqlV1 } from '../lib/graphql/helpers';
 import { compose, reportValidityHTML5 } from '../lib/utils';
 
@@ -306,6 +306,19 @@ class CreateGiftCardsForm extends Component {
     );
   }
 
+  isCollectivePaymentMethodWithLowerBalance() {
+    const { values } = this.state;
+    const paymentMethod = values.paymentMethod || this.getDefaultPaymentMethod();
+    if (
+      paymentMethod.service !== PAYMENT_METHOD_SERVICE.OPENCOLLECTIVE ||
+      paymentMethod.type !== PAYMENT_METHOD_TYPE.COLLECTIVE
+    ) {
+      return false;
+    }
+
+    return paymentMethod.balance < values.amount * this.getGiftCardsCount();
+  }
+
   renderSubmit() {
     const { submitting } = this.state;
     const count = this.getGiftCardsCount();
@@ -422,7 +435,8 @@ class CreateGiftCardsForm extends Component {
 
   canLimitToFiscalHosts() {
     const paymentMethod = this.state.values.paymentMethod || this.getDefaultPaymentMethod();
-    return !isPrepaid(paymentMethod); // Prepaid are already limited to specific fiscal hosts
+    // Prepaid are already limited to specific fiscal hosts and collective balances are already limited to specific hosts
+    return !isPrepaid(paymentMethod) && paymentMethod.type !== PAYMENT_METHOD_TYPE.COLLECTIVE;
   }
 
   /** Get batch options for select. First option is always "No batch" */
@@ -594,14 +608,11 @@ class CreateGiftCardsForm extends Component {
           {deliverType === 'email' && this.renderEmailFields()}
           {deliverType === 'manual' && this.renderManualFields()}
 
-          {serverError && (
+          {serverError ? (
             <MessageBox type="error" withIcon>
               {serverError}
             </MessageBox>
-          )}
-
-          {/** Show some warnings to encourage best practices */}
-          {this.shouldLimitToSpecificHosts() && (
+          ) : this.shouldLimitToSpecificHosts() ? (
             <MessageBox type="warning" fontSize="14px" lineHeight="20px" withIcon mb={4}>
               <FormattedMessage
                 defaultMessage="We strongly recommend limiting your gift cards to specific fiscal hosts - otherwise, malicious users could create fake Collectives to withdraw the funds. Collectives under trusted fiscal hosts have all been vetted and confirmed as legitimate."
@@ -609,8 +620,7 @@ class CreateGiftCardsForm extends Component {
                 values={{ SupportLink: I18nSupportLink }}
               />
             </MessageBox>
-          )}
-          {this.isPaymentMethodDiscouraged() && (
+          ) : this.isPaymentMethodDiscouraged() ? (
             <MessageBox type="warning" fontSize="14px" lineHeight="20px" withIcon mb={4}>
               <FormattedMessage
                 defaultMessage="Credit card payments incur processor fees, which can add up on large campaigns. Banks may also flag the numerous transactions as suspicious. We strongly recommend adding a prepaid budget via bank transfer instead. <SupportLink>Contact us</SupportLink> to learn more."
@@ -626,7 +636,14 @@ class CreateGiftCardsForm extends Component {
                 />
               </Box>
             </MessageBox>
-          )}
+          ) : this.isCollectivePaymentMethodWithLowerBalance() ? (
+            <MessageBox type="warning" fontSize="14px" lineHeight="20px" withIcon mb={4}>
+              <FormattedMessage
+                defaultMessage="Your balance is lower than the total amount required to fund these gift cards. The beneficiary will encounter an error if they attempt to contribute without sufficient balance, even if their gift card’s limit has not been reached."
+                id="bw26c7"
+              />
+            </MessageBox>
+          ) : null}
 
           <Box mb="1em" alignSelf="center" mt={3}>
             {this.renderSubmit()}
@@ -651,7 +668,7 @@ const collectiveSourcePaymentMethodsQuery = gqlV1/* GraphQL */ `
         name
         count
       }
-      paymentMethods(type: ["CREDITCARD", "PREPAID"], hasBalanceAboveZero: true) {
+      paymentMethods(type: ["CREDITCARD", "PREPAID", "COLLECTIVE"], hasBalanceAboveZero: true) {
         id
         uuid
         name

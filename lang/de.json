@@ -2884,7 +2884,7 @@
   "PaymentMethods.All": "Alle",
   "paymentMethods.creditcard.add": "Kreditkarte hinzufügen",
   "paymentMethods.creditcard.add.info": "Um Spenden als {contributeAs} zu tätigen",
-  "paymentMethods.labelCollective": "{balance} verfügbar",
+  "paymentMethods.labelCollective": "Balance: {balance} available",
   "paymentMethods.labelCreditCard": "{name} {expiration}",
   "paymentMethods.labelGiftCard": "{name} {expiration} ({balance} übrig)",
   "paymentMethods.labelPrepaid": "{name} ({balance} übrig)",

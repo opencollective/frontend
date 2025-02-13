@@ -2884,7 +2884,7 @@
   "PaymentMethods.All": "All",
   "paymentMethods.creditcard.add": "クレジットカードを追加",
   "paymentMethods.creditcard.add.info": "{contributeAs} として貢献するため",
-  "paymentMethods.labelCollective": "{balance} が利用可能",
+  "paymentMethods.labelCollective": "Balance: {balance} available",
   "paymentMethods.labelCreditCard": "{name} {expiration}",
   "paymentMethods.labelGiftCard": "{name} {expiration} ({balance} left)",
   "paymentMethods.labelPrepaid": "{name} (残り {balance})",

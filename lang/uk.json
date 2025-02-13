@@ -2884,7 +2884,7 @@
   "PaymentMethods.All": "Усі",
   "paymentMethods.creditcard.add": "Додати кредитну картку",
   "paymentMethods.creditcard.add.info": "For making contributions as {contributeAs}",
-  "paymentMethods.labelCollective": "{balance} доступно",
+  "paymentMethods.labelCollective": "Balance: {balance} available",
   "paymentMethods.labelCreditCard": "{name} {expiration}",
   "paymentMethods.labelGiftCard": "{name} {expiration} (залишилося {balance})",
   "paymentMethods.labelPrepaid": "{name} (залишилося {balance})",

@@ -2884,7 +2884,7 @@
   "PaymentMethods.All": "All",
   "paymentMethods.creditcard.add": "Pridať kreditnú kartu",
   "paymentMethods.creditcard.add.info": "Pre prispievanie ako {contributeAs}",
-  "paymentMethods.labelCollective": "{balance} k dispozícii",
+  "paymentMethods.labelCollective": "Balance: {balance} available",
   "paymentMethods.labelCreditCard": "{name} {expiration}",
   "paymentMethods.labelGiftCard": "{name} {expiration} ({balance} zostáva)",
   "paymentMethods.labelPrepaid": "{name} ({balance} zostáva)",

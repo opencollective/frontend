@@ -2884,7 +2884,7 @@
   "PaymentMethods.All": "全部",
   "paymentMethods.creditcard.add": "添加一张信用卡",
   "paymentMethods.creditcard.add.info": "以 {contributeAs} 身份贡献",
-  "paymentMethods.labelCollective": "{balance} 可用",
+  "paymentMethods.labelCollective": "Balance: {balance} available",
   "paymentMethods.labelCreditCard": "{name} {expiration}",
   "paymentMethods.labelGiftCard": "{name} {expiration}（剩余 {balance}）",
   "paymentMethods.labelPrepaid": "{name} ({balance} 剩余)",

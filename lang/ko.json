@@ -2884,7 +2884,7 @@
   "PaymentMethods.All": "All",
   "paymentMethods.creditcard.add": "신용카드 추가",
   "paymentMethods.creditcard.add.info": "For making contributions as {contributeAs}",
-  "paymentMethods.labelCollective": "{balance} 남음",
+  "paymentMethods.labelCollective": "Balance: {balance} available",
   "paymentMethods.labelCreditCard": "{name} {expiration}",
   "paymentMethods.labelGiftCard": "{name} {expiration} ({balance} left)",
   "paymentMethods.labelPrepaid": "{name} ({balance} left)",

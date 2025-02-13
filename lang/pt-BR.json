@@ -2884,7 +2884,7 @@
   "PaymentMethods.All": "Tudo",
   "paymentMethods.creditcard.add": "Adicionar um cartão de crédito",
   "paymentMethods.creditcard.add.info": "Para fazer contribuições como {contributeAs}",
-  "paymentMethods.labelCollective": "{balance} disponível",
+  "paymentMethods.labelCollective": "Balance: {balance} available",
   "paymentMethods.labelCreditCard": "{name} {expiration}",
   "paymentMethods.labelGiftCard": "{name} {expiration} ({balance} restante)",
   "paymentMethods.labelPrepaid": "{name} ({balance} restante)",
