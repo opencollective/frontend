@@ -8,6 +8,9 @@ import Header from '../components/Header';
 import { withUser } from './UserProvider';
 
 const GlobalStyles = createGlobalStyle`
+  body {
+    overflow-y: auto;
+  }
   body > div:first-child {
     height: 100%;
   }
